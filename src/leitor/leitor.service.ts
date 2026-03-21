@@ -25,6 +25,9 @@ export class LeitorService {
       const leitor = await this.prisma.leitor.findUnique({
         where:{id}
       })
+      if(!leitor){
+        throw new NotFoundException("leitor não encontrado")
+      }
       return leitor;
     }
 
@@ -34,7 +37,7 @@ export class LeitorService {
       })
 
       if(!leitor){
-        throw new NotFoundException('Usuário não encontrado')
+        throw new NotFoundException('leitor não encontrado')
       }
 
       return this.prisma.leitor.update({
@@ -47,8 +50,8 @@ export class LeitorService {
       const leitor = await this.prisma.leitor.delete({
         where: {id}
       })
-      if(!leitor){
-        throw new NotFoundException("Não há usuários a serem deletados")
+      if(!leitor){ 
+        throw new NotFoundException("Não há leitores a serem deletados")
       }
       return leitor;
     }

@@ -7,4 +7,5 @@ import { UpdateLeitorDto } from './dto/update-leitor.dto';
 export class LeitorController {
   constructor(private readonly leitorService: LeitorService) {}
   
+  
 }

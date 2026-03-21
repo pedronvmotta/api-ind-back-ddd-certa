@@ -18,17 +18,17 @@ export class CreateLivroDto {
 
     @ApiProperty({
         description: "a versão do livro",
-        example: "14"
+        example: "14e" // sim, a versão é uma string
     })
     @IsString()
-    edicao!:number
+    versao!: string;
 
     @ApiProperty({
         description: "o ano de lancamento do livro",
-        example: "2023"
+        example: "2023" // o ano é uma string
     })
-    @IsInt()
-    ano!:number
+    @IsString()
+    ano!:string
 
     @ApiProperty({
         description: "genero do livro",
