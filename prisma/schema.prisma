@@ -7,36 +7,66 @@ datasource db {
   provider = "postgresql"
 }
 
-model User {
-  id        String   @id @default(uuid())
-  name      String
-  email     String   @unique
-  password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  posts     Post[]
-  comments  Comment[]
+model Leitor{
+  id Int @id @default(autoincrement())
+  email String @unique
+  nome String 
+  cpf String @unique
+  dataNascimento DateTime
+  endereco String
+  observacao String?
+
+  emprestimos Emprestimo[] // um leitor pode ter vários empréstimos
 }
 
-model Post {
-  id        String   @id @default(uuid())
-  title     String
-  content   String
-  authorId  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  user      User     @relation(fields: [authorId], references: [id])
-  coemments  Comment[]
-  
+model Emprestimo {
+  id Int @id @default(autoincrement())
+  data_emprestimo DateTime
+  prazo_de_devolucao DateTime
+  observacoes String
+  id_leitor Int // FK
+  leitor Leitor @relation(fields: [id_leitor], references: [id])
+  itens_emprestimo ItemEmprestimo[] // um emprestimo pode ter vários itens de empréstimo
 }
 
-model Comment {
-  id        String   @id @default(uuid())
-  content   String
-  postId    String
-  authorId  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  post      Post     @relation(fields: [postId], references: [id])
-  user      User     @relation(fields: [authorId], references: [id])
+model ItemEmprestimo{
+  id Int @id @default(autoincrement())
+  data_de_devolucao DateTime
+  valor_multa Int
+  status String
+  id_emprestimo Int // FK
+  id_livro Int // FK
+
+  emprestimo Emprestimo @relation(fields: [id_emprestimo], references: [id])
+
+  livro Livro @relation(fields: [id_livro], references: [id])
 }
+
+model Livro{
+  id Int @id  @default(autoincrement())
+  nome_livro String
+  editora String
+  versao String
+  ano String
+  genero String
+  idioma String
+  qtde_total Int
+  qtde_disponivel Int
+
+  itens_emprestimo ItemEmprestimo[] //um livro pode ser emprestado N vezes (ser itemEmprestimo N vezes)
+
+  autores Autor[] // um livro pode ter N autores
+}
+
+model Autor{
+  id Int @id @default(autoincrement())
+  nome_autor String
+  origem String
+  biografia String
+  data_de_nascimento DateTime
+  nome_artistico String
+  id_livro Int // FK
+
+  livro Livro @relation(fields: [id_livro], references: [id]) 
+}
+
