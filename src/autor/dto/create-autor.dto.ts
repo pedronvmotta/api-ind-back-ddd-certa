@@ -1,5 +1,5 @@
 import { IsInt, IsString, IsDate } from "class-validator";
-import { ApiProperty, ApiTags } from "@nestjs/swagger";
+import { ApiProperty} from "@nestjs/swagger";
 
 export class CreateAutorDto {
 
@@ -12,7 +12,7 @@ export class CreateAutorDto {
 
     @ApiProperty({
         description: "aqui é o nome do autor",
-        example: "joão"
+        example: "antonio"
     })
     @IsString()
     nome_autor!: string;
@@ -24,10 +24,25 @@ export class CreateAutorDto {
     @IsString()
     origem!: string;
 
-    // continuar a partir daqui (olha seu MER no lucid chart)
+    @ApiProperty({
+        description: "biografia do autor",
+        example: "victor souza cruz foi um inventor do século 18 que inventou a resenha e o eletromagnetismo"
+    })
+    @IsString()
+    biografia!: string;
 
+    @ApiProperty({
+        description: "data de nascimento do autor",
+        example: 19/11/2005
+    })
+    @IsDate()
+    data_de_nascimento!: Date;
 
-
-    
+    @ApiProperty({
+        description: "nome artistico do autor",
+        example: "tom"
+    })
+    @IsString()
+    nome_artistico!: string;
     
 }
