@@ -8,14 +8,14 @@ datasource db {
 }
 
 model Leitor {
-  id             Int          @id @default(autoincrement())
-  email          String       @unique
-  nome           String
-  cpf            String       @unique
+  id                 Int          @id @default(autoincrement())
+  email              String       @unique
+  nome               String
+  cpf                String       @unique
   data_de_nascimento DateTime
-  endereco       String
-  observacao     String?
-  emprestimos    Emprestimo[]
+  endereco           String
+  observacao         String?
+  emprestimos        Emprestimo[]
 }
 
 model Emprestimo {

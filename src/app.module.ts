@@ -4,9 +4,10 @@ import { EmprestimoModule } from './emprestimo/emprestimo.module';
 import { ItemEmprestimoModule } from './item-emprestimo/item-emprestimo.module';
 import { LivroModule } from './livro/livro.module';
 import { AutorModule } from './autor/autor.module';
+import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
-    imports: [LeitorModule, EmprestimoModule, ItemEmprestimoModule, LivroModule, AutorModule]
+    imports: [LeitorModule, EmprestimoModule, ItemEmprestimoModule, LivroModule, AutorModule, PrismaModule]
 })
 
 export class AppModule {}

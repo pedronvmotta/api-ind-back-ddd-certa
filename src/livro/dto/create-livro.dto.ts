@@ -3,13 +3,6 @@ import { ApiProperty} from "@nestjs/swagger";
 
 export class CreateLivroDto {
     @ApiProperty({
-        description: "id do livro",
-        example: "id : 1"
-    })
-    @IsInt()
-    id_livro!:number;
-
-    @ApiProperty({
         description: "nome do livro",
         example: "Rlk da barra da tijuca : volume 2"
     })

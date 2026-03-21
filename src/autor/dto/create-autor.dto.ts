@@ -3,12 +3,6 @@ import { ApiProperty} from "@nestjs/swagger";
 
 export class CreateAutorDto {
 
-    @ApiProperty({
-        description: "esse campo é o id do autor",
-        example: "id:1"
-    })
-    @IsInt()
-    id_autor!:number;
 
     @ApiProperty({
         description: "aqui é o nome do autor",
