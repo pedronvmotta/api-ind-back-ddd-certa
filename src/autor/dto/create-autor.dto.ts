@@ -1,45 +1,24 @@
-import { IsInt, IsString, IsDate } from "class-validator";
-import { ApiProperty} from "@nestjs/swagger";
+import { IsString, IsDateString } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateAutorDto {
+  @ApiProperty({ description: 'nome do autor', example: 'Antonio' })
+  @IsString()
+  nome_autor!: string;
 
-    @ApiProperty({ description: "id do usuário vinculado", example: 1 })
-    @IsInt()
-    id_user!: number;
+  @ApiProperty({ description: 'país de origem do autor', example: 'Dinamarca' })
+  @IsString()
+  origem!: string;
 
-    @ApiProperty({
-        description: "aqui é o nome do autor",
-        example: "antonio"
-    })
-    @IsString()
-    nome_autor!: string;
+  @ApiProperty({ description: 'biografia do autor', example: 'Foi um inventor...' })
+  @IsString()
+  biografia!: string;
 
-    @ApiProperty({
-        description: "aqui é o país de origem do autor",
-        example: "dinamarca"
-    })
-    @IsString()
-    origem!: string;
+  @ApiProperty({ description: 'data de nascimento do autor', example: '2005-11-19' })
+  @IsDateString()
+  data_de_nascimento!: string;
 
-    @ApiProperty({
-        description: "biografia do autor",
-        example: "victor souza cruz foi um inventor do século 18 que inventou a resenha e o eletromagnetismo"
-    })
-    @IsString()
-    biografia!: string;
-
-    @ApiProperty({
-        description: "data de nascimento do autor",
-        example: 19/11/2005
-    })
-    @IsDate()
-    data_de_nascimento!: Date;
-
-    @ApiProperty({
-        description: "nome artistico do autor",
-        example: "tom"
-    })
-    @IsString()
-    nome_artistico!: string;
-    
+  @ApiProperty({ description: 'nome artístico do autor', example: 'Tom' })
+  @IsString()
+  nome_artistico!: string;
 }

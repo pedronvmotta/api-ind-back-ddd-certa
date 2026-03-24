@@ -142,8 +142,7 @@ exports.Prisma.AutorScalarFieldEnum = {
   origem: 'origem',
   biografia: 'biografia',
   data_de_nascimento: 'data_de_nascimento',
-  nome_artistico: 'nome_artistico',
-  id_livro: 'id_livro'
+  nome_artistico: 'nome_artistico'
 };
 
 exports.Prisma.LivroScalarFieldEnum = {
@@ -156,6 +155,11 @@ exports.Prisma.LivroScalarFieldEnum = {
   idioma: 'idioma',
   qtde_total: 'qtde_total',
   qtde_disponivel: 'qtde_disponivel'
+};
+
+exports.Prisma.AutorLivroScalarFieldEnum = {
+  id_autor: 'id_autor',
+  id_livro: 'id_livro'
 };
 
 exports.Prisma.EmprestimoScalarFieldEnum = {
@@ -196,6 +200,7 @@ exports.Prisma.ModelName = {
   Leitor: 'Leitor',
   Autor: 'Autor',
   Livro: 'Livro',
+  AutorLivro: 'AutorLivro',
   Emprestimo: 'Emprestimo',
   ItemEmprestimo: 'ItemEmprestimo'
 };

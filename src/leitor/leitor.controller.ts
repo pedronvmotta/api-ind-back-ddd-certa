@@ -7,15 +7,6 @@ import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 @Controller('leitores')
 export class LeitorController {
   constructor(private readonly leitorService: LeitorService) {}
-  
-  @Post('/cadastro')
-  @ApiOperation({summary: "cadastra um leitor"})
-  @ApiResponse({status:201, description: "leitor criado"})
-  @ApiResponse({status:400, description: "leitor não criado"})
-
-  cadastrarLeitor(@Body() createLeitorDto: CreateLeitorDto){
-    return this.leitorService.cadastrarLeitor(createLeitorDto)
-  }
 
   @Get('/listar-todos')
   @ApiOperation({summary: "lista todos os leitores"})
