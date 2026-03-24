@@ -6,26 +6,14 @@ import { CreateAutorDto } from './dto/create-autor.dto';
 
 @Controller('autores')
 export class AutorController {
-  
-constructor(private readonly autorService: AutorService){}
+  constructor(private readonly autorService: AutorService) {} // ← constructor vazio
 
-// /autores/cadastro
-@Post('/cadastro')
-@ApiOperation({summary: "fazer cadastro dos autores"})
-@ApiResponse({status: 200, description: "autor encontrado" })
-@ApiResponse({status: 404, description: "autor não encontrado"})
-cadastrarAutores(@Body() autorDto: CreateAutorDto){
-    return this.autorService.cadastrarAutor(autorDto)
-}
-
-// /autores/listar-autores
-
-@Get('/listar-autores')
-@ApiOperation({summary: "listar todos os autores"})
-@ApiResponse({status: 200, description: "autor encontrado" })
-@ApiResponse({status: 404, description: "autor não encontrado"})
-listarAutores(){  
-    return this.autorService.listarAutores()
-}
-
+  @ApiOperation({ summary: 'Cria autores' })
+  @ApiResponse({ status: 201, description: 'Criado com sucesso' })
+  @ApiResponse({ status: 400, description: 'Dados inválidos' })
+  @ApiResponse({ status: 500, description: 'Erro interno do servidor' })
+  @Post('/criar-autor')
+  criarAutor(@Body() createAutorDto: CreateAutorDto) {
+    return this.autorService.criarAutor(createAutorDto);
+  }
 }

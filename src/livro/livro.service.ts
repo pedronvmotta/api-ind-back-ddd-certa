@@ -40,7 +40,6 @@ export class LivroService {
     const livro = await this.prisma.livro.findUnique({
       where:{id}
     })
-
     if(!livro){
       throw new NotFoundException("Livro não encontrado")
     }
@@ -65,3 +64,4 @@ export class LivroService {
     })
   }
 }
+

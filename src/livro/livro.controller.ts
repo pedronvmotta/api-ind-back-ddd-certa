@@ -7,6 +7,5 @@ import { UpdateLivroDto } from './dto/update-livro.dto';
 export class LivroController {
   constructor(private readonly livroService: LivroService) {
 
-    
-  }
+  
 }
