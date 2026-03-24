@@ -1,4 +1,4 @@
-import { IsEmail, IsString, IsDate } from "class-validator"
+import { IsEmail, IsString, IsDate, IsEnum } from "class-validator"
 import { Role } from "src/generated/prisma"
 
 export class CreateUserDto {
@@ -9,7 +9,7 @@ export class CreateUserDto {
     @IsString()
     password!:string
 
-    @IsString()
+    @IsEnum(Role)
     role!: Role
 
     @IsDate()
