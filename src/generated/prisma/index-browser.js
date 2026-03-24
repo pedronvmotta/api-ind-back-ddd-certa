@@ -120,14 +120,42 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
+exports.Prisma.UserScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  password: 'password'
+};
+
 exports.Prisma.LeitorScalarFieldEnum = {
   id: 'id',
   email: 'email',
   nome: 'nome',
   cpf: 'cpf',
-  data_de_nascimento: 'data_de_nascimento',
   endereco: 'endereco',
-  observacao: 'observacao'
+  observacao: 'observacao',
+  data_de_nascimento: 'data_de_nascimento'
+};
+
+exports.Prisma.AutorScalarFieldEnum = {
+  id: 'id',
+  nome_autor: 'nome_autor',
+  origem: 'origem',
+  biografia: 'biografia',
+  data_de_nascimento: 'data_de_nascimento',
+  nome_artistico: 'nome_artistico',
+  id_livro: 'id_livro'
+};
+
+exports.Prisma.LivroScalarFieldEnum = {
+  id: 'id',
+  nome_livro: 'nome_livro',
+  editora: 'editora',
+  versao: 'versao',
+  ano: 'ano',
+  genero: 'genero',
+  idioma: 'idioma',
+  qtde_total: 'qtde_total',
+  qtde_disponivel: 'qtde_disponivel'
 };
 
 exports.Prisma.EmprestimoScalarFieldEnum = {
@@ -147,34 +175,6 @@ exports.Prisma.ItemEmprestimoScalarFieldEnum = {
   id_livro: 'id_livro'
 };
 
-exports.Prisma.LivroScalarFieldEnum = {
-  id: 'id',
-  nome_livro: 'nome_livro',
-  editora: 'editora',
-  versao: 'versao',
-  ano: 'ano',
-  genero: 'genero',
-  idioma: 'idioma',
-  qtde_total: 'qtde_total',
-  qtde_disponivel: 'qtde_disponivel'
-};
-
-exports.Prisma.AutorScalarFieldEnum = {
-  id: 'id',
-  nome_autor: 'nome_autor',
-  origem: 'origem',
-  biografia: 'biografia',
-  data_de_nascimento: 'data_de_nascimento',
-  nome_artistico: 'nome_artistico',
-  id_livro: 'id_livro'
-};
-
-exports.Prisma.UserScalarFieldEnum = {
-  id: 'id',
-  email: 'email',
-  password: 'password'
-};
-
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -192,12 +192,12 @@ exports.Prisma.NullsOrder = {
 
 
 exports.Prisma.ModelName = {
+  User: 'User',
   Leitor: 'Leitor',
-  Emprestimo: 'Emprestimo',
-  ItemEmprestimo: 'ItemEmprestimo',
-  Livro: 'Livro',
   Autor: 'Autor',
-  User: 'User'
+  Livro: 'Livro',
+  Emprestimo: 'Emprestimo',
+  ItemEmprestimo: 'ItemEmprestimo'
 };
 
 /**

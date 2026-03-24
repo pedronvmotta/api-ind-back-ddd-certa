@@ -1,21 +1,53 @@
 generator client {
-  provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
+  provider     = "prisma-client-js"
+  output       = "../src/generated/prisma"
+  moduleformat = "cjs"
 }
 
 datasource db {
   provider = "postgresql"
 }
 
+model User {
+  id       Int    @id @default(autoincrement())
+  email    String @unique
+  password String
+}
+
 model Leitor {
-  id             Int          @id @default(autoincrement())
-  email          String       @unique
-  nome           String
-  cpf            String       @unique
+  id                 Int          @id @default(autoincrement())
+  email              String       @unique
+  nome               String
+  cpf                String       @unique
+  endereco           String
+  observacao         String?
   data_de_nascimento DateTime
-  endereco       String
-  observacao     String?
-  emprestimos    Emprestimo[]
+  emprestimos        Emprestimo[]
+}
+
+model Autor {
+  id                 Int      @id @default(autoincrement())
+  nome_autor         String
+  origem             String
+  biografia          String
+  data_de_nascimento DateTime
+  nome_artistico     String
+  id_livro           Int
+  Livro              Livro    @relation(fields: [id_livro], references: [id])
+}
+
+model Livro {
+  id               Int              @id @default(autoincrement())
+  nome_livro       String
+  editora          String
+  versao           String
+  ano              String
+  genero           String
+  idioma           String
+  qtde_total       Int
+  qtde_disponivel  Int
+  Autor            Autor[]
+  itens_emprestimo ItemEmprestimo[]
 }
 
 model Emprestimo {
@@ -37,35 +69,4 @@ model ItemEmprestimo {
   id_livro          Int
   emprestimo        Emprestimo @relation(fields: [id_emprestimo], references: [id])
   livro             Livro      @relation(fields: [id_livro], references: [id])
-}
-
-model Livro {
-  id               Int              @id @default(autoincrement())
-  nome_livro       String
-  editora          String
-  versao           String
-  ano              String
-  genero           String
-  idioma           String
-  qtde_total       Int
-  qtde_disponivel  Int
-  autores          Autor[]
-  itens_emprestimo ItemEmprestimo[]
-}
-
-model Autor {
-  id                 Int      @id @default(autoincrement())
-  nome_autor         String
-  origem             String
-  biografia          String
-  data_de_nascimento DateTime
-  nome_artistico     String
-  id_livro           Int
-  livro              Livro    @relation(fields: [id_livro], references: [id])
-}
-
-model User {
-  id       Int    @id @default(autoincrement())
-  email    String @unique
-  password String
 }

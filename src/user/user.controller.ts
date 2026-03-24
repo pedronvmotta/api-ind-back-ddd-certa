@@ -2,33 +2,52 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
 
-@Controller('user')
+@Controller('usuarios')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+  @Post("/cadastro")
+  @ApiOperation({ summary: "cadastra o usuario" })
+  @ApiResponse({ status: 201, description: "usuario cadastrado com sucesso" })
+  @ApiResponse({ status: 400, description: "dados inválidos" })
+  cadastrarUsuario(@Body() createUserDto: CreateUserDto) {
+    return this.userService.cadastrarUsuario(createUserDto)
   }
 
-  @Get()
-  findAll() {
-    return this.userService.findAll();
+  @Get("/listar-todos")
+  @ApiOperation({ summary: "lista todos os usuarios" })
+  @ApiResponse({ status: 200, description: "usuarios listados com sucesso" })
+  @ApiResponse({ status: 404, description: "não há usuários a serem listados" })
+  listarUsuarios() {
+    return this.userService.listarUsuarios()
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+  @Get('/pegar-dados-usuario/:id')
+  @ApiOperation({ summary: "pega os dados do usuario" })
+  @ApiResponse({ status: 200, description: "dados do usuario pegos com sucesso" })
+  @ApiResponse({ status: 404, description: "usuário não encontrado" })
+  @ApiParam({ name: "id", type: Number })
+  getDadosByUsuario(@Param('id') id: number) { // faltava @Param
+    return this.userService.getDadosByUsuario(+id)
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
+  @Patch('/atualizar-dados-usuario/:id')
+  @ApiOperation({ summary: "atualiza os dados do usuario" })
+  @ApiResponse({ status: 200, description: "dados do usuario atualizados com sucesso" })
+  @ApiResponse({ status: 404, description: "usuário não encontrado" })
+  @ApiParam({ name: "id", type: Number })
+  updateDadosUsuario(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto) { // faltava @Param
+    return this.userService.updateDadosUsuario(+id, updateUserDto)
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
+  @Delete('/deletar-usuario/:id')
+  @ApiOperation({ summary: "deleta o usuario" })
+  @ApiResponse({ status: 200, description: "usuario deletado com sucesso" })
+  @ApiResponse({ status: 404, description: "usuário não encontrado" })
+  @ApiParam({ name: "id", type: Number })
+  deletarUsuario(@Param('id') id: number) { // faltava @Param
+    return this.userService.deletarUsuario(+id)
   }
 }
