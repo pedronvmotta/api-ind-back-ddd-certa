@@ -63,3 +63,9 @@ model Autor {
   id_livro           Int
   livro              Livro    @relation(fields: [id_livro], references: [id])
 }
+
+model User {
+  id       Int    @id @default(autoincrement())
+  email    String @unique
+  password String
+}

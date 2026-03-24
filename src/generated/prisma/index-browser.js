@@ -169,6 +169,12 @@ exports.Prisma.AutorScalarFieldEnum = {
   id_livro: 'id_livro'
 };
 
+exports.Prisma.UserScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  password: 'password'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -190,7 +196,8 @@ exports.Prisma.ModelName = {
   Emprestimo: 'Emprestimo',
   ItemEmprestimo: 'ItemEmprestimo',
   Livro: 'Livro',
-  Autor: 'Autor'
+  Autor: 'Autor',
+  User: 'User'
 };
 
 /**
