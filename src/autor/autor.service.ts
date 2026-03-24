@@ -9,10 +9,13 @@ export class AutorService {
   constructor(private readonly prisma: PrismaService) {}
 
   async cadastrarAutor(createAutorDto: CreateAutorDto) {
-    return await this.prisma.autor.create({
-      data: { ...createAutorDto }
-    })
-  }
+  return await this.prisma.autor.create({
+    data: {
+      ...createAutorDto,
+      data_de_nascimento: new Date(createAutorDto.data_de_nascimento),
+    },
+  });
+}
 
   async listarAutores() {
     // bug: estava consultando prisma.leitor
