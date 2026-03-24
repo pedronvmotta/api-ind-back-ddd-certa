@@ -2,7 +2,8 @@ import { Injectable} from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UserService } from 'src/user/user.service';
 import {JwtService} from '@nestjs/jwt'
-
+import * as bcrypt from 'bcrypt';
+    
 @Injectable()
 export class AuthService {
     constructor(private readonly prisma:PrismaService,
@@ -12,7 +13,7 @@ export class AuthService {
 
     async validateUser(email, password){
         const user =  await this.userService.findByEmail(email)
-        if(!user || user.password !== password){
+        if(!user ||  !(await bcrypt.compare(password, user.password))){
             throw new Error('Credenciais inválidas')
         }
         return {...user, password: undefined}
