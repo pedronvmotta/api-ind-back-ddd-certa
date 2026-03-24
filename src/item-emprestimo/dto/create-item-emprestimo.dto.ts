@@ -1,4 +1,4 @@
-import { IsInt, IsString, IsDate } from "class-validator";
+import { IsInt, IsString, IsDate, IsIn } from "class-validator";
 import { ApiProperty} from "@nestjs/swagger";
 
 export class CreateItemEmprestimoDto {
@@ -23,5 +23,19 @@ export class CreateItemEmprestimoDto {
     })
     @IsString()
     status !: string;
+
+    @ApiProperty({
+        description: "id do emprestimo",
+        example: "id:1"
+    })
+    @IsInt()
+    id_emprestimo!:number;
+
+    @ApiProperty({
+        description: "id do livro",
+        example: "id:1"
+    })
+    @IsInt()
+    id_livro!:number;
 
 }
