@@ -123,19 +123,17 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
   email: 'email',
-  password: 'password',
-  role: 'role',
-  created_at: 'created_at'
+  password: 'password'
 };
 
 exports.Prisma.LeitorScalarFieldEnum = {
   id: 'id',
+  email: 'email',
   nome: 'nome',
   cpf: 'cpf',
-  data_de_nascimento: 'data_de_nascimento',
   endereco: 'endereco',
   observacao: 'observacao',
-  id_user: 'id_user'
+  data_de_nascimento: 'data_de_nascimento'
 };
 
 exports.Prisma.AutorScalarFieldEnum = {
@@ -145,7 +143,7 @@ exports.Prisma.AutorScalarFieldEnum = {
   biografia: 'biografia',
   data_de_nascimento: 'data_de_nascimento',
   nome_artistico: 'nome_artistico',
-  id_user: 'id_user'
+  id_livro: 'id_livro'
 };
 
 exports.Prisma.LivroScalarFieldEnum = {
@@ -157,8 +155,7 @@ exports.Prisma.LivroScalarFieldEnum = {
   genero: 'genero',
   idioma: 'idioma',
   qtde_total: 'qtde_total',
-  qtde_disponivel: 'qtde_disponivel',
-  id_autor: 'id_autor'
+  qtde_disponivel: 'qtde_disponivel'
 };
 
 exports.Prisma.EmprestimoScalarFieldEnum = {
@@ -192,11 +189,7 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
-exports.Role = exports.$Enums.Role = {
-  LEITOR: 'LEITOR',
-  AUTOR: 'AUTOR',
-  ADMIN: 'ADMIN'
-};
+
 
 exports.Prisma.ModelName = {
   User: 'User',

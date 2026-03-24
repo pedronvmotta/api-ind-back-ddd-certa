@@ -45,24 +45,6 @@ export type Emprestimo = $Result.DefaultSelection<Prisma.$EmprestimoPayload>
 export type ItemEmprestimo = $Result.DefaultSelection<Prisma.$ItemEmprestimoPayload>
 
 /**
- * Enums
- */
-export namespace $Enums {
-  export const Role: {
-  LEITOR: 'LEITOR',
-  AUTOR: 'AUTOR',
-  ADMIN: 'ADMIN'
-};
-
-export type Role = (typeof Role)[keyof typeof Role]
-
-}
-
-export type Role = $Enums.Role
-
-export const Role: typeof $Enums.Role
-
-/**
  * ##  Prisma Client ʲˢ
  *
  * Type-safe database client for TypeScript & Node.js
@@ -1366,45 +1348,16 @@ export namespace Prisma {
 
 
   /**
-   * Count Type AutorCountOutputType
-   */
-
-  export type AutorCountOutputType = {
-    livros: number
-  }
-
-  export type AutorCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    livros?: boolean | AutorCountOutputTypeCountLivrosArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * AutorCountOutputType without action
-   */
-  export type AutorCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the AutorCountOutputType
-     */
-    select?: AutorCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * AutorCountOutputType without action
-   */
-  export type AutorCountOutputTypeCountLivrosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: LivroWhereInput
-  }
-
-
-  /**
    * Count Type LivroCountOutputType
    */
 
   export type LivroCountOutputType = {
+    Autor: number
     itens_emprestimo: number
   }
 
   export type LivroCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    Autor?: boolean | LivroCountOutputTypeCountAutorArgs
     itens_emprestimo?: boolean | LivroCountOutputTypeCountItens_emprestimoArgs
   }
 
@@ -1417,6 +1370,13 @@ export namespace Prisma {
      * Select specific fields to fetch from the LivroCountOutputType
      */
     select?: LivroCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * LivroCountOutputType without action
+   */
+  export type LivroCountOutputTypeCountAutorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AutorWhereInput
   }
 
   /**
@@ -1486,24 +1446,18 @@ export namespace Prisma {
     id: number | null
     email: string | null
     password: string | null
-    role: $Enums.Role | null
-    created_at: Date | null
   }
 
   export type UserMaxAggregateOutputType = {
     id: number | null
     email: string | null
     password: string | null
-    role: $Enums.Role | null
-    created_at: Date | null
   }
 
   export type UserCountAggregateOutputType = {
     id: number
     email: number
     password: number
-    role: number
-    created_at: number
     _all: number
   }
 
@@ -1520,24 +1474,18 @@ export namespace Prisma {
     id?: true
     email?: true
     password?: true
-    role?: true
-    created_at?: true
   }
 
   export type UserMaxAggregateInputType = {
     id?: true
     email?: true
     password?: true
-    role?: true
-    created_at?: true
   }
 
   export type UserCountAggregateInputType = {
     id?: true
     email?: true
     password?: true
-    role?: true
-    created_at?: true
     _all?: true
   }
 
@@ -1631,8 +1579,6 @@ export namespace Prisma {
     id: number
     email: string
     password: string
-    role: $Enums.Role
-    created_at: Date
     _count: UserCountAggregateOutputType | null
     _avg: UserAvgAggregateOutputType | null
     _sum: UserSumAggregateOutputType | null
@@ -1658,56 +1604,35 @@ export namespace Prisma {
     id?: boolean
     email?: boolean
     password?: boolean
-    role?: boolean
-    created_at?: boolean
-    leitor?: boolean | User$leitorArgs<ExtArgs>
-    autor?: boolean | User$autorArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     email?: boolean
     password?: boolean
-    role?: boolean
-    created_at?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     email?: boolean
     password?: boolean
-    role?: boolean
-    created_at?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
     id?: boolean
     email?: boolean
     password?: boolean
-    role?: boolean
-    created_at?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "role" | "created_at", ExtArgs["result"]["user"]>
-  export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    leitor?: boolean | User$leitorArgs<ExtArgs>
-    autor?: boolean | User$autorArgs<ExtArgs>
-  }
-  export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-  export type UserIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password", ExtArgs["result"]["user"]>
 
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
-    objects: {
-      leitor: Prisma.$LeitorPayload<ExtArgs> | null
-      autor: Prisma.$AutorPayload<ExtArgs> | null
-    }
+    objects: {}
     scalars: $Extensions.GetPayloadResult<{
       id: number
       email: string
       password: string
-      role: $Enums.Role
-      created_at: Date
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -2102,8 +2027,6 @@ export namespace Prisma {
    */
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    leitor<T extends User$leitorArgs<ExtArgs> = {}>(args?: Subset<T, User$leitorArgs<ExtArgs>>): Prisma__LeitorClient<$Result.GetResult<Prisma.$LeitorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    autor<T extends User$autorArgs<ExtArgs> = {}>(args?: Subset<T, User$autorArgs<ExtArgs>>): Prisma__AutorClient<$Result.GetResult<Prisma.$AutorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2136,8 +2059,6 @@ export namespace Prisma {
     readonly id: FieldRef<"User", 'Int'>
     readonly email: FieldRef<"User", 'String'>
     readonly password: FieldRef<"User", 'String'>
-    readonly role: FieldRef<"User", 'Role'>
-    readonly created_at: FieldRef<"User", 'DateTime'>
   }
     
 
@@ -2154,10 +2075,6 @@ export namespace Prisma {
      * Omit specific fields from the User
      */
     omit?: UserOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserInclude<ExtArgs> | null
     /**
      * Filter, which User to fetch.
      */
@@ -2177,10 +2094,6 @@ export namespace Prisma {
      */
     omit?: UserOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserInclude<ExtArgs> | null
-    /**
      * Filter, which User to fetch.
      */
     where: UserWhereUniqueInput
@@ -2198,10 +2111,6 @@ export namespace Prisma {
      * Omit specific fields from the User
      */
     omit?: UserOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserInclude<ExtArgs> | null
     /**
      * Filter, which User to fetch.
      */
@@ -2251,10 +2160,6 @@ export namespace Prisma {
      */
     omit?: UserOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserInclude<ExtArgs> | null
-    /**
      * Filter, which User to fetch.
      */
     where?: UserWhereInput
@@ -2302,10 +2207,6 @@ export namespace Prisma {
      * Omit specific fields from the User
      */
     omit?: UserOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserInclude<ExtArgs> | null
     /**
      * Filter, which Users to fetch.
      */
@@ -2355,10 +2256,6 @@ export namespace Prisma {
      */
     omit?: UserOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserInclude<ExtArgs> | null
-    /**
      * The data needed to create a User.
      */
     data: XOR<UserCreateInput, UserUncheckedCreateInput>
@@ -2406,10 +2303,6 @@ export namespace Prisma {
      * Omit specific fields from the User
      */
     omit?: UserOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserInclude<ExtArgs> | null
     /**
      * The data needed to update a User.
      */
@@ -2477,10 +2370,6 @@ export namespace Prisma {
      */
     omit?: UserOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserInclude<ExtArgs> | null
-    /**
      * The filter to search for the User to update in case it exists.
      */
     where: UserWhereUniqueInput
@@ -2507,10 +2396,6 @@ export namespace Prisma {
      */
     omit?: UserOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserInclude<ExtArgs> | null
-    /**
      * Filter which User to delete.
      */
     where: UserWhereUniqueInput
@@ -2531,44 +2416,6 @@ export namespace Prisma {
   }
 
   /**
-   * User.leitor
-   */
-  export type User$leitorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Leitor
-     */
-    select?: LeitorSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Leitor
-     */
-    omit?: LeitorOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LeitorInclude<ExtArgs> | null
-    where?: LeitorWhereInput
-  }
-
-  /**
-   * User.autor
-   */
-  export type User$autorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Autor
-     */
-    select?: AutorSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Autor
-     */
-    omit?: AutorOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AutorInclude<ExtArgs> | null
-    where?: AutorWhereInput
-  }
-
-  /**
    * User without action
    */
   export type UserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2580,10 +2427,6 @@ export namespace Prisma {
      * Omit specific fields from the User
      */
     omit?: UserOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserInclude<ExtArgs> | null
   }
 
 
@@ -2601,84 +2444,80 @@ export namespace Prisma {
 
   export type LeitorAvgAggregateOutputType = {
     id: number | null
-    id_user: number | null
   }
 
   export type LeitorSumAggregateOutputType = {
     id: number | null
-    id_user: number | null
   }
 
   export type LeitorMinAggregateOutputType = {
     id: number | null
+    email: string | null
     nome: string | null
     cpf: string | null
-    data_de_nascimento: Date | null
     endereco: string | null
     observacao: string | null
-    id_user: number | null
+    data_de_nascimento: Date | null
   }
 
   export type LeitorMaxAggregateOutputType = {
     id: number | null
+    email: string | null
     nome: string | null
     cpf: string | null
-    data_de_nascimento: Date | null
     endereco: string | null
     observacao: string | null
-    id_user: number | null
+    data_de_nascimento: Date | null
   }
 
   export type LeitorCountAggregateOutputType = {
     id: number
+    email: number
     nome: number
     cpf: number
-    data_de_nascimento: number
     endereco: number
     observacao: number
-    id_user: number
+    data_de_nascimento: number
     _all: number
   }
 
 
   export type LeitorAvgAggregateInputType = {
     id?: true
-    id_user?: true
   }
 
   export type LeitorSumAggregateInputType = {
     id?: true
-    id_user?: true
   }
 
   export type LeitorMinAggregateInputType = {
     id?: true
+    email?: true
     nome?: true
     cpf?: true
-    data_de_nascimento?: true
     endereco?: true
     observacao?: true
-    id_user?: true
+    data_de_nascimento?: true
   }
 
   export type LeitorMaxAggregateInputType = {
     id?: true
+    email?: true
     nome?: true
     cpf?: true
-    data_de_nascimento?: true
     endereco?: true
     observacao?: true
-    id_user?: true
+    data_de_nascimento?: true
   }
 
   export type LeitorCountAggregateInputType = {
     id?: true
+    email?: true
     nome?: true
     cpf?: true
-    data_de_nascimento?: true
     endereco?: true
     observacao?: true
-    id_user?: true
+    data_de_nascimento?: true
     _all?: true
   }
 
@@ -2770,12 +2609,12 @@ export namespace Prisma {
 
   export type LeitorGroupByOutputType = {
     id: number
+    email: string
     nome: string
     cpf: string
-    data_de_nascimento: Date
     endereco: string
     observacao: string | null
-    id_user: number
+    data_de_nascimento: Date
     _count: LeitorCountAggregateOutputType | null
     _avg: LeitorAvgAggregateOutputType | null
     _sum: LeitorSumAggregateOutputType | null
@@ -2799,76 +2638,67 @@ export namespace Prisma {
 
   export type LeitorSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    email?: boolean
     nome?: boolean
     cpf?: boolean
-    data_de_nascimento?: boolean
     endereco?: boolean
     observacao?: boolean
-    id_user?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    data_de_nascimento?: boolean
     emprestimos?: boolean | Leitor$emprestimosArgs<ExtArgs>
     _count?: boolean | LeitorCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["leitor"]>
 
   export type LeitorSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    email?: boolean
     nome?: boolean
     cpf?: boolean
-    data_de_nascimento?: boolean
     endereco?: boolean
     observacao?: boolean
-    id_user?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    data_de_nascimento?: boolean
   }, ExtArgs["result"]["leitor"]>
 
   export type LeitorSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    email?: boolean
     nome?: boolean
     cpf?: boolean
-    data_de_nascimento?: boolean
     endereco?: boolean
     observacao?: boolean
-    id_user?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    data_de_nascimento?: boolean
   }, ExtArgs["result"]["leitor"]>
 
   export type LeitorSelectScalar = {
     id?: boolean
+    email?: boolean
     nome?: boolean
     cpf?: boolean
-    data_de_nascimento?: boolean
     endereco?: boolean
     observacao?: boolean
-    id_user?: boolean
+    data_de_nascimento?: boolean
   }
 
-  export type LeitorOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nome" | "cpf" | "data_de_nascimento" | "endereco" | "observacao" | "id_user", ExtArgs["result"]["leitor"]>
+  export type LeitorOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "nome" | "cpf" | "endereco" | "observacao" | "data_de_nascimento", ExtArgs["result"]["leitor"]>
   export type LeitorInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     emprestimos?: boolean | Leitor$emprestimosArgs<ExtArgs>
     _count?: boolean | LeitorCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type LeitorIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }
-  export type LeitorIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }
+  export type LeitorIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type LeitorIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
 
   export type $LeitorPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Leitor"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs>
       emprestimos: Prisma.$EmprestimoPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
+      email: string
       nome: string
       cpf: string
-      data_de_nascimento: Date
       endereco: string
       observacao: string | null
-      id_user: number
+      data_de_nascimento: Date
     }, ExtArgs["result"]["leitor"]>
     composites: {}
   }
@@ -3263,7 +3093,6 @@ export namespace Prisma {
    */
   export interface Prisma__LeitorClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     emprestimos<T extends Leitor$emprestimosArgs<ExtArgs> = {}>(args?: Subset<T, Leitor$emprestimosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmprestimoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -3295,12 +3124,12 @@ export namespace Prisma {
    */
   interface LeitorFieldRefs {
     readonly id: FieldRef<"Leitor", 'Int'>
+    readonly email: FieldRef<"Leitor", 'String'>
     readonly nome: FieldRef<"Leitor", 'String'>
     readonly cpf: FieldRef<"Leitor", 'String'>
-    readonly data_de_nascimento: FieldRef<"Leitor", 'DateTime'>
     readonly endereco: FieldRef<"Leitor", 'String'>
     readonly observacao: FieldRef<"Leitor", 'String'>
-    readonly id_user: FieldRef<"Leitor", 'Int'>
+    readonly data_de_nascimento: FieldRef<"Leitor", 'DateTime'>
   }
     
 
@@ -3555,10 +3384,6 @@ export namespace Prisma {
      */
     data: LeitorCreateManyInput | LeitorCreateManyInput[]
     skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LeitorIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -3629,10 +3454,6 @@ export namespace Prisma {
      * Limit how many Leitors to update.
      */
     limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LeitorIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -3758,12 +3579,12 @@ export namespace Prisma {
 
   export type AutorAvgAggregateOutputType = {
     id: number | null
-    id_user: number | null
+    id_livro: number | null
   }
 
   export type AutorSumAggregateOutputType = {
     id: number | null
-    id_user: number | null
+    id_livro: number | null
   }
 
   export type AutorMinAggregateOutputType = {
@@ -3773,7 +3594,7 @@ export namespace Prisma {
     biografia: string | null
     data_de_nascimento: Date | null
     nome_artistico: string | null
-    id_user: number | null
+    id_livro: number | null
   }
 
   export type AutorMaxAggregateOutputType = {
@@ -3783,7 +3604,7 @@ export namespace Prisma {
     biografia: string | null
     data_de_nascimento: Date | null
     nome_artistico: string | null
-    id_user: number | null
+    id_livro: number | null
   }
 
   export type AutorCountAggregateOutputType = {
@@ -3793,19 +3614,19 @@ export namespace Prisma {
     biografia: number
     data_de_nascimento: number
     nome_artistico: number
-    id_user: number
+    id_livro: number
     _all: number
   }
 
 
   export type AutorAvgAggregateInputType = {
     id?: true
-    id_user?: true
+    id_livro?: true
   }
 
   export type AutorSumAggregateInputType = {
     id?: true
-    id_user?: true
+    id_livro?: true
   }
 
   export type AutorMinAggregateInputType = {
@@ -3815,7 +3636,7 @@ export namespace Prisma {
     biografia?: true
     data_de_nascimento?: true
     nome_artistico?: true
-    id_user?: true
+    id_livro?: true
   }
 
   export type AutorMaxAggregateInputType = {
@@ -3825,7 +3646,7 @@ export namespace Prisma {
     biografia?: true
     data_de_nascimento?: true
     nome_artistico?: true
-    id_user?: true
+    id_livro?: true
   }
 
   export type AutorCountAggregateInputType = {
@@ -3835,7 +3656,7 @@ export namespace Prisma {
     biografia?: true
     data_de_nascimento?: true
     nome_artistico?: true
-    id_user?: true
+    id_livro?: true
     _all?: true
   }
 
@@ -3932,7 +3753,7 @@ export namespace Prisma {
     biografia: string
     data_de_nascimento: Date
     nome_artistico: string
-    id_user: number
+    id_livro: number
     _count: AutorCountAggregateOutputType | null
     _avg: AutorAvgAggregateOutputType | null
     _sum: AutorSumAggregateOutputType | null
@@ -3961,10 +3782,8 @@ export namespace Prisma {
     biografia?: boolean
     data_de_nascimento?: boolean
     nome_artistico?: boolean
-    id_user?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    livros?: boolean | Autor$livrosArgs<ExtArgs>
-    _count?: boolean | AutorCountOutputTypeDefaultArgs<ExtArgs>
+    id_livro?: boolean
+    Livro?: boolean | LivroDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["autor"]>
 
   export type AutorSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -3974,8 +3793,8 @@ export namespace Prisma {
     biografia?: boolean
     data_de_nascimento?: boolean
     nome_artistico?: boolean
-    id_user?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    id_livro?: boolean
+    Livro?: boolean | LivroDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["autor"]>
 
   export type AutorSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -3985,8 +3804,8 @@ export namespace Prisma {
     biografia?: boolean
     data_de_nascimento?: boolean
     nome_artistico?: boolean
-    id_user?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    id_livro?: boolean
+    Livro?: boolean | LivroDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["autor"]>
 
   export type AutorSelectScalar = {
@@ -3996,27 +3815,24 @@ export namespace Prisma {
     biografia?: boolean
     data_de_nascimento?: boolean
     nome_artistico?: boolean
-    id_user?: boolean
+    id_livro?: boolean
   }
 
-  export type AutorOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nome_autor" | "origem" | "biografia" | "data_de_nascimento" | "nome_artistico" | "id_user", ExtArgs["result"]["autor"]>
+  export type AutorOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nome_autor" | "origem" | "biografia" | "data_de_nascimento" | "nome_artistico" | "id_livro", ExtArgs["result"]["autor"]>
   export type AutorInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    livros?: boolean | Autor$livrosArgs<ExtArgs>
-    _count?: boolean | AutorCountOutputTypeDefaultArgs<ExtArgs>
+    Livro?: boolean | LivroDefaultArgs<ExtArgs>
   }
   export type AutorIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    Livro?: boolean | LivroDefaultArgs<ExtArgs>
   }
   export type AutorIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    Livro?: boolean | LivroDefaultArgs<ExtArgs>
   }
 
   export type $AutorPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Autor"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs>
-      livros: Prisma.$LivroPayload<ExtArgs>[]
+      Livro: Prisma.$LivroPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -4025,7 +3841,7 @@ export namespace Prisma {
       biografia: string
       data_de_nascimento: Date
       nome_artistico: string
-      id_user: number
+      id_livro: number
     }, ExtArgs["result"]["autor"]>
     composites: {}
   }
@@ -4420,8 +4236,7 @@ export namespace Prisma {
    */
   export interface Prisma__AutorClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    livros<T extends Autor$livrosArgs<ExtArgs> = {}>(args?: Subset<T, Autor$livrosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LivroPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    Livro<T extends LivroDefaultArgs<ExtArgs> = {}>(args?: Subset<T, LivroDefaultArgs<ExtArgs>>): Prisma__LivroClient<$Result.GetResult<Prisma.$LivroPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4457,7 +4272,7 @@ export namespace Prisma {
     readonly biografia: FieldRef<"Autor", 'String'>
     readonly data_de_nascimento: FieldRef<"Autor", 'DateTime'>
     readonly nome_artistico: FieldRef<"Autor", 'String'>
-    readonly id_user: FieldRef<"Autor", 'Int'>
+    readonly id_livro: FieldRef<"Autor", 'Int'>
   }
     
 
@@ -4859,30 +4674,6 @@ export namespace Prisma {
   }
 
   /**
-   * Autor.livros
-   */
-  export type Autor$livrosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Livro
-     */
-    select?: LivroSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Livro
-     */
-    omit?: LivroOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LivroInclude<ExtArgs> | null
-    where?: LivroWhereInput
-    orderBy?: LivroOrderByWithRelationInput | LivroOrderByWithRelationInput[]
-    cursor?: LivroWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: LivroScalarFieldEnum | LivroScalarFieldEnum[]
-  }
-
-  /**
    * Autor without action
    */
   export type AutorDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4915,46 +4706,38 @@ export namespace Prisma {
 
   export type LivroAvgAggregateOutputType = {
     id: number | null
-    versao: number | null
-    ano: number | null
     qtde_total: number | null
     qtde_disponivel: number | null
-    id_autor: number | null
   }
 
   export type LivroSumAggregateOutputType = {
     id: number | null
-    versao: number | null
-    ano: number | null
     qtde_total: number | null
     qtde_disponivel: number | null
-    id_autor: number | null
   }
 
   export type LivroMinAggregateOutputType = {
     id: number | null
     nome_livro: string | null
     editora: string | null
-    versao: number | null
-    ano: number | null
+    versao: string | null
+    ano: string | null
     genero: string | null
     idioma: string | null
     qtde_total: number | null
     qtde_disponivel: number | null
-    id_autor: number | null
   }
 
   export type LivroMaxAggregateOutputType = {
     id: number | null
     nome_livro: string | null
     editora: string | null
-    versao: number | null
-    ano: number | null
+    versao: string | null
+    ano: string | null
     genero: string | null
     idioma: string | null
     qtde_total: number | null
     qtde_disponivel: number | null
-    id_autor: number | null
   }
 
   export type LivroCountAggregateOutputType = {
@@ -4967,27 +4750,20 @@ export namespace Prisma {
     idioma: number
     qtde_total: number
     qtde_disponivel: number
-    id_autor: number
     _all: number
   }
 
 
   export type LivroAvgAggregateInputType = {
     id?: true
-    versao?: true
-    ano?: true
     qtde_total?: true
     qtde_disponivel?: true
-    id_autor?: true
   }
 
   export type LivroSumAggregateInputType = {
     id?: true
-    versao?: true
-    ano?: true
     qtde_total?: true
     qtde_disponivel?: true
-    id_autor?: true
   }
 
   export type LivroMinAggregateInputType = {
@@ -5000,7 +4776,6 @@ export namespace Prisma {
     idioma?: true
     qtde_total?: true
     qtde_disponivel?: true
-    id_autor?: true
   }
 
   export type LivroMaxAggregateInputType = {
@@ -5013,7 +4788,6 @@ export namespace Prisma {
     idioma?: true
     qtde_total?: true
     qtde_disponivel?: true
-    id_autor?: true
   }
 
   export type LivroCountAggregateInputType = {
@@ -5026,7 +4800,6 @@ export namespace Prisma {
     idioma?: true
     qtde_total?: true
     qtde_disponivel?: true
-    id_autor?: true
     _all?: true
   }
 
@@ -5120,13 +4893,12 @@ export namespace Prisma {
     id: number
     nome_livro: string
     editora: string
-    versao: number
-    ano: number
+    versao: string
+    ano: string
     genero: string
     idioma: string
     qtde_total: number
     qtde_disponivel: number
-    id_autor: number
     _count: LivroCountAggregateOutputType | null
     _avg: LivroAvgAggregateOutputType | null
     _sum: LivroSumAggregateOutputType | null
@@ -5158,8 +4930,7 @@ export namespace Prisma {
     idioma?: boolean
     qtde_total?: boolean
     qtde_disponivel?: boolean
-    id_autor?: boolean
-    autor?: boolean | AutorDefaultArgs<ExtArgs>
+    Autor?: boolean | Livro$AutorArgs<ExtArgs>
     itens_emprestimo?: boolean | Livro$itens_emprestimoArgs<ExtArgs>
     _count?: boolean | LivroCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["livro"]>
@@ -5174,8 +4945,6 @@ export namespace Prisma {
     idioma?: boolean
     qtde_total?: boolean
     qtde_disponivel?: boolean
-    id_autor?: boolean
-    autor?: boolean | AutorDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["livro"]>
 
   export type LivroSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -5188,8 +4957,6 @@ export namespace Prisma {
     idioma?: boolean
     qtde_total?: boolean
     qtde_disponivel?: boolean
-    id_autor?: boolean
-    autor?: boolean | AutorDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["livro"]>
 
   export type LivroSelectScalar = {
@@ -5202,39 +4969,33 @@ export namespace Prisma {
     idioma?: boolean
     qtde_total?: boolean
     qtde_disponivel?: boolean
-    id_autor?: boolean
   }
 
-  export type LivroOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nome_livro" | "editora" | "versao" | "ano" | "genero" | "idioma" | "qtde_total" | "qtde_disponivel" | "id_autor", ExtArgs["result"]["livro"]>
+  export type LivroOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nome_livro" | "editora" | "versao" | "ano" | "genero" | "idioma" | "qtde_total" | "qtde_disponivel", ExtArgs["result"]["livro"]>
   export type LivroInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    autor?: boolean | AutorDefaultArgs<ExtArgs>
+    Autor?: boolean | Livro$AutorArgs<ExtArgs>
     itens_emprestimo?: boolean | Livro$itens_emprestimoArgs<ExtArgs>
     _count?: boolean | LivroCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type LivroIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    autor?: boolean | AutorDefaultArgs<ExtArgs>
-  }
-  export type LivroIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    autor?: boolean | AutorDefaultArgs<ExtArgs>
-  }
+  export type LivroIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type LivroIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
 
   export type $LivroPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Livro"
     objects: {
-      autor: Prisma.$AutorPayload<ExtArgs>
+      Autor: Prisma.$AutorPayload<ExtArgs>[]
       itens_emprestimo: Prisma.$ItemEmprestimoPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
       nome_livro: string
       editora: string
-      versao: number
-      ano: number
+      versao: string
+      ano: string
       genero: string
       idioma: string
       qtde_total: number
       qtde_disponivel: number
-      id_autor: number
     }, ExtArgs["result"]["livro"]>
     composites: {}
   }
@@ -5629,7 +5390,7 @@ export namespace Prisma {
    */
   export interface Prisma__LivroClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    autor<T extends AutorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AutorDefaultArgs<ExtArgs>>): Prisma__AutorClient<$Result.GetResult<Prisma.$AutorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    Autor<T extends Livro$AutorArgs<ExtArgs> = {}>(args?: Subset<T, Livro$AutorArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AutorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     itens_emprestimo<T extends Livro$itens_emprestimoArgs<ExtArgs> = {}>(args?: Subset<T, Livro$itens_emprestimoArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ItemEmprestimoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -5663,13 +5424,12 @@ export namespace Prisma {
     readonly id: FieldRef<"Livro", 'Int'>
     readonly nome_livro: FieldRef<"Livro", 'String'>
     readonly editora: FieldRef<"Livro", 'String'>
-    readonly versao: FieldRef<"Livro", 'Int'>
-    readonly ano: FieldRef<"Livro", 'Int'>
+    readonly versao: FieldRef<"Livro", 'String'>
+    readonly ano: FieldRef<"Livro", 'String'>
     readonly genero: FieldRef<"Livro", 'String'>
     readonly idioma: FieldRef<"Livro", 'String'>
     readonly qtde_total: FieldRef<"Livro", 'Int'>
     readonly qtde_disponivel: FieldRef<"Livro", 'Int'>
-    readonly id_autor: FieldRef<"Livro", 'Int'>
   }
     
 
@@ -5924,10 +5684,6 @@ export namespace Prisma {
      */
     data: LivroCreateManyInput | LivroCreateManyInput[]
     skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LivroIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -5998,10 +5754,6 @@ export namespace Prisma {
      * Limit how many Livros to update.
      */
     limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LivroIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -6068,6 +5820,30 @@ export namespace Prisma {
      * Limit how many Livros to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Livro.Autor
+   */
+  export type Livro$AutorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Autor
+     */
+    select?: AutorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Autor
+     */
+    omit?: AutorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AutorInclude<ExtArgs> | null
+    where?: AutorWhereInput
+    orderBy?: AutorOrderByWithRelationInput | AutorOrderByWithRelationInput[]
+    cursor?: AutorWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AutorScalarFieldEnum | AutorScalarFieldEnum[]
   }
 
   /**
@@ -6286,7 +6062,7 @@ export namespace Prisma {
     id: number
     data_emprestimo: Date
     prazo_de_devolucao: Date
-    observacoes: string | null
+    observacoes: string
     id_leitor: number
     _count: EmprestimoCountAggregateOutputType | null
     _avg: EmprestimoAvgAggregateOutputType | null
@@ -6369,7 +6145,7 @@ export namespace Prisma {
       id: number
       data_emprestimo: Date
       prazo_de_devolucao: Date
-      observacoes: string | null
+      observacoes: string
       id_leitor: number
     }, ExtArgs["result"]["emprestimo"]>
     composites: {}
@@ -8391,9 +8167,7 @@ export namespace Prisma {
   export const UserScalarFieldEnum: {
     id: 'id',
     email: 'email',
-    password: 'password',
-    role: 'role',
-    created_at: 'created_at'
+    password: 'password'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -8401,12 +8175,12 @@ export namespace Prisma {
 
   export const LeitorScalarFieldEnum: {
     id: 'id',
+    email: 'email',
     nome: 'nome',
     cpf: 'cpf',
-    data_de_nascimento: 'data_de_nascimento',
     endereco: 'endereco',
     observacao: 'observacao',
-    id_user: 'id_user'
+    data_de_nascimento: 'data_de_nascimento'
   };
 
   export type LeitorScalarFieldEnum = (typeof LeitorScalarFieldEnum)[keyof typeof LeitorScalarFieldEnum]
@@ -8419,7 +8193,7 @@ export namespace Prisma {
     biografia: 'biografia',
     data_de_nascimento: 'data_de_nascimento',
     nome_artistico: 'nome_artistico',
-    id_user: 'id_user'
+    id_livro: 'id_livro'
   };
 
   export type AutorScalarFieldEnum = (typeof AutorScalarFieldEnum)[keyof typeof AutorScalarFieldEnum]
@@ -8434,8 +8208,7 @@ export namespace Prisma {
     genero: 'genero',
     idioma: 'idioma',
     qtde_total: 'qtde_total',
-    qtde_disponivel: 'qtde_disponivel',
-    id_autor: 'id_autor'
+    qtde_disponivel: 'qtde_disponivel'
   };
 
   export type LivroScalarFieldEnum = (typeof LivroScalarFieldEnum)[keyof typeof LivroScalarFieldEnum]
@@ -8522,20 +8295,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Role'
-   */
-  export type EnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role'>
-    
-
-
-  /**
-   * Reference to a field of type 'Role[]'
-   */
-  export type ListEnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role[]'>
-    
-
-
-  /**
    * Reference to a field of type 'DateTime'
    */
   export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
@@ -8573,20 +8332,12 @@ export namespace Prisma {
     id?: IntFilter<"User"> | number
     email?: StringFilter<"User"> | string
     password?: StringFilter<"User"> | string
-    role?: EnumRoleFilter<"User"> | $Enums.Role
-    created_at?: DateTimeFilter<"User"> | Date | string
-    leitor?: XOR<LeitorNullableScalarRelationFilter, LeitorWhereInput> | null
-    autor?: XOR<AutorNullableScalarRelationFilter, AutorWhereInput> | null
   }
 
   export type UserOrderByWithRelationInput = {
     id?: SortOrder
     email?: SortOrder
     password?: SortOrder
-    role?: SortOrder
-    created_at?: SortOrder
-    leitor?: LeitorOrderByWithRelationInput
-    autor?: AutorOrderByWithRelationInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -8596,18 +8347,12 @@ export namespace Prisma {
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
     password?: StringFilter<"User"> | string
-    role?: EnumRoleFilter<"User"> | $Enums.Role
-    created_at?: DateTimeFilter<"User"> | Date | string
-    leitor?: XOR<LeitorNullableScalarRelationFilter, LeitorWhereInput> | null
-    autor?: XOR<AutorNullableScalarRelationFilter, AutorWhereInput> | null
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
     id?: SortOrder
     email?: SortOrder
     password?: SortOrder
-    role?: SortOrder
-    created_at?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _avg?: UserAvgOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
@@ -8622,8 +8367,6 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"User"> | number
     email?: StringWithAggregatesFilter<"User"> | string
     password?: StringWithAggregatesFilter<"User"> | string
-    role?: EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
-    created_at?: DateTimeWithAggregatesFilter<"User"> | Date | string
   }
 
   export type LeitorWhereInput = {
@@ -8631,51 +8374,48 @@ export namespace Prisma {
     OR?: LeitorWhereInput[]
     NOT?: LeitorWhereInput | LeitorWhereInput[]
     id?: IntFilter<"Leitor"> | number
+    email?: StringFilter<"Leitor"> | string
     nome?: StringFilter<"Leitor"> | string
     cpf?: StringFilter<"Leitor"> | string
-    data_de_nascimento?: DateTimeFilter<"Leitor"> | Date | string
     endereco?: StringFilter<"Leitor"> | string
     observacao?: StringNullableFilter<"Leitor"> | string | null
-    id_user?: IntFilter<"Leitor"> | number
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    data_de_nascimento?: DateTimeFilter<"Leitor"> | Date | string
     emprestimos?: EmprestimoListRelationFilter
   }
 
   export type LeitorOrderByWithRelationInput = {
     id?: SortOrder
+    email?: SortOrder
     nome?: SortOrder
     cpf?: SortOrder
-    data_de_nascimento?: SortOrder
     endereco?: SortOrder
     observacao?: SortOrderInput | SortOrder
-    id_user?: SortOrder
-    user?: UserOrderByWithRelationInput
+    data_de_nascimento?: SortOrder
     emprestimos?: EmprestimoOrderByRelationAggregateInput
   }
 
   export type LeitorWhereUniqueInput = Prisma.AtLeast<{
     id?: number
+    email?: string
     cpf?: string
-    id_user?: number
     AND?: LeitorWhereInput | LeitorWhereInput[]
     OR?: LeitorWhereInput[]
     NOT?: LeitorWhereInput | LeitorWhereInput[]
     nome?: StringFilter<"Leitor"> | string
-    data_de_nascimento?: DateTimeFilter<"Leitor"> | Date | string
     endereco?: StringFilter<"Leitor"> | string
     observacao?: StringNullableFilter<"Leitor"> | string | null
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    data_de_nascimento?: DateTimeFilter<"Leitor"> | Date | string
     emprestimos?: EmprestimoListRelationFilter
-  }, "id" | "cpf" | "id_user">
+  }, "id" | "email" | "cpf">
 
   export type LeitorOrderByWithAggregationInput = {
     id?: SortOrder
+    email?: SortOrder
     nome?: SortOrder
     cpf?: SortOrder
-    data_de_nascimento?: SortOrder
     endereco?: SortOrder
     observacao?: SortOrderInput | SortOrder
-    id_user?: SortOrder
+    data_de_nascimento?: SortOrder
     _count?: LeitorCountOrderByAggregateInput
     _avg?: LeitorAvgOrderByAggregateInput
     _max?: LeitorMaxOrderByAggregateInput
@@ -8688,12 +8428,12 @@ export namespace Prisma {
     OR?: LeitorScalarWhereWithAggregatesInput[]
     NOT?: LeitorScalarWhereWithAggregatesInput | LeitorScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Leitor"> | number
+    email?: StringWithAggregatesFilter<"Leitor"> | string
     nome?: StringWithAggregatesFilter<"Leitor"> | string
     cpf?: StringWithAggregatesFilter<"Leitor"> | string
-    data_de_nascimento?: DateTimeWithAggregatesFilter<"Leitor"> | Date | string
     endereco?: StringWithAggregatesFilter<"Leitor"> | string
     observacao?: StringNullableWithAggregatesFilter<"Leitor"> | string | null
-    id_user?: IntWithAggregatesFilter<"Leitor"> | number
+    data_de_nascimento?: DateTimeWithAggregatesFilter<"Leitor"> | Date | string
   }
 
   export type AutorWhereInput = {
@@ -8706,9 +8446,8 @@ export namespace Prisma {
     biografia?: StringFilter<"Autor"> | string
     data_de_nascimento?: DateTimeFilter<"Autor"> | Date | string
     nome_artistico?: StringFilter<"Autor"> | string
-    id_user?: IntFilter<"Autor"> | number
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    livros?: LivroListRelationFilter
+    id_livro?: IntFilter<"Autor"> | number
+    Livro?: XOR<LivroScalarRelationFilter, LivroWhereInput>
   }
 
   export type AutorOrderByWithRelationInput = {
@@ -8718,14 +8457,12 @@ export namespace Prisma {
     biografia?: SortOrder
     data_de_nascimento?: SortOrder
     nome_artistico?: SortOrder
-    id_user?: SortOrder
-    user?: UserOrderByWithRelationInput
-    livros?: LivroOrderByRelationAggregateInput
+    id_livro?: SortOrder
+    Livro?: LivroOrderByWithRelationInput
   }
 
   export type AutorWhereUniqueInput = Prisma.AtLeast<{
     id?: number
-    id_user?: number
     AND?: AutorWhereInput | AutorWhereInput[]
     OR?: AutorWhereInput[]
     NOT?: AutorWhereInput | AutorWhereInput[]
@@ -8734,9 +8471,9 @@ export namespace Prisma {
     biografia?: StringFilter<"Autor"> | string
     data_de_nascimento?: DateTimeFilter<"Autor"> | Date | string
     nome_artistico?: StringFilter<"Autor"> | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    livros?: LivroListRelationFilter
-  }, "id" | "id_user">
+    id_livro?: IntFilter<"Autor"> | number
+    Livro?: XOR<LivroScalarRelationFilter, LivroWhereInput>
+  }, "id">
 
   export type AutorOrderByWithAggregationInput = {
     id?: SortOrder
@@ -8745,7 +8482,7 @@ export namespace Prisma {
     biografia?: SortOrder
     data_de_nascimento?: SortOrder
     nome_artistico?: SortOrder
-    id_user?: SortOrder
+    id_livro?: SortOrder
     _count?: AutorCountOrderByAggregateInput
     _avg?: AutorAvgOrderByAggregateInput
     _max?: AutorMaxOrderByAggregateInput
@@ -8763,7 +8500,7 @@ export namespace Prisma {
     biografia?: StringWithAggregatesFilter<"Autor"> | string
     data_de_nascimento?: DateTimeWithAggregatesFilter<"Autor"> | Date | string
     nome_artistico?: StringWithAggregatesFilter<"Autor"> | string
-    id_user?: IntWithAggregatesFilter<"Autor"> | number
+    id_livro?: IntWithAggregatesFilter<"Autor"> | number
   }
 
   export type LivroWhereInput = {
@@ -8773,14 +8510,13 @@ export namespace Prisma {
     id?: IntFilter<"Livro"> | number
     nome_livro?: StringFilter<"Livro"> | string
     editora?: StringFilter<"Livro"> | string
-    versao?: IntFilter<"Livro"> | number
-    ano?: IntFilter<"Livro"> | number
+    versao?: StringFilter<"Livro"> | string
+    ano?: StringFilter<"Livro"> | string
     genero?: StringFilter<"Livro"> | string
     idioma?: StringFilter<"Livro"> | string
     qtde_total?: IntFilter<"Livro"> | number
     qtde_disponivel?: IntFilter<"Livro"> | number
-    id_autor?: IntFilter<"Livro"> | number
-    autor?: XOR<AutorScalarRelationFilter, AutorWhereInput>
+    Autor?: AutorListRelationFilter
     itens_emprestimo?: ItemEmprestimoListRelationFilter
   }
 
@@ -8794,8 +8530,7 @@ export namespace Prisma {
     idioma?: SortOrder
     qtde_total?: SortOrder
     qtde_disponivel?: SortOrder
-    id_autor?: SortOrder
-    autor?: AutorOrderByWithRelationInput
+    Autor?: AutorOrderByRelationAggregateInput
     itens_emprestimo?: ItemEmprestimoOrderByRelationAggregateInput
   }
 
@@ -8806,14 +8541,13 @@ export namespace Prisma {
     NOT?: LivroWhereInput | LivroWhereInput[]
     nome_livro?: StringFilter<"Livro"> | string
     editora?: StringFilter<"Livro"> | string
-    versao?: IntFilter<"Livro"> | number
-    ano?: IntFilter<"Livro"> | number
+    versao?: StringFilter<"Livro"> | string
+    ano?: StringFilter<"Livro"> | string
     genero?: StringFilter<"Livro"> | string
     idioma?: StringFilter<"Livro"> | string
     qtde_total?: IntFilter<"Livro"> | number
     qtde_disponivel?: IntFilter<"Livro"> | number
-    id_autor?: IntFilter<"Livro"> | number
-    autor?: XOR<AutorScalarRelationFilter, AutorWhereInput>
+    Autor?: AutorListRelationFilter
     itens_emprestimo?: ItemEmprestimoListRelationFilter
   }, "id">
 
@@ -8827,7 +8561,6 @@ export namespace Prisma {
     idioma?: SortOrder
     qtde_total?: SortOrder
     qtde_disponivel?: SortOrder
-    id_autor?: SortOrder
     _count?: LivroCountOrderByAggregateInput
     _avg?: LivroAvgOrderByAggregateInput
     _max?: LivroMaxOrderByAggregateInput
@@ -8842,13 +8575,12 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"Livro"> | number
     nome_livro?: StringWithAggregatesFilter<"Livro"> | string
     editora?: StringWithAggregatesFilter<"Livro"> | string
-    versao?: IntWithAggregatesFilter<"Livro"> | number
-    ano?: IntWithAggregatesFilter<"Livro"> | number
+    versao?: StringWithAggregatesFilter<"Livro"> | string
+    ano?: StringWithAggregatesFilter<"Livro"> | string
     genero?: StringWithAggregatesFilter<"Livro"> | string
     idioma?: StringWithAggregatesFilter<"Livro"> | string
     qtde_total?: IntWithAggregatesFilter<"Livro"> | number
     qtde_disponivel?: IntWithAggregatesFilter<"Livro"> | number
-    id_autor?: IntWithAggregatesFilter<"Livro"> | number
   }
 
   export type EmprestimoWhereInput = {
@@ -8858,7 +8590,7 @@ export namespace Prisma {
     id?: IntFilter<"Emprestimo"> | number
     data_emprestimo?: DateTimeFilter<"Emprestimo"> | Date | string
     prazo_de_devolucao?: DateTimeFilter<"Emprestimo"> | Date | string
-    observacoes?: StringNullableFilter<"Emprestimo"> | string | null
+    observacoes?: StringFilter<"Emprestimo"> | string
     id_leitor?: IntFilter<"Emprestimo"> | number
     leitor?: XOR<LeitorScalarRelationFilter, LeitorWhereInput>
     itens_emprestimo?: ItemEmprestimoListRelationFilter
@@ -8868,7 +8600,7 @@ export namespace Prisma {
     id?: SortOrder
     data_emprestimo?: SortOrder
     prazo_de_devolucao?: SortOrder
-    observacoes?: SortOrderInput | SortOrder
+    observacoes?: SortOrder
     id_leitor?: SortOrder
     leitor?: LeitorOrderByWithRelationInput
     itens_emprestimo?: ItemEmprestimoOrderByRelationAggregateInput
@@ -8881,7 +8613,7 @@ export namespace Prisma {
     NOT?: EmprestimoWhereInput | EmprestimoWhereInput[]
     data_emprestimo?: DateTimeFilter<"Emprestimo"> | Date | string
     prazo_de_devolucao?: DateTimeFilter<"Emprestimo"> | Date | string
-    observacoes?: StringNullableFilter<"Emprestimo"> | string | null
+    observacoes?: StringFilter<"Emprestimo"> | string
     id_leitor?: IntFilter<"Emprestimo"> | number
     leitor?: XOR<LeitorScalarRelationFilter, LeitorWhereInput>
     itens_emprestimo?: ItemEmprestimoListRelationFilter
@@ -8891,7 +8623,7 @@ export namespace Prisma {
     id?: SortOrder
     data_emprestimo?: SortOrder
     prazo_de_devolucao?: SortOrder
-    observacoes?: SortOrderInput | SortOrder
+    observacoes?: SortOrder
     id_leitor?: SortOrder
     _count?: EmprestimoCountOrderByAggregateInput
     _avg?: EmprestimoAvgOrderByAggregateInput
@@ -8907,7 +8639,7 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"Emprestimo"> | number
     data_emprestimo?: DateTimeWithAggregatesFilter<"Emprestimo"> | Date | string
     prazo_de_devolucao?: DateTimeWithAggregatesFilter<"Emprestimo"> | Date | string
-    observacoes?: StringNullableWithAggregatesFilter<"Emprestimo"> | string | null
+    observacoes?: StringWithAggregatesFilter<"Emprestimo"> | string
     id_leitor?: IntWithAggregatesFilter<"Emprestimo"> | number
   }
 
@@ -8979,132 +8711,111 @@ export namespace Prisma {
   export type UserCreateInput = {
     email: string
     password: string
-    role?: $Enums.Role
-    created_at?: Date | string
-    leitor?: LeitorCreateNestedOneWithoutUserInput
-    autor?: AutorCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
     id?: number
     email: string
     password: string
-    role?: $Enums.Role
-    created_at?: Date | string
-    leitor?: LeitorUncheckedCreateNestedOneWithoutUserInput
-    autor?: AutorUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserUpdateInput = {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    leitor?: LeitorUpdateOneWithoutUserNestedInput
-    autor?: AutorUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    leitor?: LeitorUncheckedUpdateOneWithoutUserNestedInput
-    autor?: AutorUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
     id?: number
     email: string
     password: string
-    role?: $Enums.Role
-    created_at?: Date | string
   }
 
   export type UserUpdateManyMutationInput = {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type LeitorCreateInput = {
+    email: string
     nome: string
     cpf: string
-    data_de_nascimento: Date | string
     endereco: string
     observacao?: string | null
-    user: UserCreateNestedOneWithoutLeitorInput
+    data_de_nascimento: Date | string
     emprestimos?: EmprestimoCreateNestedManyWithoutLeitorInput
   }
 
   export type LeitorUncheckedCreateInput = {
     id?: number
+    email: string
     nome: string
     cpf: string
-    data_de_nascimento: Date | string
     endereco: string
     observacao?: string | null
-    id_user: number
+    data_de_nascimento: Date | string
     emprestimos?: EmprestimoUncheckedCreateNestedManyWithoutLeitorInput
   }
 
   export type LeitorUpdateInput = {
+    email?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     cpf?: StringFieldUpdateOperationsInput | string
-    data_de_nascimento?: DateTimeFieldUpdateOperationsInput | Date | string
     endereco?: StringFieldUpdateOperationsInput | string
     observacao?: NullableStringFieldUpdateOperationsInput | string | null
-    user?: UserUpdateOneRequiredWithoutLeitorNestedInput
+    data_de_nascimento?: DateTimeFieldUpdateOperationsInput | Date | string
     emprestimos?: EmprestimoUpdateManyWithoutLeitorNestedInput
   }
 
   export type LeitorUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
+    email?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     cpf?: StringFieldUpdateOperationsInput | string
-    data_de_nascimento?: DateTimeFieldUpdateOperationsInput | Date | string
     endereco?: StringFieldUpdateOperationsInput | string
     observacao?: NullableStringFieldUpdateOperationsInput | string | null
-    id_user?: IntFieldUpdateOperationsInput | number
+    data_de_nascimento?: DateTimeFieldUpdateOperationsInput | Date | string
     emprestimos?: EmprestimoUncheckedUpdateManyWithoutLeitorNestedInput
   }
 
   export type LeitorCreateManyInput = {
     id?: number
+    email: string
     nome: string
     cpf: string
-    data_de_nascimento: Date | string
     endereco: string
     observacao?: string | null
-    id_user: number
+    data_de_nascimento: Date | string
   }
 
   export type LeitorUpdateManyMutationInput = {
+    email?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     cpf?: StringFieldUpdateOperationsInput | string
-    data_de_nascimento?: DateTimeFieldUpdateOperationsInput | Date | string
     endereco?: StringFieldUpdateOperationsInput | string
     observacao?: NullableStringFieldUpdateOperationsInput | string | null
+    data_de_nascimento?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type LeitorUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
+    email?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     cpf?: StringFieldUpdateOperationsInput | string
-    data_de_nascimento?: DateTimeFieldUpdateOperationsInput | Date | string
     endereco?: StringFieldUpdateOperationsInput | string
     observacao?: NullableStringFieldUpdateOperationsInput | string | null
-    id_user?: IntFieldUpdateOperationsInput | number
+    data_de_nascimento?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type AutorCreateInput = {
@@ -9113,8 +8824,7 @@ export namespace Prisma {
     biografia: string
     data_de_nascimento: Date | string
     nome_artistico: string
-    user: UserCreateNestedOneWithoutAutorInput
-    livros?: LivroCreateNestedManyWithoutAutorInput
+    Livro: LivroCreateNestedOneWithoutAutorInput
   }
 
   export type AutorUncheckedCreateInput = {
@@ -9124,8 +8834,7 @@ export namespace Prisma {
     biografia: string
     data_de_nascimento: Date | string
     nome_artistico: string
-    id_user: number
-    livros?: LivroUncheckedCreateNestedManyWithoutAutorInput
+    id_livro: number
   }
 
   export type AutorUpdateInput = {
@@ -9134,8 +8843,7 @@ export namespace Prisma {
     biografia?: StringFieldUpdateOperationsInput | string
     data_de_nascimento?: DateTimeFieldUpdateOperationsInput | Date | string
     nome_artistico?: StringFieldUpdateOperationsInput | string
-    user?: UserUpdateOneRequiredWithoutAutorNestedInput
-    livros?: LivroUpdateManyWithoutAutorNestedInput
+    Livro?: LivroUpdateOneRequiredWithoutAutorNestedInput
   }
 
   export type AutorUncheckedUpdateInput = {
@@ -9145,8 +8853,7 @@ export namespace Prisma {
     biografia?: StringFieldUpdateOperationsInput | string
     data_de_nascimento?: DateTimeFieldUpdateOperationsInput | Date | string
     nome_artistico?: StringFieldUpdateOperationsInput | string
-    id_user?: IntFieldUpdateOperationsInput | number
-    livros?: LivroUncheckedUpdateManyWithoutAutorNestedInput
+    id_livro?: IntFieldUpdateOperationsInput | number
   }
 
   export type AutorCreateManyInput = {
@@ -9156,7 +8863,7 @@ export namespace Prisma {
     biografia: string
     data_de_nascimento: Date | string
     nome_artistico: string
-    id_user: number
+    id_livro: number
   }
 
   export type AutorUpdateManyMutationInput = {
@@ -9174,19 +8881,19 @@ export namespace Prisma {
     biografia?: StringFieldUpdateOperationsInput | string
     data_de_nascimento?: DateTimeFieldUpdateOperationsInput | Date | string
     nome_artistico?: StringFieldUpdateOperationsInput | string
-    id_user?: IntFieldUpdateOperationsInput | number
+    id_livro?: IntFieldUpdateOperationsInput | number
   }
 
   export type LivroCreateInput = {
     nome_livro: string
     editora: string
-    versao: number
-    ano: number
+    versao: string
+    ano: string
     genero: string
     idioma: string
     qtde_total: number
     qtde_disponivel: number
-    autor: AutorCreateNestedOneWithoutLivrosInput
+    Autor?: AutorCreateNestedManyWithoutLivroInput
     itens_emprestimo?: ItemEmprestimoCreateNestedManyWithoutLivroInput
   }
 
@@ -9194,26 +8901,26 @@ export namespace Prisma {
     id?: number
     nome_livro: string
     editora: string
-    versao: number
-    ano: number
+    versao: string
+    ano: string
     genero: string
     idioma: string
     qtde_total: number
     qtde_disponivel: number
-    id_autor: number
+    Autor?: AutorUncheckedCreateNestedManyWithoutLivroInput
     itens_emprestimo?: ItemEmprestimoUncheckedCreateNestedManyWithoutLivroInput
   }
 
   export type LivroUpdateInput = {
     nome_livro?: StringFieldUpdateOperationsInput | string
     editora?: StringFieldUpdateOperationsInput | string
-    versao?: IntFieldUpdateOperationsInput | number
-    ano?: IntFieldUpdateOperationsInput | number
+    versao?: StringFieldUpdateOperationsInput | string
+    ano?: StringFieldUpdateOperationsInput | string
     genero?: StringFieldUpdateOperationsInput | string
     idioma?: StringFieldUpdateOperationsInput | string
     qtde_total?: IntFieldUpdateOperationsInput | number
     qtde_disponivel?: IntFieldUpdateOperationsInput | number
-    autor?: AutorUpdateOneRequiredWithoutLivrosNestedInput
+    Autor?: AutorUpdateManyWithoutLivroNestedInput
     itens_emprestimo?: ItemEmprestimoUpdateManyWithoutLivroNestedInput
   }
 
@@ -9221,13 +8928,13 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     nome_livro?: StringFieldUpdateOperationsInput | string
     editora?: StringFieldUpdateOperationsInput | string
-    versao?: IntFieldUpdateOperationsInput | number
-    ano?: IntFieldUpdateOperationsInput | number
+    versao?: StringFieldUpdateOperationsInput | string
+    ano?: StringFieldUpdateOperationsInput | string
     genero?: StringFieldUpdateOperationsInput | string
     idioma?: StringFieldUpdateOperationsInput | string
     qtde_total?: IntFieldUpdateOperationsInput | number
     qtde_disponivel?: IntFieldUpdateOperationsInput | number
-    id_autor?: IntFieldUpdateOperationsInput | number
+    Autor?: AutorUncheckedUpdateManyWithoutLivroNestedInput
     itens_emprestimo?: ItemEmprestimoUncheckedUpdateManyWithoutLivroNestedInput
   }
 
@@ -9235,20 +8942,19 @@ export namespace Prisma {
     id?: number
     nome_livro: string
     editora: string
-    versao: number
-    ano: number
+    versao: string
+    ano: string
     genero: string
     idioma: string
     qtde_total: number
     qtde_disponivel: number
-    id_autor: number
   }
 
   export type LivroUpdateManyMutationInput = {
     nome_livro?: StringFieldUpdateOperationsInput | string
     editora?: StringFieldUpdateOperationsInput | string
-    versao?: IntFieldUpdateOperationsInput | number
-    ano?: IntFieldUpdateOperationsInput | number
+    versao?: StringFieldUpdateOperationsInput | string
+    ano?: StringFieldUpdateOperationsInput | string
     genero?: StringFieldUpdateOperationsInput | string
     idioma?: StringFieldUpdateOperationsInput | string
     qtde_total?: IntFieldUpdateOperationsInput | number
@@ -9259,19 +8965,18 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     nome_livro?: StringFieldUpdateOperationsInput | string
     editora?: StringFieldUpdateOperationsInput | string
-    versao?: IntFieldUpdateOperationsInput | number
-    ano?: IntFieldUpdateOperationsInput | number
+    versao?: StringFieldUpdateOperationsInput | string
+    ano?: StringFieldUpdateOperationsInput | string
     genero?: StringFieldUpdateOperationsInput | string
     idioma?: StringFieldUpdateOperationsInput | string
     qtde_total?: IntFieldUpdateOperationsInput | number
     qtde_disponivel?: IntFieldUpdateOperationsInput | number
-    id_autor?: IntFieldUpdateOperationsInput | number
   }
 
   export type EmprestimoCreateInput = {
     data_emprestimo: Date | string
     prazo_de_devolucao: Date | string
-    observacoes?: string | null
+    observacoes: string
     leitor: LeitorCreateNestedOneWithoutEmprestimosInput
     itens_emprestimo?: ItemEmprestimoCreateNestedManyWithoutEmprestimoInput
   }
@@ -9280,7 +8985,7 @@ export namespace Prisma {
     id?: number
     data_emprestimo: Date | string
     prazo_de_devolucao: Date | string
-    observacoes?: string | null
+    observacoes: string
     id_leitor: number
     itens_emprestimo?: ItemEmprestimoUncheckedCreateNestedManyWithoutEmprestimoInput
   }
@@ -9288,7 +8993,7 @@ export namespace Prisma {
   export type EmprestimoUpdateInput = {
     data_emprestimo?: DateTimeFieldUpdateOperationsInput | Date | string
     prazo_de_devolucao?: DateTimeFieldUpdateOperationsInput | Date | string
-    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    observacoes?: StringFieldUpdateOperationsInput | string
     leitor?: LeitorUpdateOneRequiredWithoutEmprestimosNestedInput
     itens_emprestimo?: ItemEmprestimoUpdateManyWithoutEmprestimoNestedInput
   }
@@ -9297,7 +9002,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     data_emprestimo?: DateTimeFieldUpdateOperationsInput | Date | string
     prazo_de_devolucao?: DateTimeFieldUpdateOperationsInput | Date | string
-    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    observacoes?: StringFieldUpdateOperationsInput | string
     id_leitor?: IntFieldUpdateOperationsInput | number
     itens_emprestimo?: ItemEmprestimoUncheckedUpdateManyWithoutEmprestimoNestedInput
   }
@@ -9306,21 +9011,21 @@ export namespace Prisma {
     id?: number
     data_emprestimo: Date | string
     prazo_de_devolucao: Date | string
-    observacoes?: string | null
+    observacoes: string
     id_leitor: number
   }
 
   export type EmprestimoUpdateManyMutationInput = {
     data_emprestimo?: DateTimeFieldUpdateOperationsInput | Date | string
     prazo_de_devolucao?: DateTimeFieldUpdateOperationsInput | Date | string
-    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    observacoes?: StringFieldUpdateOperationsInput | string
   }
 
   export type EmprestimoUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     data_emprestimo?: DateTimeFieldUpdateOperationsInput | Date | string
     prazo_de_devolucao?: DateTimeFieldUpdateOperationsInput | Date | string
-    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    observacoes?: StringFieldUpdateOperationsInput | string
     id_leitor?: IntFieldUpdateOperationsInput | number
   }
 
@@ -9408,40 +9113,10 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
-  export type EnumRoleFilter<$PrismaModel = never> = {
-    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
-    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
-    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
-    not?: NestedEnumRoleFilter<$PrismaModel> | $Enums.Role
-  }
-
-  export type DateTimeFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
-  }
-
-  export type LeitorNullableScalarRelationFilter = {
-    is?: LeitorWhereInput | null
-    isNot?: LeitorWhereInput | null
-  }
-
-  export type AutorNullableScalarRelationFilter = {
-    is?: AutorWhereInput | null
-    isNot?: AutorWhereInput | null
-  }
-
   export type UserCountOrderByAggregateInput = {
     id?: SortOrder
     email?: SortOrder
     password?: SortOrder
-    role?: SortOrder
-    created_at?: SortOrder
   }
 
   export type UserAvgOrderByAggregateInput = {
@@ -9452,16 +9127,12 @@ export namespace Prisma {
     id?: SortOrder
     email?: SortOrder
     password?: SortOrder
-    role?: SortOrder
-    created_at?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
     id?: SortOrder
     email?: SortOrder
     password?: SortOrder
-    role?: SortOrder
-    created_at?: SortOrder
   }
 
   export type UserSumOrderByAggregateInput = {
@@ -9502,30 +9173,6 @@ export namespace Prisma {
     _max?: NestedStringFilter<$PrismaModel>
   }
 
-  export type EnumRoleWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
-    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
-    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
-    not?: NestedEnumRoleWithAggregatesFilter<$PrismaModel> | $Enums.Role
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumRoleFilter<$PrismaModel>
-    _max?: NestedEnumRoleFilter<$PrismaModel>
-  }
-
-  export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedDateTimeFilter<$PrismaModel>
-    _max?: NestedDateTimeFilter<$PrismaModel>
-  }
-
   export type StringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -9541,9 +9188,15 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
-  export type UserScalarRelationFilter = {
-    is?: UserWhereInput
-    isNot?: UserWhereInput
+  export type DateTimeFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
   export type EmprestimoListRelationFilter = {
@@ -9563,42 +9216,40 @@ export namespace Prisma {
 
   export type LeitorCountOrderByAggregateInput = {
     id?: SortOrder
+    email?: SortOrder
     nome?: SortOrder
     cpf?: SortOrder
-    data_de_nascimento?: SortOrder
     endereco?: SortOrder
     observacao?: SortOrder
-    id_user?: SortOrder
+    data_de_nascimento?: SortOrder
   }
 
   export type LeitorAvgOrderByAggregateInput = {
     id?: SortOrder
-    id_user?: SortOrder
   }
 
   export type LeitorMaxOrderByAggregateInput = {
     id?: SortOrder
+    email?: SortOrder
     nome?: SortOrder
     cpf?: SortOrder
-    data_de_nascimento?: SortOrder
     endereco?: SortOrder
     observacao?: SortOrder
-    id_user?: SortOrder
+    data_de_nascimento?: SortOrder
   }
 
   export type LeitorMinOrderByAggregateInput = {
     id?: SortOrder
+    email?: SortOrder
     nome?: SortOrder
     cpf?: SortOrder
-    data_de_nascimento?: SortOrder
     endereco?: SortOrder
     observacao?: SortOrder
-    id_user?: SortOrder
+    data_de_nascimento?: SortOrder
   }
 
   export type LeitorSumOrderByAggregateInput = {
     id?: SortOrder
-    id_user?: SortOrder
   }
 
   export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -9619,14 +9270,23 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
-  export type LivroListRelationFilter = {
-    every?: LivroWhereInput
-    some?: LivroWhereInput
-    none?: LivroWhereInput
+  export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
-  export type LivroOrderByRelationAggregateInput = {
-    _count?: SortOrder
+  export type LivroScalarRelationFilter = {
+    is?: LivroWhereInput
+    isNot?: LivroWhereInput
   }
 
   export type AutorCountOrderByAggregateInput = {
@@ -9636,12 +9296,12 @@ export namespace Prisma {
     biografia?: SortOrder
     data_de_nascimento?: SortOrder
     nome_artistico?: SortOrder
-    id_user?: SortOrder
+    id_livro?: SortOrder
   }
 
   export type AutorAvgOrderByAggregateInput = {
     id?: SortOrder
-    id_user?: SortOrder
+    id_livro?: SortOrder
   }
 
   export type AutorMaxOrderByAggregateInput = {
@@ -9651,7 +9311,7 @@ export namespace Prisma {
     biografia?: SortOrder
     data_de_nascimento?: SortOrder
     nome_artistico?: SortOrder
-    id_user?: SortOrder
+    id_livro?: SortOrder
   }
 
   export type AutorMinOrderByAggregateInput = {
@@ -9661,23 +9321,28 @@ export namespace Prisma {
     biografia?: SortOrder
     data_de_nascimento?: SortOrder
     nome_artistico?: SortOrder
-    id_user?: SortOrder
+    id_livro?: SortOrder
   }
 
   export type AutorSumOrderByAggregateInput = {
     id?: SortOrder
-    id_user?: SortOrder
+    id_livro?: SortOrder
   }
 
-  export type AutorScalarRelationFilter = {
-    is?: AutorWhereInput
-    isNot?: AutorWhereInput
+  export type AutorListRelationFilter = {
+    every?: AutorWhereInput
+    some?: AutorWhereInput
+    none?: AutorWhereInput
   }
 
   export type ItemEmprestimoListRelationFilter = {
     every?: ItemEmprestimoWhereInput
     some?: ItemEmprestimoWhereInput
     none?: ItemEmprestimoWhereInput
+  }
+
+  export type AutorOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type ItemEmprestimoOrderByRelationAggregateInput = {
@@ -9694,16 +9359,12 @@ export namespace Prisma {
     idioma?: SortOrder
     qtde_total?: SortOrder
     qtde_disponivel?: SortOrder
-    id_autor?: SortOrder
   }
 
   export type LivroAvgOrderByAggregateInput = {
     id?: SortOrder
-    versao?: SortOrder
-    ano?: SortOrder
     qtde_total?: SortOrder
     qtde_disponivel?: SortOrder
-    id_autor?: SortOrder
   }
 
   export type LivroMaxOrderByAggregateInput = {
@@ -9716,7 +9377,6 @@ export namespace Prisma {
     idioma?: SortOrder
     qtde_total?: SortOrder
     qtde_disponivel?: SortOrder
-    id_autor?: SortOrder
   }
 
   export type LivroMinOrderByAggregateInput = {
@@ -9729,16 +9389,12 @@ export namespace Prisma {
     idioma?: SortOrder
     qtde_total?: SortOrder
     qtde_disponivel?: SortOrder
-    id_autor?: SortOrder
   }
 
   export type LivroSumOrderByAggregateInput = {
     id?: SortOrder
-    versao?: SortOrder
-    ano?: SortOrder
     qtde_total?: SortOrder
     qtde_disponivel?: SortOrder
-    id_autor?: SortOrder
   }
 
   export type LeitorScalarRelationFilter = {
@@ -9785,11 +9441,6 @@ export namespace Prisma {
     isNot?: EmprestimoWhereInput
   }
 
-  export type LivroScalarRelationFilter = {
-    is?: LivroWhereInput
-    isNot?: LivroWhereInput
-  }
-
   export type ItemEmprestimoCountOrderByAggregateInput = {
     id?: SortOrder
     data_de_devolucao?: SortOrder
@@ -9831,60 +9482,8 @@ export namespace Prisma {
     id_livro?: SortOrder
   }
 
-  export type LeitorCreateNestedOneWithoutUserInput = {
-    create?: XOR<LeitorCreateWithoutUserInput, LeitorUncheckedCreateWithoutUserInput>
-    connectOrCreate?: LeitorCreateOrConnectWithoutUserInput
-    connect?: LeitorWhereUniqueInput
-  }
-
-  export type AutorCreateNestedOneWithoutUserInput = {
-    create?: XOR<AutorCreateWithoutUserInput, AutorUncheckedCreateWithoutUserInput>
-    connectOrCreate?: AutorCreateOrConnectWithoutUserInput
-    connect?: AutorWhereUniqueInput
-  }
-
-  export type LeitorUncheckedCreateNestedOneWithoutUserInput = {
-    create?: XOR<LeitorCreateWithoutUserInput, LeitorUncheckedCreateWithoutUserInput>
-    connectOrCreate?: LeitorCreateOrConnectWithoutUserInput
-    connect?: LeitorWhereUniqueInput
-  }
-
-  export type AutorUncheckedCreateNestedOneWithoutUserInput = {
-    create?: XOR<AutorCreateWithoutUserInput, AutorUncheckedCreateWithoutUserInput>
-    connectOrCreate?: AutorCreateOrConnectWithoutUserInput
-    connect?: AutorWhereUniqueInput
-  }
-
   export type StringFieldUpdateOperationsInput = {
     set?: string
-  }
-
-  export type EnumRoleFieldUpdateOperationsInput = {
-    set?: $Enums.Role
-  }
-
-  export type DateTimeFieldUpdateOperationsInput = {
-    set?: Date | string
-  }
-
-  export type LeitorUpdateOneWithoutUserNestedInput = {
-    create?: XOR<LeitorCreateWithoutUserInput, LeitorUncheckedCreateWithoutUserInput>
-    connectOrCreate?: LeitorCreateOrConnectWithoutUserInput
-    upsert?: LeitorUpsertWithoutUserInput
-    disconnect?: LeitorWhereInput | boolean
-    delete?: LeitorWhereInput | boolean
-    connect?: LeitorWhereUniqueInput
-    update?: XOR<XOR<LeitorUpdateToOneWithWhereWithoutUserInput, LeitorUpdateWithoutUserInput>, LeitorUncheckedUpdateWithoutUserInput>
-  }
-
-  export type AutorUpdateOneWithoutUserNestedInput = {
-    create?: XOR<AutorCreateWithoutUserInput, AutorUncheckedCreateWithoutUserInput>
-    connectOrCreate?: AutorCreateOrConnectWithoutUserInput
-    upsert?: AutorUpsertWithoutUserInput
-    disconnect?: AutorWhereInput | boolean
-    delete?: AutorWhereInput | boolean
-    connect?: AutorWhereUniqueInput
-    update?: XOR<XOR<AutorUpdateToOneWithWhereWithoutUserInput, AutorUpdateWithoutUserInput>, AutorUncheckedUpdateWithoutUserInput>
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -9893,32 +9492,6 @@ export namespace Prisma {
     decrement?: number
     multiply?: number
     divide?: number
-  }
-
-  export type LeitorUncheckedUpdateOneWithoutUserNestedInput = {
-    create?: XOR<LeitorCreateWithoutUserInput, LeitorUncheckedCreateWithoutUserInput>
-    connectOrCreate?: LeitorCreateOrConnectWithoutUserInput
-    upsert?: LeitorUpsertWithoutUserInput
-    disconnect?: LeitorWhereInput | boolean
-    delete?: LeitorWhereInput | boolean
-    connect?: LeitorWhereUniqueInput
-    update?: XOR<XOR<LeitorUpdateToOneWithWhereWithoutUserInput, LeitorUpdateWithoutUserInput>, LeitorUncheckedUpdateWithoutUserInput>
-  }
-
-  export type AutorUncheckedUpdateOneWithoutUserNestedInput = {
-    create?: XOR<AutorCreateWithoutUserInput, AutorUncheckedCreateWithoutUserInput>
-    connectOrCreate?: AutorCreateOrConnectWithoutUserInput
-    upsert?: AutorUpsertWithoutUserInput
-    disconnect?: AutorWhereInput | boolean
-    delete?: AutorWhereInput | boolean
-    connect?: AutorWhereUniqueInput
-    update?: XOR<XOR<AutorUpdateToOneWithWhereWithoutUserInput, AutorUpdateWithoutUserInput>, AutorUncheckedUpdateWithoutUserInput>
-  }
-
-  export type UserCreateNestedOneWithoutLeitorInput = {
-    create?: XOR<UserCreateWithoutLeitorInput, UserUncheckedCreateWithoutLeitorInput>
-    connectOrCreate?: UserCreateOrConnectWithoutLeitorInput
-    connect?: UserWhereUniqueInput
   }
 
   export type EmprestimoCreateNestedManyWithoutLeitorInput = {
@@ -9939,12 +9512,8 @@ export namespace Prisma {
     set?: string | null
   }
 
-  export type UserUpdateOneRequiredWithoutLeitorNestedInput = {
-    create?: XOR<UserCreateWithoutLeitorInput, UserUncheckedCreateWithoutLeitorInput>
-    connectOrCreate?: UserCreateOrConnectWithoutLeitorInput
-    upsert?: UserUpsertWithoutLeitorInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutLeitorInput, UserUpdateWithoutLeitorInput>, UserUncheckedUpdateWithoutLeitorInput>
+  export type DateTimeFieldUpdateOperationsInput = {
+    set?: Date | string
   }
 
   export type EmprestimoUpdateManyWithoutLeitorNestedInput = {
@@ -9975,66 +9544,25 @@ export namespace Prisma {
     deleteMany?: EmprestimoScalarWhereInput | EmprestimoScalarWhereInput[]
   }
 
-  export type UserCreateNestedOneWithoutAutorInput = {
-    create?: XOR<UserCreateWithoutAutorInput, UserUncheckedCreateWithoutAutorInput>
-    connectOrCreate?: UserCreateOrConnectWithoutAutorInput
-    connect?: UserWhereUniqueInput
+  export type LivroCreateNestedOneWithoutAutorInput = {
+    create?: XOR<LivroCreateWithoutAutorInput, LivroUncheckedCreateWithoutAutorInput>
+    connectOrCreate?: LivroCreateOrConnectWithoutAutorInput
+    connect?: LivroWhereUniqueInput
   }
 
-  export type LivroCreateNestedManyWithoutAutorInput = {
-    create?: XOR<LivroCreateWithoutAutorInput, LivroUncheckedCreateWithoutAutorInput> | LivroCreateWithoutAutorInput[] | LivroUncheckedCreateWithoutAutorInput[]
-    connectOrCreate?: LivroCreateOrConnectWithoutAutorInput | LivroCreateOrConnectWithoutAutorInput[]
-    createMany?: LivroCreateManyAutorInputEnvelope
-    connect?: LivroWhereUniqueInput | LivroWhereUniqueInput[]
+  export type LivroUpdateOneRequiredWithoutAutorNestedInput = {
+    create?: XOR<LivroCreateWithoutAutorInput, LivroUncheckedCreateWithoutAutorInput>
+    connectOrCreate?: LivroCreateOrConnectWithoutAutorInput
+    upsert?: LivroUpsertWithoutAutorInput
+    connect?: LivroWhereUniqueInput
+    update?: XOR<XOR<LivroUpdateToOneWithWhereWithoutAutorInput, LivroUpdateWithoutAutorInput>, LivroUncheckedUpdateWithoutAutorInput>
   }
 
-  export type LivroUncheckedCreateNestedManyWithoutAutorInput = {
-    create?: XOR<LivroCreateWithoutAutorInput, LivroUncheckedCreateWithoutAutorInput> | LivroCreateWithoutAutorInput[] | LivroUncheckedCreateWithoutAutorInput[]
-    connectOrCreate?: LivroCreateOrConnectWithoutAutorInput | LivroCreateOrConnectWithoutAutorInput[]
-    createMany?: LivroCreateManyAutorInputEnvelope
-    connect?: LivroWhereUniqueInput | LivroWhereUniqueInput[]
-  }
-
-  export type UserUpdateOneRequiredWithoutAutorNestedInput = {
-    create?: XOR<UserCreateWithoutAutorInput, UserUncheckedCreateWithoutAutorInput>
-    connectOrCreate?: UserCreateOrConnectWithoutAutorInput
-    upsert?: UserUpsertWithoutAutorInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAutorInput, UserUpdateWithoutAutorInput>, UserUncheckedUpdateWithoutAutorInput>
-  }
-
-  export type LivroUpdateManyWithoutAutorNestedInput = {
-    create?: XOR<LivroCreateWithoutAutorInput, LivroUncheckedCreateWithoutAutorInput> | LivroCreateWithoutAutorInput[] | LivroUncheckedCreateWithoutAutorInput[]
-    connectOrCreate?: LivroCreateOrConnectWithoutAutorInput | LivroCreateOrConnectWithoutAutorInput[]
-    upsert?: LivroUpsertWithWhereUniqueWithoutAutorInput | LivroUpsertWithWhereUniqueWithoutAutorInput[]
-    createMany?: LivroCreateManyAutorInputEnvelope
-    set?: LivroWhereUniqueInput | LivroWhereUniqueInput[]
-    disconnect?: LivroWhereUniqueInput | LivroWhereUniqueInput[]
-    delete?: LivroWhereUniqueInput | LivroWhereUniqueInput[]
-    connect?: LivroWhereUniqueInput | LivroWhereUniqueInput[]
-    update?: LivroUpdateWithWhereUniqueWithoutAutorInput | LivroUpdateWithWhereUniqueWithoutAutorInput[]
-    updateMany?: LivroUpdateManyWithWhereWithoutAutorInput | LivroUpdateManyWithWhereWithoutAutorInput[]
-    deleteMany?: LivroScalarWhereInput | LivroScalarWhereInput[]
-  }
-
-  export type LivroUncheckedUpdateManyWithoutAutorNestedInput = {
-    create?: XOR<LivroCreateWithoutAutorInput, LivroUncheckedCreateWithoutAutorInput> | LivroCreateWithoutAutorInput[] | LivroUncheckedCreateWithoutAutorInput[]
-    connectOrCreate?: LivroCreateOrConnectWithoutAutorInput | LivroCreateOrConnectWithoutAutorInput[]
-    upsert?: LivroUpsertWithWhereUniqueWithoutAutorInput | LivroUpsertWithWhereUniqueWithoutAutorInput[]
-    createMany?: LivroCreateManyAutorInputEnvelope
-    set?: LivroWhereUniqueInput | LivroWhereUniqueInput[]
-    disconnect?: LivroWhereUniqueInput | LivroWhereUniqueInput[]
-    delete?: LivroWhereUniqueInput | LivroWhereUniqueInput[]
-    connect?: LivroWhereUniqueInput | LivroWhereUniqueInput[]
-    update?: LivroUpdateWithWhereUniqueWithoutAutorInput | LivroUpdateWithWhereUniqueWithoutAutorInput[]
-    updateMany?: LivroUpdateManyWithWhereWithoutAutorInput | LivroUpdateManyWithWhereWithoutAutorInput[]
-    deleteMany?: LivroScalarWhereInput | LivroScalarWhereInput[]
-  }
-
-  export type AutorCreateNestedOneWithoutLivrosInput = {
-    create?: XOR<AutorCreateWithoutLivrosInput, AutorUncheckedCreateWithoutLivrosInput>
-    connectOrCreate?: AutorCreateOrConnectWithoutLivrosInput
-    connect?: AutorWhereUniqueInput
+  export type AutorCreateNestedManyWithoutLivroInput = {
+    create?: XOR<AutorCreateWithoutLivroInput, AutorUncheckedCreateWithoutLivroInput> | AutorCreateWithoutLivroInput[] | AutorUncheckedCreateWithoutLivroInput[]
+    connectOrCreate?: AutorCreateOrConnectWithoutLivroInput | AutorCreateOrConnectWithoutLivroInput[]
+    createMany?: AutorCreateManyLivroInputEnvelope
+    connect?: AutorWhereUniqueInput | AutorWhereUniqueInput[]
   }
 
   export type ItemEmprestimoCreateNestedManyWithoutLivroInput = {
@@ -10044,6 +9572,13 @@ export namespace Prisma {
     connect?: ItemEmprestimoWhereUniqueInput | ItemEmprestimoWhereUniqueInput[]
   }
 
+  export type AutorUncheckedCreateNestedManyWithoutLivroInput = {
+    create?: XOR<AutorCreateWithoutLivroInput, AutorUncheckedCreateWithoutLivroInput> | AutorCreateWithoutLivroInput[] | AutorUncheckedCreateWithoutLivroInput[]
+    connectOrCreate?: AutorCreateOrConnectWithoutLivroInput | AutorCreateOrConnectWithoutLivroInput[]
+    createMany?: AutorCreateManyLivroInputEnvelope
+    connect?: AutorWhereUniqueInput | AutorWhereUniqueInput[]
+  }
+
   export type ItemEmprestimoUncheckedCreateNestedManyWithoutLivroInput = {
     create?: XOR<ItemEmprestimoCreateWithoutLivroInput, ItemEmprestimoUncheckedCreateWithoutLivroInput> | ItemEmprestimoCreateWithoutLivroInput[] | ItemEmprestimoUncheckedCreateWithoutLivroInput[]
     connectOrCreate?: ItemEmprestimoCreateOrConnectWithoutLivroInput | ItemEmprestimoCreateOrConnectWithoutLivroInput[]
@@ -10051,12 +9586,18 @@ export namespace Prisma {
     connect?: ItemEmprestimoWhereUniqueInput | ItemEmprestimoWhereUniqueInput[]
   }
 
-  export type AutorUpdateOneRequiredWithoutLivrosNestedInput = {
-    create?: XOR<AutorCreateWithoutLivrosInput, AutorUncheckedCreateWithoutLivrosInput>
-    connectOrCreate?: AutorCreateOrConnectWithoutLivrosInput
-    upsert?: AutorUpsertWithoutLivrosInput
-    connect?: AutorWhereUniqueInput
-    update?: XOR<XOR<AutorUpdateToOneWithWhereWithoutLivrosInput, AutorUpdateWithoutLivrosInput>, AutorUncheckedUpdateWithoutLivrosInput>
+  export type AutorUpdateManyWithoutLivroNestedInput = {
+    create?: XOR<AutorCreateWithoutLivroInput, AutorUncheckedCreateWithoutLivroInput> | AutorCreateWithoutLivroInput[] | AutorUncheckedCreateWithoutLivroInput[]
+    connectOrCreate?: AutorCreateOrConnectWithoutLivroInput | AutorCreateOrConnectWithoutLivroInput[]
+    upsert?: AutorUpsertWithWhereUniqueWithoutLivroInput | AutorUpsertWithWhereUniqueWithoutLivroInput[]
+    createMany?: AutorCreateManyLivroInputEnvelope
+    set?: AutorWhereUniqueInput | AutorWhereUniqueInput[]
+    disconnect?: AutorWhereUniqueInput | AutorWhereUniqueInput[]
+    delete?: AutorWhereUniqueInput | AutorWhereUniqueInput[]
+    connect?: AutorWhereUniqueInput | AutorWhereUniqueInput[]
+    update?: AutorUpdateWithWhereUniqueWithoutLivroInput | AutorUpdateWithWhereUniqueWithoutLivroInput[]
+    updateMany?: AutorUpdateManyWithWhereWithoutLivroInput | AutorUpdateManyWithWhereWithoutLivroInput[]
+    deleteMany?: AutorScalarWhereInput | AutorScalarWhereInput[]
   }
 
   export type ItemEmprestimoUpdateManyWithoutLivroNestedInput = {
@@ -10071,6 +9612,20 @@ export namespace Prisma {
     update?: ItemEmprestimoUpdateWithWhereUniqueWithoutLivroInput | ItemEmprestimoUpdateWithWhereUniqueWithoutLivroInput[]
     updateMany?: ItemEmprestimoUpdateManyWithWhereWithoutLivroInput | ItemEmprestimoUpdateManyWithWhereWithoutLivroInput[]
     deleteMany?: ItemEmprestimoScalarWhereInput | ItemEmprestimoScalarWhereInput[]
+  }
+
+  export type AutorUncheckedUpdateManyWithoutLivroNestedInput = {
+    create?: XOR<AutorCreateWithoutLivroInput, AutorUncheckedCreateWithoutLivroInput> | AutorCreateWithoutLivroInput[] | AutorUncheckedCreateWithoutLivroInput[]
+    connectOrCreate?: AutorCreateOrConnectWithoutLivroInput | AutorCreateOrConnectWithoutLivroInput[]
+    upsert?: AutorUpsertWithWhereUniqueWithoutLivroInput | AutorUpsertWithWhereUniqueWithoutLivroInput[]
+    createMany?: AutorCreateManyLivroInputEnvelope
+    set?: AutorWhereUniqueInput | AutorWhereUniqueInput[]
+    disconnect?: AutorWhereUniqueInput | AutorWhereUniqueInput[]
+    delete?: AutorWhereUniqueInput | AutorWhereUniqueInput[]
+    connect?: AutorWhereUniqueInput | AutorWhereUniqueInput[]
+    update?: AutorUpdateWithWhereUniqueWithoutLivroInput | AutorUpdateWithWhereUniqueWithoutLivroInput[]
+    updateMany?: AutorUpdateManyWithWhereWithoutLivroInput | AutorUpdateManyWithWhereWithoutLivroInput[]
+    deleteMany?: AutorScalarWhereInput | AutorScalarWhereInput[]
   }
 
   export type ItemEmprestimoUncheckedUpdateManyWithoutLivroNestedInput = {
@@ -10196,24 +9751,6 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
-  export type NestedEnumRoleFilter<$PrismaModel = never> = {
-    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
-    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
-    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
-    not?: NestedEnumRoleFilter<$PrismaModel> | $Enums.Role
-  }
-
-  export type NestedDateTimeFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
-  }
-
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -10258,30 +9795,6 @@ export namespace Prisma {
     _max?: NestedStringFilter<$PrismaModel>
   }
 
-  export type NestedEnumRoleWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
-    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
-    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
-    not?: NestedEnumRoleWithAggregatesFilter<$PrismaModel> | $Enums.Role
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumRoleFilter<$PrismaModel>
-    _max?: NestedEnumRoleFilter<$PrismaModel>
-  }
-
-  export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedDateTimeFilter<$PrismaModel>
-    _max?: NestedDateTimeFilter<$PrismaModel>
-  }
-
   export type NestedStringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -10294,6 +9807,17 @@ export namespace Prisma {
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
+  export type NestedDateTimeFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -10324,140 +9848,24 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
-  export type LeitorCreateWithoutUserInput = {
-    nome: string
-    cpf: string
-    data_de_nascimento: Date | string
-    endereco: string
-    observacao?: string | null
-    emprestimos?: EmprestimoCreateNestedManyWithoutLeitorInput
-  }
-
-  export type LeitorUncheckedCreateWithoutUserInput = {
-    id?: number
-    nome: string
-    cpf: string
-    data_de_nascimento: Date | string
-    endereco: string
-    observacao?: string | null
-    emprestimos?: EmprestimoUncheckedCreateNestedManyWithoutLeitorInput
-  }
-
-  export type LeitorCreateOrConnectWithoutUserInput = {
-    where: LeitorWhereUniqueInput
-    create: XOR<LeitorCreateWithoutUserInput, LeitorUncheckedCreateWithoutUserInput>
-  }
-
-  export type AutorCreateWithoutUserInput = {
-    nome_autor: string
-    origem: string
-    biografia: string
-    data_de_nascimento: Date | string
-    nome_artistico: string
-    livros?: LivroCreateNestedManyWithoutAutorInput
-  }
-
-  export type AutorUncheckedCreateWithoutUserInput = {
-    id?: number
-    nome_autor: string
-    origem: string
-    biografia: string
-    data_de_nascimento: Date | string
-    nome_artistico: string
-    livros?: LivroUncheckedCreateNestedManyWithoutAutorInput
-  }
-
-  export type AutorCreateOrConnectWithoutUserInput = {
-    where: AutorWhereUniqueInput
-    create: XOR<AutorCreateWithoutUserInput, AutorUncheckedCreateWithoutUserInput>
-  }
-
-  export type LeitorUpsertWithoutUserInput = {
-    update: XOR<LeitorUpdateWithoutUserInput, LeitorUncheckedUpdateWithoutUserInput>
-    create: XOR<LeitorCreateWithoutUserInput, LeitorUncheckedCreateWithoutUserInput>
-    where?: LeitorWhereInput
-  }
-
-  export type LeitorUpdateToOneWithWhereWithoutUserInput = {
-    where?: LeitorWhereInput
-    data: XOR<LeitorUpdateWithoutUserInput, LeitorUncheckedUpdateWithoutUserInput>
-  }
-
-  export type LeitorUpdateWithoutUserInput = {
-    nome?: StringFieldUpdateOperationsInput | string
-    cpf?: StringFieldUpdateOperationsInput | string
-    data_de_nascimento?: DateTimeFieldUpdateOperationsInput | Date | string
-    endereco?: StringFieldUpdateOperationsInput | string
-    observacao?: NullableStringFieldUpdateOperationsInput | string | null
-    emprestimos?: EmprestimoUpdateManyWithoutLeitorNestedInput
-  }
-
-  export type LeitorUncheckedUpdateWithoutUserInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    nome?: StringFieldUpdateOperationsInput | string
-    cpf?: StringFieldUpdateOperationsInput | string
-    data_de_nascimento?: DateTimeFieldUpdateOperationsInput | Date | string
-    endereco?: StringFieldUpdateOperationsInput | string
-    observacao?: NullableStringFieldUpdateOperationsInput | string | null
-    emprestimos?: EmprestimoUncheckedUpdateManyWithoutLeitorNestedInput
-  }
-
-  export type AutorUpsertWithoutUserInput = {
-    update: XOR<AutorUpdateWithoutUserInput, AutorUncheckedUpdateWithoutUserInput>
-    create: XOR<AutorCreateWithoutUserInput, AutorUncheckedCreateWithoutUserInput>
-    where?: AutorWhereInput
-  }
-
-  export type AutorUpdateToOneWithWhereWithoutUserInput = {
-    where?: AutorWhereInput
-    data: XOR<AutorUpdateWithoutUserInput, AutorUncheckedUpdateWithoutUserInput>
-  }
-
-  export type AutorUpdateWithoutUserInput = {
-    nome_autor?: StringFieldUpdateOperationsInput | string
-    origem?: StringFieldUpdateOperationsInput | string
-    biografia?: StringFieldUpdateOperationsInput | string
-    data_de_nascimento?: DateTimeFieldUpdateOperationsInput | Date | string
-    nome_artistico?: StringFieldUpdateOperationsInput | string
-    livros?: LivroUpdateManyWithoutAutorNestedInput
-  }
-
-  export type AutorUncheckedUpdateWithoutUserInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    nome_autor?: StringFieldUpdateOperationsInput | string
-    origem?: StringFieldUpdateOperationsInput | string
-    biografia?: StringFieldUpdateOperationsInput | string
-    data_de_nascimento?: DateTimeFieldUpdateOperationsInput | Date | string
-    nome_artistico?: StringFieldUpdateOperationsInput | string
-    livros?: LivroUncheckedUpdateManyWithoutAutorNestedInput
-  }
-
-  export type UserCreateWithoutLeitorInput = {
-    email: string
-    password: string
-    role?: $Enums.Role
-    created_at?: Date | string
-    autor?: AutorCreateNestedOneWithoutUserInput
-  }
-
-  export type UserUncheckedCreateWithoutLeitorInput = {
-    id?: number
-    email: string
-    password: string
-    role?: $Enums.Role
-    created_at?: Date | string
-    autor?: AutorUncheckedCreateNestedOneWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutLeitorInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutLeitorInput, UserUncheckedCreateWithoutLeitorInput>
+  export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
   export type EmprestimoCreateWithoutLeitorInput = {
     data_emprestimo: Date | string
     prazo_de_devolucao: Date | string
-    observacoes?: string | null
+    observacoes: string
     itens_emprestimo?: ItemEmprestimoCreateNestedManyWithoutEmprestimoInput
   }
 
@@ -10465,7 +9873,7 @@ export namespace Prisma {
     id?: number
     data_emprestimo: Date | string
     prazo_de_devolucao: Date | string
-    observacoes?: string | null
+    observacoes: string
     itens_emprestimo?: ItemEmprestimoUncheckedCreateNestedManyWithoutEmprestimoInput
   }
 
@@ -10477,34 +9885,6 @@ export namespace Prisma {
   export type EmprestimoCreateManyLeitorInputEnvelope = {
     data: EmprestimoCreateManyLeitorInput | EmprestimoCreateManyLeitorInput[]
     skipDuplicates?: boolean
-  }
-
-  export type UserUpsertWithoutLeitorInput = {
-    update: XOR<UserUpdateWithoutLeitorInput, UserUncheckedUpdateWithoutLeitorInput>
-    create: XOR<UserCreateWithoutLeitorInput, UserUncheckedCreateWithoutLeitorInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutLeitorInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutLeitorInput, UserUncheckedUpdateWithoutLeitorInput>
-  }
-
-  export type UserUpdateWithoutLeitorInput = {
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    autor?: AutorUpdateOneWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutLeitorInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    autor?: AutorUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type EmprestimoUpsertWithWhereUniqueWithoutLeitorInput = {
@@ -10530,37 +9910,15 @@ export namespace Prisma {
     id?: IntFilter<"Emprestimo"> | number
     data_emprestimo?: DateTimeFilter<"Emprestimo"> | Date | string
     prazo_de_devolucao?: DateTimeFilter<"Emprestimo"> | Date | string
-    observacoes?: StringNullableFilter<"Emprestimo"> | string | null
+    observacoes?: StringFilter<"Emprestimo"> | string
     id_leitor?: IntFilter<"Emprestimo"> | number
-  }
-
-  export type UserCreateWithoutAutorInput = {
-    email: string
-    password: string
-    role?: $Enums.Role
-    created_at?: Date | string
-    leitor?: LeitorCreateNestedOneWithoutUserInput
-  }
-
-  export type UserUncheckedCreateWithoutAutorInput = {
-    id?: number
-    email: string
-    password: string
-    role?: $Enums.Role
-    created_at?: Date | string
-    leitor?: LeitorUncheckedCreateNestedOneWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutAutorInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutAutorInput, UserUncheckedCreateWithoutAutorInput>
   }
 
   export type LivroCreateWithoutAutorInput = {
     nome_livro: string
     editora: string
-    versao: number
-    ano: number
+    versao: string
+    ano: string
     genero: string
     idioma: string
     qtde_total: number
@@ -10572,8 +9930,8 @@ export namespace Prisma {
     id?: number
     nome_livro: string
     editora: string
-    versao: number
-    ano: number
+    versao: string
+    ano: string
     genero: string
     idioma: string
     qtde_total: number
@@ -10586,93 +9944,67 @@ export namespace Prisma {
     create: XOR<LivroCreateWithoutAutorInput, LivroUncheckedCreateWithoutAutorInput>
   }
 
-  export type LivroCreateManyAutorInputEnvelope = {
-    data: LivroCreateManyAutorInput | LivroCreateManyAutorInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type UserUpsertWithoutAutorInput = {
-    update: XOR<UserUpdateWithoutAutorInput, UserUncheckedUpdateWithoutAutorInput>
-    create: XOR<UserCreateWithoutAutorInput, UserUncheckedCreateWithoutAutorInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutAutorInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutAutorInput, UserUncheckedUpdateWithoutAutorInput>
-  }
-
-  export type UserUpdateWithoutAutorInput = {
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    leitor?: LeitorUpdateOneWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutAutorInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    leitor?: LeitorUncheckedUpdateOneWithoutUserNestedInput
-  }
-
-  export type LivroUpsertWithWhereUniqueWithoutAutorInput = {
-    where: LivroWhereUniqueInput
+  export type LivroUpsertWithoutAutorInput = {
     update: XOR<LivroUpdateWithoutAutorInput, LivroUncheckedUpdateWithoutAutorInput>
     create: XOR<LivroCreateWithoutAutorInput, LivroUncheckedCreateWithoutAutorInput>
+    where?: LivroWhereInput
   }
 
-  export type LivroUpdateWithWhereUniqueWithoutAutorInput = {
-    where: LivroWhereUniqueInput
+  export type LivroUpdateToOneWithWhereWithoutAutorInput = {
+    where?: LivroWhereInput
     data: XOR<LivroUpdateWithoutAutorInput, LivroUncheckedUpdateWithoutAutorInput>
   }
 
-  export type LivroUpdateManyWithWhereWithoutAutorInput = {
-    where: LivroScalarWhereInput
-    data: XOR<LivroUpdateManyMutationInput, LivroUncheckedUpdateManyWithoutAutorInput>
+  export type LivroUpdateWithoutAutorInput = {
+    nome_livro?: StringFieldUpdateOperationsInput | string
+    editora?: StringFieldUpdateOperationsInput | string
+    versao?: StringFieldUpdateOperationsInput | string
+    ano?: StringFieldUpdateOperationsInput | string
+    genero?: StringFieldUpdateOperationsInput | string
+    idioma?: StringFieldUpdateOperationsInput | string
+    qtde_total?: IntFieldUpdateOperationsInput | number
+    qtde_disponivel?: IntFieldUpdateOperationsInput | number
+    itens_emprestimo?: ItemEmprestimoUpdateManyWithoutLivroNestedInput
   }
 
-  export type LivroScalarWhereInput = {
-    AND?: LivroScalarWhereInput | LivroScalarWhereInput[]
-    OR?: LivroScalarWhereInput[]
-    NOT?: LivroScalarWhereInput | LivroScalarWhereInput[]
-    id?: IntFilter<"Livro"> | number
-    nome_livro?: StringFilter<"Livro"> | string
-    editora?: StringFilter<"Livro"> | string
-    versao?: IntFilter<"Livro"> | number
-    ano?: IntFilter<"Livro"> | number
-    genero?: StringFilter<"Livro"> | string
-    idioma?: StringFilter<"Livro"> | string
-    qtde_total?: IntFilter<"Livro"> | number
-    qtde_disponivel?: IntFilter<"Livro"> | number
-    id_autor?: IntFilter<"Livro"> | number
+  export type LivroUncheckedUpdateWithoutAutorInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    nome_livro?: StringFieldUpdateOperationsInput | string
+    editora?: StringFieldUpdateOperationsInput | string
+    versao?: StringFieldUpdateOperationsInput | string
+    ano?: StringFieldUpdateOperationsInput | string
+    genero?: StringFieldUpdateOperationsInput | string
+    idioma?: StringFieldUpdateOperationsInput | string
+    qtde_total?: IntFieldUpdateOperationsInput | number
+    qtde_disponivel?: IntFieldUpdateOperationsInput | number
+    itens_emprestimo?: ItemEmprestimoUncheckedUpdateManyWithoutLivroNestedInput
   }
 
-  export type AutorCreateWithoutLivrosInput = {
+  export type AutorCreateWithoutLivroInput = {
     nome_autor: string
     origem: string
     biografia: string
     data_de_nascimento: Date | string
     nome_artistico: string
-    user: UserCreateNestedOneWithoutAutorInput
   }
 
-  export type AutorUncheckedCreateWithoutLivrosInput = {
+  export type AutorUncheckedCreateWithoutLivroInput = {
     id?: number
     nome_autor: string
     origem: string
     biografia: string
     data_de_nascimento: Date | string
     nome_artistico: string
-    id_user: number
   }
 
-  export type AutorCreateOrConnectWithoutLivrosInput = {
+  export type AutorCreateOrConnectWithoutLivroInput = {
     where: AutorWhereUniqueInput
-    create: XOR<AutorCreateWithoutLivrosInput, AutorUncheckedCreateWithoutLivrosInput>
+    create: XOR<AutorCreateWithoutLivroInput, AutorUncheckedCreateWithoutLivroInput>
+  }
+
+  export type AutorCreateManyLivroInputEnvelope = {
+    data: AutorCreateManyLivroInput | AutorCreateManyLivroInput[]
+    skipDuplicates?: boolean
   }
 
   export type ItemEmprestimoCreateWithoutLivroInput = {
@@ -10700,34 +10032,33 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type AutorUpsertWithoutLivrosInput = {
-    update: XOR<AutorUpdateWithoutLivrosInput, AutorUncheckedUpdateWithoutLivrosInput>
-    create: XOR<AutorCreateWithoutLivrosInput, AutorUncheckedCreateWithoutLivrosInput>
-    where?: AutorWhereInput
+  export type AutorUpsertWithWhereUniqueWithoutLivroInput = {
+    where: AutorWhereUniqueInput
+    update: XOR<AutorUpdateWithoutLivroInput, AutorUncheckedUpdateWithoutLivroInput>
+    create: XOR<AutorCreateWithoutLivroInput, AutorUncheckedCreateWithoutLivroInput>
   }
 
-  export type AutorUpdateToOneWithWhereWithoutLivrosInput = {
-    where?: AutorWhereInput
-    data: XOR<AutorUpdateWithoutLivrosInput, AutorUncheckedUpdateWithoutLivrosInput>
+  export type AutorUpdateWithWhereUniqueWithoutLivroInput = {
+    where: AutorWhereUniqueInput
+    data: XOR<AutorUpdateWithoutLivroInput, AutorUncheckedUpdateWithoutLivroInput>
   }
 
-  export type AutorUpdateWithoutLivrosInput = {
-    nome_autor?: StringFieldUpdateOperationsInput | string
-    origem?: StringFieldUpdateOperationsInput | string
-    biografia?: StringFieldUpdateOperationsInput | string
-    data_de_nascimento?: DateTimeFieldUpdateOperationsInput | Date | string
-    nome_artistico?: StringFieldUpdateOperationsInput | string
-    user?: UserUpdateOneRequiredWithoutAutorNestedInput
+  export type AutorUpdateManyWithWhereWithoutLivroInput = {
+    where: AutorScalarWhereInput
+    data: XOR<AutorUpdateManyMutationInput, AutorUncheckedUpdateManyWithoutLivroInput>
   }
 
-  export type AutorUncheckedUpdateWithoutLivrosInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    nome_autor?: StringFieldUpdateOperationsInput | string
-    origem?: StringFieldUpdateOperationsInput | string
-    biografia?: StringFieldUpdateOperationsInput | string
-    data_de_nascimento?: DateTimeFieldUpdateOperationsInput | Date | string
-    nome_artistico?: StringFieldUpdateOperationsInput | string
-    id_user?: IntFieldUpdateOperationsInput | number
+  export type AutorScalarWhereInput = {
+    AND?: AutorScalarWhereInput | AutorScalarWhereInput[]
+    OR?: AutorScalarWhereInput[]
+    NOT?: AutorScalarWhereInput | AutorScalarWhereInput[]
+    id?: IntFilter<"Autor"> | number
+    nome_autor?: StringFilter<"Autor"> | string
+    origem?: StringFilter<"Autor"> | string
+    biografia?: StringFilter<"Autor"> | string
+    data_de_nascimento?: DateTimeFilter<"Autor"> | Date | string
+    nome_artistico?: StringFilter<"Autor"> | string
+    id_livro?: IntFilter<"Autor"> | number
   }
 
   export type ItemEmprestimoUpsertWithWhereUniqueWithoutLivroInput = {
@@ -10759,22 +10090,22 @@ export namespace Prisma {
   }
 
   export type LeitorCreateWithoutEmprestimosInput = {
+    email: string
     nome: string
     cpf: string
-    data_de_nascimento: Date | string
     endereco: string
     observacao?: string | null
-    user: UserCreateNestedOneWithoutLeitorInput
+    data_de_nascimento: Date | string
   }
 
   export type LeitorUncheckedCreateWithoutEmprestimosInput = {
     id?: number
+    email: string
     nome: string
     cpf: string
-    data_de_nascimento: Date | string
     endereco: string
     observacao?: string | null
-    id_user: number
+    data_de_nascimento: Date | string
   }
 
   export type LeitorCreateOrConnectWithoutEmprestimosInput = {
@@ -10819,22 +10150,22 @@ export namespace Prisma {
   }
 
   export type LeitorUpdateWithoutEmprestimosInput = {
+    email?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     cpf?: StringFieldUpdateOperationsInput | string
-    data_de_nascimento?: DateTimeFieldUpdateOperationsInput | Date | string
     endereco?: StringFieldUpdateOperationsInput | string
     observacao?: NullableStringFieldUpdateOperationsInput | string | null
-    user?: UserUpdateOneRequiredWithoutLeitorNestedInput
+    data_de_nascimento?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type LeitorUncheckedUpdateWithoutEmprestimosInput = {
     id?: IntFieldUpdateOperationsInput | number
+    email?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     cpf?: StringFieldUpdateOperationsInput | string
-    data_de_nascimento?: DateTimeFieldUpdateOperationsInput | Date | string
     endereco?: StringFieldUpdateOperationsInput | string
     observacao?: NullableStringFieldUpdateOperationsInput | string | null
-    id_user?: IntFieldUpdateOperationsInput | number
+    data_de_nascimento?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ItemEmprestimoUpsertWithWhereUniqueWithoutEmprestimoInput = {
@@ -10856,7 +10187,7 @@ export namespace Prisma {
   export type EmprestimoCreateWithoutItens_emprestimoInput = {
     data_emprestimo: Date | string
     prazo_de_devolucao: Date | string
-    observacoes?: string | null
+    observacoes: string
     leitor: LeitorCreateNestedOneWithoutEmprestimosInput
   }
 
@@ -10864,7 +10195,7 @@ export namespace Prisma {
     id?: number
     data_emprestimo: Date | string
     prazo_de_devolucao: Date | string
-    observacoes?: string | null
+    observacoes: string
     id_leitor: number
   }
 
@@ -10876,26 +10207,26 @@ export namespace Prisma {
   export type LivroCreateWithoutItens_emprestimoInput = {
     nome_livro: string
     editora: string
-    versao: number
-    ano: number
+    versao: string
+    ano: string
     genero: string
     idioma: string
     qtde_total: number
     qtde_disponivel: number
-    autor: AutorCreateNestedOneWithoutLivrosInput
+    Autor?: AutorCreateNestedManyWithoutLivroInput
   }
 
   export type LivroUncheckedCreateWithoutItens_emprestimoInput = {
     id?: number
     nome_livro: string
     editora: string
-    versao: number
-    ano: number
+    versao: string
+    ano: string
     genero: string
     idioma: string
     qtde_total: number
     qtde_disponivel: number
-    id_autor: number
+    Autor?: AutorUncheckedCreateNestedManyWithoutLivroInput
   }
 
   export type LivroCreateOrConnectWithoutItens_emprestimoInput = {
@@ -10917,7 +10248,7 @@ export namespace Prisma {
   export type EmprestimoUpdateWithoutItens_emprestimoInput = {
     data_emprestimo?: DateTimeFieldUpdateOperationsInput | Date | string
     prazo_de_devolucao?: DateTimeFieldUpdateOperationsInput | Date | string
-    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    observacoes?: StringFieldUpdateOperationsInput | string
     leitor?: LeitorUpdateOneRequiredWithoutEmprestimosNestedInput
   }
 
@@ -10925,7 +10256,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     data_emprestimo?: DateTimeFieldUpdateOperationsInput | Date | string
     prazo_de_devolucao?: DateTimeFieldUpdateOperationsInput | Date | string
-    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    observacoes?: StringFieldUpdateOperationsInput | string
     id_leitor?: IntFieldUpdateOperationsInput | number
   }
 
@@ -10943,39 +10274,39 @@ export namespace Prisma {
   export type LivroUpdateWithoutItens_emprestimoInput = {
     nome_livro?: StringFieldUpdateOperationsInput | string
     editora?: StringFieldUpdateOperationsInput | string
-    versao?: IntFieldUpdateOperationsInput | number
-    ano?: IntFieldUpdateOperationsInput | number
+    versao?: StringFieldUpdateOperationsInput | string
+    ano?: StringFieldUpdateOperationsInput | string
     genero?: StringFieldUpdateOperationsInput | string
     idioma?: StringFieldUpdateOperationsInput | string
     qtde_total?: IntFieldUpdateOperationsInput | number
     qtde_disponivel?: IntFieldUpdateOperationsInput | number
-    autor?: AutorUpdateOneRequiredWithoutLivrosNestedInput
+    Autor?: AutorUpdateManyWithoutLivroNestedInput
   }
 
   export type LivroUncheckedUpdateWithoutItens_emprestimoInput = {
     id?: IntFieldUpdateOperationsInput | number
     nome_livro?: StringFieldUpdateOperationsInput | string
     editora?: StringFieldUpdateOperationsInput | string
-    versao?: IntFieldUpdateOperationsInput | number
-    ano?: IntFieldUpdateOperationsInput | number
+    versao?: StringFieldUpdateOperationsInput | string
+    ano?: StringFieldUpdateOperationsInput | string
     genero?: StringFieldUpdateOperationsInput | string
     idioma?: StringFieldUpdateOperationsInput | string
     qtde_total?: IntFieldUpdateOperationsInput | number
     qtde_disponivel?: IntFieldUpdateOperationsInput | number
-    id_autor?: IntFieldUpdateOperationsInput | number
+    Autor?: AutorUncheckedUpdateManyWithoutLivroNestedInput
   }
 
   export type EmprestimoCreateManyLeitorInput = {
     id?: number
     data_emprestimo: Date | string
     prazo_de_devolucao: Date | string
-    observacoes?: string | null
+    observacoes: string
   }
 
   export type EmprestimoUpdateWithoutLeitorInput = {
     data_emprestimo?: DateTimeFieldUpdateOperationsInput | Date | string
     prazo_de_devolucao?: DateTimeFieldUpdateOperationsInput | Date | string
-    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    observacoes?: StringFieldUpdateOperationsInput | string
     itens_emprestimo?: ItemEmprestimoUpdateManyWithoutEmprestimoNestedInput
   }
 
@@ -10983,7 +10314,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     data_emprestimo?: DateTimeFieldUpdateOperationsInput | Date | string
     prazo_de_devolucao?: DateTimeFieldUpdateOperationsInput | Date | string
-    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    observacoes?: StringFieldUpdateOperationsInput | string
     itens_emprestimo?: ItemEmprestimoUncheckedUpdateManyWithoutEmprestimoNestedInput
   }
 
@@ -10991,56 +10322,16 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     data_emprestimo?: DateTimeFieldUpdateOperationsInput | Date | string
     prazo_de_devolucao?: DateTimeFieldUpdateOperationsInput | Date | string
-    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    observacoes?: StringFieldUpdateOperationsInput | string
   }
 
-  export type LivroCreateManyAutorInput = {
+  export type AutorCreateManyLivroInput = {
     id?: number
-    nome_livro: string
-    editora: string
-    versao: number
-    ano: number
-    genero: string
-    idioma: string
-    qtde_total: number
-    qtde_disponivel: number
-  }
-
-  export type LivroUpdateWithoutAutorInput = {
-    nome_livro?: StringFieldUpdateOperationsInput | string
-    editora?: StringFieldUpdateOperationsInput | string
-    versao?: IntFieldUpdateOperationsInput | number
-    ano?: IntFieldUpdateOperationsInput | number
-    genero?: StringFieldUpdateOperationsInput | string
-    idioma?: StringFieldUpdateOperationsInput | string
-    qtde_total?: IntFieldUpdateOperationsInput | number
-    qtde_disponivel?: IntFieldUpdateOperationsInput | number
-    itens_emprestimo?: ItemEmprestimoUpdateManyWithoutLivroNestedInput
-  }
-
-  export type LivroUncheckedUpdateWithoutAutorInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    nome_livro?: StringFieldUpdateOperationsInput | string
-    editora?: StringFieldUpdateOperationsInput | string
-    versao?: IntFieldUpdateOperationsInput | number
-    ano?: IntFieldUpdateOperationsInput | number
-    genero?: StringFieldUpdateOperationsInput | string
-    idioma?: StringFieldUpdateOperationsInput | string
-    qtde_total?: IntFieldUpdateOperationsInput | number
-    qtde_disponivel?: IntFieldUpdateOperationsInput | number
-    itens_emprestimo?: ItemEmprestimoUncheckedUpdateManyWithoutLivroNestedInput
-  }
-
-  export type LivroUncheckedUpdateManyWithoutAutorInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    nome_livro?: StringFieldUpdateOperationsInput | string
-    editora?: StringFieldUpdateOperationsInput | string
-    versao?: IntFieldUpdateOperationsInput | number
-    ano?: IntFieldUpdateOperationsInput | number
-    genero?: StringFieldUpdateOperationsInput | string
-    idioma?: StringFieldUpdateOperationsInput | string
-    qtde_total?: IntFieldUpdateOperationsInput | number
-    qtde_disponivel?: IntFieldUpdateOperationsInput | number
+    nome_autor: string
+    origem: string
+    biografia: string
+    data_de_nascimento: Date | string
+    nome_artistico: string
   }
 
   export type ItemEmprestimoCreateManyLivroInput = {
@@ -11049,6 +10340,32 @@ export namespace Prisma {
     valor_multa: number
     status: string
     id_emprestimo: number
+  }
+
+  export type AutorUpdateWithoutLivroInput = {
+    nome_autor?: StringFieldUpdateOperationsInput | string
+    origem?: StringFieldUpdateOperationsInput | string
+    biografia?: StringFieldUpdateOperationsInput | string
+    data_de_nascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    nome_artistico?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type AutorUncheckedUpdateWithoutLivroInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    nome_autor?: StringFieldUpdateOperationsInput | string
+    origem?: StringFieldUpdateOperationsInput | string
+    biografia?: StringFieldUpdateOperationsInput | string
+    data_de_nascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    nome_artistico?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type AutorUncheckedUpdateManyWithoutLivroInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    nome_autor?: StringFieldUpdateOperationsInput | string
+    origem?: StringFieldUpdateOperationsInput | string
+    biografia?: StringFieldUpdateOperationsInput | string
+    data_de_nascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    nome_artistico?: StringFieldUpdateOperationsInput | string
   }
 
   export type ItemEmprestimoUpdateWithoutLivroInput = {
