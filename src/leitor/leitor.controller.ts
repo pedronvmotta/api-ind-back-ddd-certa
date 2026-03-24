@@ -48,6 +48,5 @@ export class LeitorController {
   deletarLeitor(@Param('id') id:number){
     return this.leitorService.deletarLeitor(+id)
   }
-
-  
+   
 }
