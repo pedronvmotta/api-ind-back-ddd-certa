@@ -61,7 +61,7 @@ model Autor {
   data_de_nascimento DateTime
   nome_artistico     String
   id_livro           Int
-  livro              Livro    @relation(fields: [id_livro], references: [id])
+  livro              Livro?    @relation(fields: [id_livro], references: [id])
 }
 
 model User {
