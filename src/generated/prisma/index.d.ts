@@ -14,10 +14,25 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
 
 
 /**
+ * Model User
+ * 
+ */
+export type User = $Result.DefaultSelection<Prisma.$UserPayload>
+/**
  * Model Leitor
  * 
  */
 export type Leitor = $Result.DefaultSelection<Prisma.$LeitorPayload>
+/**
+ * Model Autor
+ * 
+ */
+export type Autor = $Result.DefaultSelection<Prisma.$AutorPayload>
+/**
+ * Model Livro
+ * 
+ */
+export type Livro = $Result.DefaultSelection<Prisma.$LivroPayload>
 /**
  * Model Emprestimo
  * 
@@ -28,21 +43,24 @@ export type Emprestimo = $Result.DefaultSelection<Prisma.$EmprestimoPayload>
  * 
  */
 export type ItemEmprestimo = $Result.DefaultSelection<Prisma.$ItemEmprestimoPayload>
+
 /**
- * Model Livro
- * 
+ * Enums
  */
-export type Livro = $Result.DefaultSelection<Prisma.$LivroPayload>
-/**
- * Model Autor
- * 
- */
-export type Autor = $Result.DefaultSelection<Prisma.$AutorPayload>
-/**
- * Model User
- * 
- */
-export type User = $Result.DefaultSelection<Prisma.$UserPayload>
+export namespace $Enums {
+  export const Role: {
+  LEITOR: 'LEITOR',
+  AUTOR: 'AUTOR',
+  ADMIN: 'ADMIN'
+};
+
+export type Role = (typeof Role)[keyof typeof Role]
+
+}
+
+export type Role = $Enums.Role
+
+export const Role: typeof $Enums.Role
 
 /**
  * ##  Prisma Client ʲˢ
@@ -53,8 +71,8 @@ export type User = $Result.DefaultSelection<Prisma.$UserPayload>
  * const prisma = new PrismaClient({
  *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
  * })
- * // Fetch zero or more Leitors
- * const leitors = await prisma.leitor.findMany()
+ * // Fetch zero or more Users
+ * const users = await prisma.user.findMany()
  * ```
  *
  *
@@ -76,8 +94,8 @@ export class PrismaClient<
    * const prisma = new PrismaClient({
    *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
    * })
-   * // Fetch zero or more Leitors
-   * const leitors = await prisma.leitor.findMany()
+   * // Fetch zero or more Users
+   * const users = await prisma.user.findMany()
    * ```
    *
    *
@@ -166,6 +184,16 @@ export class PrismaClient<
   }>>
 
       /**
+   * `prisma.user`: Exposes CRUD operations for the **User** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Users
+    * const users = await prisma.user.findMany()
+    * ```
+    */
+  get user(): Prisma.UserDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.leitor`: Exposes CRUD operations for the **Leitor** model.
     * Example usage:
     * ```ts
@@ -174,6 +202,26 @@ export class PrismaClient<
     * ```
     */
   get leitor(): Prisma.LeitorDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.autor`: Exposes CRUD operations for the **Autor** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Autors
+    * const autors = await prisma.autor.findMany()
+    * ```
+    */
+  get autor(): Prisma.AutorDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.livro`: Exposes CRUD operations for the **Livro** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Livros
+    * const livros = await prisma.livro.findMany()
+    * ```
+    */
+  get livro(): Prisma.LivroDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.emprestimo`: Exposes CRUD operations for the **Emprestimo** model.
@@ -194,36 +242,6 @@ export class PrismaClient<
     * ```
     */
   get itemEmprestimo(): Prisma.ItemEmprestimoDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.livro`: Exposes CRUD operations for the **Livro** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Livros
-    * const livros = await prisma.livro.findMany()
-    * ```
-    */
-  get livro(): Prisma.LivroDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.autor`: Exposes CRUD operations for the **Autor** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Autors
-    * const autors = await prisma.autor.findMany()
-    * ```
-    */
-  get autor(): Prisma.AutorDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.user`: Exposes CRUD operations for the **User** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Users
-    * const users = await prisma.user.findMany()
-    * ```
-    */
-  get user(): Prisma.UserDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -658,12 +676,12 @@ export namespace Prisma {
 
 
   export const ModelName: {
+    User: 'User',
     Leitor: 'Leitor',
-    Emprestimo: 'Emprestimo',
-    ItemEmprestimo: 'ItemEmprestimo',
-    Livro: 'Livro',
     Autor: 'Autor',
-    User: 'User'
+    Livro: 'Livro',
+    Emprestimo: 'Emprestimo',
+    ItemEmprestimo: 'ItemEmprestimo'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -679,10 +697,84 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "leitor" | "emprestimo" | "itemEmprestimo" | "livro" | "autor" | "user"
+      modelProps: "user" | "leitor" | "autor" | "livro" | "emprestimo" | "itemEmprestimo"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
+      User: {
+        payload: Prisma.$UserPayload<ExtArgs>
+        fields: Prisma.UserFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.UserFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.UserFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload>
+          }
+          findFirst: {
+            args: Prisma.UserFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.UserFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload>
+          }
+          findMany: {
+            args: Prisma.UserFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload>[]
+          }
+          create: {
+            args: Prisma.UserCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload>
+          }
+          createMany: {
+            args: Prisma.UserCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.UserCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload>[]
+          }
+          delete: {
+            args: Prisma.UserDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload>
+          }
+          update: {
+            args: Prisma.UserUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload>
+          }
+          deleteMany: {
+            args: Prisma.UserDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.UserUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.UserUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload>[]
+          }
+          upsert: {
+            args: Prisma.UserUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload>
+          }
+          aggregate: {
+            args: Prisma.UserAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateUser>
+          }
+          groupBy: {
+            args: Prisma.UserGroupByArgs<ExtArgs>
+            result: $Utils.Optional<UserGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.UserCountArgs<ExtArgs>
+            result: $Utils.Optional<UserCountAggregateOutputType> | number
+          }
+        }
+      }
       Leitor: {
         payload: Prisma.$LeitorPayload<ExtArgs>
         fields: Prisma.LeitorFieldRefs
@@ -754,6 +846,154 @@ export namespace Prisma {
           count: {
             args: Prisma.LeitorCountArgs<ExtArgs>
             result: $Utils.Optional<LeitorCountAggregateOutputType> | number
+          }
+        }
+      }
+      Autor: {
+        payload: Prisma.$AutorPayload<ExtArgs>
+        fields: Prisma.AutorFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AutorFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AutorPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AutorFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AutorPayload>
+          }
+          findFirst: {
+            args: Prisma.AutorFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AutorPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AutorFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AutorPayload>
+          }
+          findMany: {
+            args: Prisma.AutorFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AutorPayload>[]
+          }
+          create: {
+            args: Prisma.AutorCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AutorPayload>
+          }
+          createMany: {
+            args: Prisma.AutorCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AutorCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AutorPayload>[]
+          }
+          delete: {
+            args: Prisma.AutorDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AutorPayload>
+          }
+          update: {
+            args: Prisma.AutorUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AutorPayload>
+          }
+          deleteMany: {
+            args: Prisma.AutorDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AutorUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AutorUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AutorPayload>[]
+          }
+          upsert: {
+            args: Prisma.AutorUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AutorPayload>
+          }
+          aggregate: {
+            args: Prisma.AutorAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAutor>
+          }
+          groupBy: {
+            args: Prisma.AutorGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AutorGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AutorCountArgs<ExtArgs>
+            result: $Utils.Optional<AutorCountAggregateOutputType> | number
+          }
+        }
+      }
+      Livro: {
+        payload: Prisma.$LivroPayload<ExtArgs>
+        fields: Prisma.LivroFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.LivroFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LivroPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.LivroFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LivroPayload>
+          }
+          findFirst: {
+            args: Prisma.LivroFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LivroPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.LivroFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LivroPayload>
+          }
+          findMany: {
+            args: Prisma.LivroFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LivroPayload>[]
+          }
+          create: {
+            args: Prisma.LivroCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LivroPayload>
+          }
+          createMany: {
+            args: Prisma.LivroCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.LivroCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LivroPayload>[]
+          }
+          delete: {
+            args: Prisma.LivroDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LivroPayload>
+          }
+          update: {
+            args: Prisma.LivroUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LivroPayload>
+          }
+          deleteMany: {
+            args: Prisma.LivroDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.LivroUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.LivroUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LivroPayload>[]
+          }
+          upsert: {
+            args: Prisma.LivroUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LivroPayload>
+          }
+          aggregate: {
+            args: Prisma.LivroAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateLivro>
+          }
+          groupBy: {
+            args: Prisma.LivroGroupByArgs<ExtArgs>
+            result: $Utils.Optional<LivroGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.LivroCountArgs<ExtArgs>
+            result: $Utils.Optional<LivroCountAggregateOutputType> | number
           }
         }
       }
@@ -905,228 +1145,6 @@ export namespace Prisma {
           }
         }
       }
-      Livro: {
-        payload: Prisma.$LivroPayload<ExtArgs>
-        fields: Prisma.LivroFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.LivroFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$LivroPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.LivroFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$LivroPayload>
-          }
-          findFirst: {
-            args: Prisma.LivroFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$LivroPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.LivroFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$LivroPayload>
-          }
-          findMany: {
-            args: Prisma.LivroFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$LivroPayload>[]
-          }
-          create: {
-            args: Prisma.LivroCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$LivroPayload>
-          }
-          createMany: {
-            args: Prisma.LivroCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.LivroCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$LivroPayload>[]
-          }
-          delete: {
-            args: Prisma.LivroDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$LivroPayload>
-          }
-          update: {
-            args: Prisma.LivroUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$LivroPayload>
-          }
-          deleteMany: {
-            args: Prisma.LivroDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.LivroUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.LivroUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$LivroPayload>[]
-          }
-          upsert: {
-            args: Prisma.LivroUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$LivroPayload>
-          }
-          aggregate: {
-            args: Prisma.LivroAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateLivro>
-          }
-          groupBy: {
-            args: Prisma.LivroGroupByArgs<ExtArgs>
-            result: $Utils.Optional<LivroGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.LivroCountArgs<ExtArgs>
-            result: $Utils.Optional<LivroCountAggregateOutputType> | number
-          }
-        }
-      }
-      Autor: {
-        payload: Prisma.$AutorPayload<ExtArgs>
-        fields: Prisma.AutorFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.AutorFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AutorPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.AutorFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AutorPayload>
-          }
-          findFirst: {
-            args: Prisma.AutorFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AutorPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.AutorFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AutorPayload>
-          }
-          findMany: {
-            args: Prisma.AutorFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AutorPayload>[]
-          }
-          create: {
-            args: Prisma.AutorCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AutorPayload>
-          }
-          createMany: {
-            args: Prisma.AutorCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.AutorCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AutorPayload>[]
-          }
-          delete: {
-            args: Prisma.AutorDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AutorPayload>
-          }
-          update: {
-            args: Prisma.AutorUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AutorPayload>
-          }
-          deleteMany: {
-            args: Prisma.AutorDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.AutorUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.AutorUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AutorPayload>[]
-          }
-          upsert: {
-            args: Prisma.AutorUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AutorPayload>
-          }
-          aggregate: {
-            args: Prisma.AutorAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateAutor>
-          }
-          groupBy: {
-            args: Prisma.AutorGroupByArgs<ExtArgs>
-            result: $Utils.Optional<AutorGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.AutorCountArgs<ExtArgs>
-            result: $Utils.Optional<AutorCountAggregateOutputType> | number
-          }
-        }
-      }
-      User: {
-        payload: Prisma.$UserPayload<ExtArgs>
-        fields: Prisma.UserFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.UserFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.UserFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserPayload>
-          }
-          findFirst: {
-            args: Prisma.UserFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.UserFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserPayload>
-          }
-          findMany: {
-            args: Prisma.UserFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserPayload>[]
-          }
-          create: {
-            args: Prisma.UserCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserPayload>
-          }
-          createMany: {
-            args: Prisma.UserCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.UserCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserPayload>[]
-          }
-          delete: {
-            args: Prisma.UserDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserPayload>
-          }
-          update: {
-            args: Prisma.UserUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserPayload>
-          }
-          deleteMany: {
-            args: Prisma.UserDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.UserUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.UserUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserPayload>[]
-          }
-          upsert: {
-            args: Prisma.UserUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserPayload>
-          }
-          aggregate: {
-            args: Prisma.UserAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateUser>
-          }
-          groupBy: {
-            args: Prisma.UserGroupByArgs<ExtArgs>
-            result: $Utils.Optional<UserGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.UserCountArgs<ExtArgs>
-            result: $Utils.Optional<UserCountAggregateOutputType> | number
-          }
-        }
-      }
     }
   } & {
     other: {
@@ -1235,12 +1253,12 @@ export namespace Prisma {
     comments?: runtime.SqlCommenterPlugin[]
   }
   export type GlobalOmitConfig = {
+    user?: UserOmit
     leitor?: LeitorOmit
+    autor?: AutorOmit
+    livro?: LivroOmit
     emprestimo?: EmprestimoOmit
     itemEmprestimo?: ItemEmprestimoOmit
-    livro?: LivroOmit
-    autor?: AutorOmit
-    user?: UserOmit
   }
 
   /* Types for Logging */
@@ -1348,6 +1366,68 @@ export namespace Prisma {
 
 
   /**
+   * Count Type AutorCountOutputType
+   */
+
+  export type AutorCountOutputType = {
+    livros: number
+  }
+
+  export type AutorCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    livros?: boolean | AutorCountOutputTypeCountLivrosArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * AutorCountOutputType without action
+   */
+  export type AutorCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AutorCountOutputType
+     */
+    select?: AutorCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * AutorCountOutputType without action
+   */
+  export type AutorCountOutputTypeCountLivrosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LivroWhereInput
+  }
+
+
+  /**
+   * Count Type LivroCountOutputType
+   */
+
+  export type LivroCountOutputType = {
+    itens_emprestimo: number
+  }
+
+  export type LivroCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    itens_emprestimo?: boolean | LivroCountOutputTypeCountItens_emprestimoArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * LivroCountOutputType without action
+   */
+  export type LivroCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LivroCountOutputType
+     */
+    select?: LivroCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * LivroCountOutputType without action
+   */
+  export type LivroCountOutputTypeCountItens_emprestimoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ItemEmprestimoWhereInput
+  }
+
+
+  /**
    * Count Type EmprestimoCountOutputType
    */
 
@@ -1379,48 +1459,1133 @@ export namespace Prisma {
 
 
   /**
-   * Count Type LivroCountOutputType
+   * Models
    */
 
-  export type LivroCountOutputType = {
-    autores: number
-    itens_emprestimo: number
+  /**
+   * Model User
+   */
+
+  export type AggregateUser = {
+    _count: UserCountAggregateOutputType | null
+    _avg: UserAvgAggregateOutputType | null
+    _sum: UserSumAggregateOutputType | null
+    _min: UserMinAggregateOutputType | null
+    _max: UserMaxAggregateOutputType | null
   }
 
-  export type LivroCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    autores?: boolean | LivroCountOutputTypeCountAutoresArgs
-    itens_emprestimo?: boolean | LivroCountOutputTypeCountItens_emprestimoArgs
+  export type UserAvgAggregateOutputType = {
+    id: number | null
   }
+
+  export type UserSumAggregateOutputType = {
+    id: number | null
+  }
+
+  export type UserMinAggregateOutputType = {
+    id: number | null
+    email: string | null
+    password: string | null
+    role: $Enums.Role | null
+    created_at: Date | null
+  }
+
+  export type UserMaxAggregateOutputType = {
+    id: number | null
+    email: string | null
+    password: string | null
+    role: $Enums.Role | null
+    created_at: Date | null
+  }
+
+  export type UserCountAggregateOutputType = {
+    id: number
+    email: number
+    password: number
+    role: number
+    created_at: number
+    _all: number
+  }
+
+
+  export type UserAvgAggregateInputType = {
+    id?: true
+  }
+
+  export type UserSumAggregateInputType = {
+    id?: true
+  }
+
+  export type UserMinAggregateInputType = {
+    id?: true
+    email?: true
+    password?: true
+    role?: true
+    created_at?: true
+  }
+
+  export type UserMaxAggregateInputType = {
+    id?: true
+    email?: true
+    password?: true
+    role?: true
+    created_at?: true
+  }
+
+  export type UserCountAggregateInputType = {
+    id?: true
+    email?: true
+    password?: true
+    role?: true
+    created_at?: true
+    _all?: true
+  }
+
+  export type UserAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which User to aggregate.
+     */
+    where?: UserWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Users to fetch.
+     */
+    orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: UserWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Users from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Users.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Users
+    **/
+    _count?: true | UserCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: UserAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: UserSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: UserMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: UserMaxAggregateInputType
+  }
+
+  export type GetUserAggregateType<T extends UserAggregateArgs> = {
+        [P in keyof T & keyof AggregateUser]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateUser[P]>
+      : GetScalarType<T[P], AggregateUser[P]>
+  }
+
+
+
+
+  export type UserGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserWhereInput
+    orderBy?: UserOrderByWithAggregationInput | UserOrderByWithAggregationInput[]
+    by: UserScalarFieldEnum[] | UserScalarFieldEnum
+    having?: UserScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: UserCountAggregateInputType | true
+    _avg?: UserAvgAggregateInputType
+    _sum?: UserSumAggregateInputType
+    _min?: UserMinAggregateInputType
+    _max?: UserMaxAggregateInputType
+  }
+
+  export type UserGroupByOutputType = {
+    id: number
+    email: string
+    password: string
+    role: $Enums.Role
+    created_at: Date
+    _count: UserCountAggregateOutputType | null
+    _avg: UserAvgAggregateOutputType | null
+    _sum: UserSumAggregateOutputType | null
+    _min: UserMinAggregateOutputType | null
+    _max: UserMaxAggregateOutputType | null
+  }
+
+  type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<UserGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof UserGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], UserGroupByOutputType[P]>
+            : GetScalarType<T[P], UserGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type UserSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    email?: boolean
+    password?: boolean
+    role?: boolean
+    created_at?: boolean
+    leitor?: boolean | User$leitorArgs<ExtArgs>
+    autor?: boolean | User$autorArgs<ExtArgs>
+  }, ExtArgs["result"]["user"]>
+
+  export type UserSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    email?: boolean
+    password?: boolean
+    role?: boolean
+    created_at?: boolean
+  }, ExtArgs["result"]["user"]>
+
+  export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    email?: boolean
+    password?: boolean
+    role?: boolean
+    created_at?: boolean
+  }, ExtArgs["result"]["user"]>
+
+  export type UserSelectScalar = {
+    id?: boolean
+    email?: boolean
+    password?: boolean
+    role?: boolean
+    created_at?: boolean
+  }
+
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "role" | "created_at", ExtArgs["result"]["user"]>
+  export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    leitor?: boolean | User$leitorArgs<ExtArgs>
+    autor?: boolean | User$autorArgs<ExtArgs>
+  }
+  export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type UserIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "User"
+    objects: {
+      leitor: Prisma.$LeitorPayload<ExtArgs> | null
+      autor: Prisma.$AutorPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      email: string
+      password: string
+      role: $Enums.Role
+      created_at: Date
+    }, ExtArgs["result"]["user"]>
+    composites: {}
+  }
+
+  type UserGetPayload<S extends boolean | null | undefined | UserDefaultArgs> = $Result.GetResult<Prisma.$UserPayload, S>
+
+  type UserCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<UserFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: UserCountAggregateInputType | true
+    }
+
+  export interface UserDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['User'], meta: { name: 'User' } }
+    /**
+     * Find zero or one User that matches the filter.
+     * @param {UserFindUniqueArgs} args - Arguments to find a User
+     * @example
+     * // Get one User
+     * const user = await prisma.user.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends UserFindUniqueArgs>(args: SelectSubset<T, UserFindUniqueArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one User that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {UserFindUniqueOrThrowArgs} args - Arguments to find a User
+     * @example
+     * // Get one User
+     * const user = await prisma.user.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends UserFindUniqueOrThrowArgs>(args: SelectSubset<T, UserFindUniqueOrThrowArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first User that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserFindFirstArgs} args - Arguments to find a User
+     * @example
+     * // Get one User
+     * const user = await prisma.user.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends UserFindFirstArgs>(args?: SelectSubset<T, UserFindFirstArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first User that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserFindFirstOrThrowArgs} args - Arguments to find a User
+     * @example
+     * // Get one User
+     * const user = await prisma.user.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends UserFindFirstOrThrowArgs>(args?: SelectSubset<T, UserFindFirstOrThrowArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Users that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Users
+     * const users = await prisma.user.findMany()
+     * 
+     * // Get first 10 Users
+     * const users = await prisma.user.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const userWithIdOnly = await prisma.user.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends UserFindManyArgs>(args?: SelectSubset<T, UserFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a User.
+     * @param {UserCreateArgs} args - Arguments to create a User.
+     * @example
+     * // Create one User
+     * const User = await prisma.user.create({
+     *   data: {
+     *     // ... data to create a User
+     *   }
+     * })
+     * 
+     */
+    create<T extends UserCreateArgs>(args: SelectSubset<T, UserCreateArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Users.
+     * @param {UserCreateManyArgs} args - Arguments to create many Users.
+     * @example
+     * // Create many Users
+     * const user = await prisma.user.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends UserCreateManyArgs>(args?: SelectSubset<T, UserCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Users and returns the data saved in the database.
+     * @param {UserCreateManyAndReturnArgs} args - Arguments to create many Users.
+     * @example
+     * // Create many Users
+     * const user = await prisma.user.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Users and only return the `id`
+     * const userWithIdOnly = await prisma.user.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends UserCreateManyAndReturnArgs>(args?: SelectSubset<T, UserCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a User.
+     * @param {UserDeleteArgs} args - Arguments to delete one User.
+     * @example
+     * // Delete one User
+     * const User = await prisma.user.delete({
+     *   where: {
+     *     // ... filter to delete one User
+     *   }
+     * })
+     * 
+     */
+    delete<T extends UserDeleteArgs>(args: SelectSubset<T, UserDeleteArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one User.
+     * @param {UserUpdateArgs} args - Arguments to update one User.
+     * @example
+     * // Update one User
+     * const user = await prisma.user.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends UserUpdateArgs>(args: SelectSubset<T, UserUpdateArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Users.
+     * @param {UserDeleteManyArgs} args - Arguments to filter Users to delete.
+     * @example
+     * // Delete a few Users
+     * const { count } = await prisma.user.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends UserDeleteManyArgs>(args?: SelectSubset<T, UserDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Users.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Users
+     * const user = await prisma.user.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends UserUpdateManyArgs>(args: SelectSubset<T, UserUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Users and returns the data updated in the database.
+     * @param {UserUpdateManyAndReturnArgs} args - Arguments to update many Users.
+     * @example
+     * // Update many Users
+     * const user = await prisma.user.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Users and only return the `id`
+     * const userWithIdOnly = await prisma.user.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends UserUpdateManyAndReturnArgs>(args: SelectSubset<T, UserUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one User.
+     * @param {UserUpsertArgs} args - Arguments to update or create a User.
+     * @example
+     * // Update or create a User
+     * const user = await prisma.user.upsert({
+     *   create: {
+     *     // ... data to create a User
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the User we want to update
+     *   }
+     * })
+     */
+    upsert<T extends UserUpsertArgs>(args: SelectSubset<T, UserUpsertArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Users.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserCountArgs} args - Arguments to filter Users to count.
+     * @example
+     * // Count the number of Users
+     * const count = await prisma.user.count({
+     *   where: {
+     *     // ... the filter for the Users we want to count
+     *   }
+     * })
+    **/
+    count<T extends UserCountArgs>(
+      args?: Subset<T, UserCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], UserCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a User.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends UserAggregateArgs>(args: Subset<T, UserAggregateArgs>): Prisma.PrismaPromise<GetUserAggregateType<T>>
+
+    /**
+     * Group by User.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends UserGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: UserGroupByArgs['orderBy'] }
+        : { orderBy?: UserGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, UserGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUserGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the User model
+   */
+  readonly fields: UserFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for User.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    leitor<T extends User$leitorArgs<ExtArgs> = {}>(args?: Subset<T, User$leitorArgs<ExtArgs>>): Prisma__LeitorClient<$Result.GetResult<Prisma.$LeitorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    autor<T extends User$autorArgs<ExtArgs> = {}>(args?: Subset<T, User$autorArgs<ExtArgs>>): Prisma__AutorClient<$Result.GetResult<Prisma.$AutorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the User model
+   */
+  interface UserFieldRefs {
+    readonly id: FieldRef<"User", 'Int'>
+    readonly email: FieldRef<"User", 'String'>
+    readonly password: FieldRef<"User", 'String'>
+    readonly role: FieldRef<"User", 'Role'>
+    readonly created_at: FieldRef<"User", 'DateTime'>
+  }
+    
 
   // Custom InputTypes
   /**
-   * LivroCountOutputType without action
+   * User findUnique
    */
-  export type LivroCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the LivroCountOutputType
+     * Select specific fields to fetch from the User
      */
-    select?: LivroCountOutputTypeSelect<ExtArgs> | null
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    /**
+     * Filter, which User to fetch.
+     */
+    where: UserWhereUniqueInput
   }
 
   /**
-   * LivroCountOutputType without action
+   * User findUniqueOrThrow
    */
-  export type LivroCountOutputTypeCountAutoresArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    /**
+     * Filter, which User to fetch.
+     */
+    where: UserWhereUniqueInput
+  }
+
+  /**
+   * User findFirst
+   */
+  export type UserFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    /**
+     * Filter, which User to fetch.
+     */
+    where?: UserWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Users to fetch.
+     */
+    orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Users.
+     */
+    cursor?: UserWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Users from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Users.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Users.
+     */
+    distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
+  }
+
+  /**
+   * User findFirstOrThrow
+   */
+  export type UserFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    /**
+     * Filter, which User to fetch.
+     */
+    where?: UserWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Users to fetch.
+     */
+    orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Users.
+     */
+    cursor?: UserWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Users from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Users.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Users.
+     */
+    distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
+  }
+
+  /**
+   * User findMany
+   */
+  export type UserFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    /**
+     * Filter, which Users to fetch.
+     */
+    where?: UserWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Users to fetch.
+     */
+    orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Users.
+     */
+    cursor?: UserWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Users from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Users.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Users.
+     */
+    distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
+  }
+
+  /**
+   * User create
+   */
+  export type UserCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    /**
+     * The data needed to create a User.
+     */
+    data: XOR<UserCreateInput, UserUncheckedCreateInput>
+  }
+
+  /**
+   * User createMany
+   */
+  export type UserCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Users.
+     */
+    data: UserCreateManyInput | UserCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * User createManyAndReturn
+   */
+  export type UserCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * The data used to create many Users.
+     */
+    data: UserCreateManyInput | UserCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * User update
+   */
+  export type UserUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    /**
+     * The data needed to update a User.
+     */
+    data: XOR<UserUpdateInput, UserUncheckedUpdateInput>
+    /**
+     * Choose, which User to update.
+     */
+    where: UserWhereUniqueInput
+  }
+
+  /**
+   * User updateMany
+   */
+  export type UserUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Users.
+     */
+    data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyInput>
+    /**
+     * Filter which Users to update
+     */
+    where?: UserWhereInput
+    /**
+     * Limit how many Users to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * User updateManyAndReturn
+   */
+  export type UserUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * The data used to update Users.
+     */
+    data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyInput>
+    /**
+     * Filter which Users to update
+     */
+    where?: UserWhereInput
+    /**
+     * Limit how many Users to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * User upsert
+   */
+  export type UserUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    /**
+     * The filter to search for the User to update in case it exists.
+     */
+    where: UserWhereUniqueInput
+    /**
+     * In case the User found by the `where` argument doesn't exist, create a new User with this data.
+     */
+    create: XOR<UserCreateInput, UserUncheckedCreateInput>
+    /**
+     * In case the User was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<UserUpdateInput, UserUncheckedUpdateInput>
+  }
+
+  /**
+   * User delete
+   */
+  export type UserDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    /**
+     * Filter which User to delete.
+     */
+    where: UserWhereUniqueInput
+  }
+
+  /**
+   * User deleteMany
+   */
+  export type UserDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Users to delete
+     */
+    where?: UserWhereInput
+    /**
+     * Limit how many Users to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * User.leitor
+   */
+  export type User$leitorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Leitor
+     */
+    select?: LeitorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Leitor
+     */
+    omit?: LeitorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeitorInclude<ExtArgs> | null
+    where?: LeitorWhereInput
+  }
+
+  /**
+   * User.autor
+   */
+  export type User$autorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Autor
+     */
+    select?: AutorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Autor
+     */
+    omit?: AutorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AutorInclude<ExtArgs> | null
     where?: AutorWhereInput
   }
 
   /**
-   * LivroCountOutputType without action
+   * User without action
    */
-  export type LivroCountOutputTypeCountItens_emprestimoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ItemEmprestimoWhereInput
+  export type UserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
   }
 
-
-  /**
-   * Models
-   */
 
   /**
    * Model Leitor
@@ -1436,80 +2601,84 @@ export namespace Prisma {
 
   export type LeitorAvgAggregateOutputType = {
     id: number | null
+    id_user: number | null
   }
 
   export type LeitorSumAggregateOutputType = {
     id: number | null
+    id_user: number | null
   }
 
   export type LeitorMinAggregateOutputType = {
     id: number | null
-    email: string | null
     nome: string | null
     cpf: string | null
     data_de_nascimento: Date | null
     endereco: string | null
     observacao: string | null
+    id_user: number | null
   }
 
   export type LeitorMaxAggregateOutputType = {
     id: number | null
-    email: string | null
     nome: string | null
     cpf: string | null
     data_de_nascimento: Date | null
     endereco: string | null
     observacao: string | null
+    id_user: number | null
   }
 
   export type LeitorCountAggregateOutputType = {
     id: number
-    email: number
     nome: number
     cpf: number
     data_de_nascimento: number
     endereco: number
     observacao: number
+    id_user: number
     _all: number
   }
 
 
   export type LeitorAvgAggregateInputType = {
     id?: true
+    id_user?: true
   }
 
   export type LeitorSumAggregateInputType = {
     id?: true
+    id_user?: true
   }
 
   export type LeitorMinAggregateInputType = {
     id?: true
-    email?: true
     nome?: true
     cpf?: true
     data_de_nascimento?: true
     endereco?: true
     observacao?: true
+    id_user?: true
   }
 
   export type LeitorMaxAggregateInputType = {
     id?: true
-    email?: true
     nome?: true
     cpf?: true
     data_de_nascimento?: true
     endereco?: true
     observacao?: true
+    id_user?: true
   }
 
   export type LeitorCountAggregateInputType = {
     id?: true
-    email?: true
     nome?: true
     cpf?: true
     data_de_nascimento?: true
     endereco?: true
     observacao?: true
+    id_user?: true
     _all?: true
   }
 
@@ -1601,12 +2770,12 @@ export namespace Prisma {
 
   export type LeitorGroupByOutputType = {
     id: number
-    email: string
     nome: string
     cpf: string
     data_de_nascimento: Date
     endereco: string
     observacao: string | null
+    id_user: number
     _count: LeitorCountAggregateOutputType | null
     _avg: LeitorAvgAggregateOutputType | null
     _sum: LeitorSumAggregateOutputType | null
@@ -1630,67 +2799,76 @@ export namespace Prisma {
 
   export type LeitorSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    email?: boolean
     nome?: boolean
     cpf?: boolean
     data_de_nascimento?: boolean
     endereco?: boolean
     observacao?: boolean
+    id_user?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
     emprestimos?: boolean | Leitor$emprestimosArgs<ExtArgs>
     _count?: boolean | LeitorCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["leitor"]>
 
   export type LeitorSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    email?: boolean
     nome?: boolean
     cpf?: boolean
     data_de_nascimento?: boolean
     endereco?: boolean
     observacao?: boolean
+    id_user?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["leitor"]>
 
   export type LeitorSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    email?: boolean
     nome?: boolean
     cpf?: boolean
     data_de_nascimento?: boolean
     endereco?: boolean
     observacao?: boolean
+    id_user?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["leitor"]>
 
   export type LeitorSelectScalar = {
     id?: boolean
-    email?: boolean
     nome?: boolean
     cpf?: boolean
     data_de_nascimento?: boolean
     endereco?: boolean
     observacao?: boolean
+    id_user?: boolean
   }
 
-  export type LeitorOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "nome" | "cpf" | "data_de_nascimento" | "endereco" | "observacao", ExtArgs["result"]["leitor"]>
+  export type LeitorOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nome" | "cpf" | "data_de_nascimento" | "endereco" | "observacao" | "id_user", ExtArgs["result"]["leitor"]>
   export type LeitorInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
     emprestimos?: boolean | Leitor$emprestimosArgs<ExtArgs>
     _count?: boolean | LeitorCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type LeitorIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-  export type LeitorIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type LeitorIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type LeitorIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
 
   export type $LeitorPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Leitor"
     objects: {
+      user: Prisma.$UserPayload<ExtArgs>
       emprestimos: Prisma.$EmprestimoPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
-      email: string
       nome: string
       cpf: string
       data_de_nascimento: Date
       endereco: string
       observacao: string | null
+      id_user: number
     }, ExtArgs["result"]["leitor"]>
     composites: {}
   }
@@ -2085,6 +3263,7 @@ export namespace Prisma {
    */
   export interface Prisma__LeitorClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     emprestimos<T extends Leitor$emprestimosArgs<ExtArgs> = {}>(args?: Subset<T, Leitor$emprestimosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmprestimoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -2116,12 +3295,12 @@ export namespace Prisma {
    */
   interface LeitorFieldRefs {
     readonly id: FieldRef<"Leitor", 'Int'>
-    readonly email: FieldRef<"Leitor", 'String'>
     readonly nome: FieldRef<"Leitor", 'String'>
     readonly cpf: FieldRef<"Leitor", 'String'>
     readonly data_de_nascimento: FieldRef<"Leitor", 'DateTime'>
     readonly endereco: FieldRef<"Leitor", 'String'>
     readonly observacao: FieldRef<"Leitor", 'String'>
+    readonly id_user: FieldRef<"Leitor", 'Int'>
   }
     
 
@@ -2376,6 +3555,10 @@ export namespace Prisma {
      */
     data: LeitorCreateManyInput | LeitorCreateManyInput[]
     skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeitorIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -2446,6 +3629,10 @@ export namespace Prisma {
      * Limit how many Leitors to update.
      */
     limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeitorIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -2554,6 +3741,2375 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: LeitorInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Autor
+   */
+
+  export type AggregateAutor = {
+    _count: AutorCountAggregateOutputType | null
+    _avg: AutorAvgAggregateOutputType | null
+    _sum: AutorSumAggregateOutputType | null
+    _min: AutorMinAggregateOutputType | null
+    _max: AutorMaxAggregateOutputType | null
+  }
+
+  export type AutorAvgAggregateOutputType = {
+    id: number | null
+    id_user: number | null
+  }
+
+  export type AutorSumAggregateOutputType = {
+    id: number | null
+    id_user: number | null
+  }
+
+  export type AutorMinAggregateOutputType = {
+    id: number | null
+    nome_autor: string | null
+    origem: string | null
+    biografia: string | null
+    data_de_nascimento: Date | null
+    nome_artistico: string | null
+    id_user: number | null
+  }
+
+  export type AutorMaxAggregateOutputType = {
+    id: number | null
+    nome_autor: string | null
+    origem: string | null
+    biografia: string | null
+    data_de_nascimento: Date | null
+    nome_artistico: string | null
+    id_user: number | null
+  }
+
+  export type AutorCountAggregateOutputType = {
+    id: number
+    nome_autor: number
+    origem: number
+    biografia: number
+    data_de_nascimento: number
+    nome_artistico: number
+    id_user: number
+    _all: number
+  }
+
+
+  export type AutorAvgAggregateInputType = {
+    id?: true
+    id_user?: true
+  }
+
+  export type AutorSumAggregateInputType = {
+    id?: true
+    id_user?: true
+  }
+
+  export type AutorMinAggregateInputType = {
+    id?: true
+    nome_autor?: true
+    origem?: true
+    biografia?: true
+    data_de_nascimento?: true
+    nome_artistico?: true
+    id_user?: true
+  }
+
+  export type AutorMaxAggregateInputType = {
+    id?: true
+    nome_autor?: true
+    origem?: true
+    biografia?: true
+    data_de_nascimento?: true
+    nome_artistico?: true
+    id_user?: true
+  }
+
+  export type AutorCountAggregateInputType = {
+    id?: true
+    nome_autor?: true
+    origem?: true
+    biografia?: true
+    data_de_nascimento?: true
+    nome_artistico?: true
+    id_user?: true
+    _all?: true
+  }
+
+  export type AutorAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Autor to aggregate.
+     */
+    where?: AutorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Autors to fetch.
+     */
+    orderBy?: AutorOrderByWithRelationInput | AutorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AutorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Autors from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Autors.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Autors
+    **/
+    _count?: true | AutorCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: AutorAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AutorSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AutorMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AutorMaxAggregateInputType
+  }
+
+  export type GetAutorAggregateType<T extends AutorAggregateArgs> = {
+        [P in keyof T & keyof AggregateAutor]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAutor[P]>
+      : GetScalarType<T[P], AggregateAutor[P]>
+  }
+
+
+
+
+  export type AutorGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AutorWhereInput
+    orderBy?: AutorOrderByWithAggregationInput | AutorOrderByWithAggregationInput[]
+    by: AutorScalarFieldEnum[] | AutorScalarFieldEnum
+    having?: AutorScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AutorCountAggregateInputType | true
+    _avg?: AutorAvgAggregateInputType
+    _sum?: AutorSumAggregateInputType
+    _min?: AutorMinAggregateInputType
+    _max?: AutorMaxAggregateInputType
+  }
+
+  export type AutorGroupByOutputType = {
+    id: number
+    nome_autor: string
+    origem: string
+    biografia: string
+    data_de_nascimento: Date
+    nome_artistico: string
+    id_user: number
+    _count: AutorCountAggregateOutputType | null
+    _avg: AutorAvgAggregateOutputType | null
+    _sum: AutorSumAggregateOutputType | null
+    _min: AutorMinAggregateOutputType | null
+    _max: AutorMaxAggregateOutputType | null
+  }
+
+  type GetAutorGroupByPayload<T extends AutorGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AutorGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AutorGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AutorGroupByOutputType[P]>
+            : GetScalarType<T[P], AutorGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AutorSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    nome_autor?: boolean
+    origem?: boolean
+    biografia?: boolean
+    data_de_nascimento?: boolean
+    nome_artistico?: boolean
+    id_user?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    livros?: boolean | Autor$livrosArgs<ExtArgs>
+    _count?: boolean | AutorCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["autor"]>
+
+  export type AutorSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    nome_autor?: boolean
+    origem?: boolean
+    biografia?: boolean
+    data_de_nascimento?: boolean
+    nome_artistico?: boolean
+    id_user?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["autor"]>
+
+  export type AutorSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    nome_autor?: boolean
+    origem?: boolean
+    biografia?: boolean
+    data_de_nascimento?: boolean
+    nome_artistico?: boolean
+    id_user?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["autor"]>
+
+  export type AutorSelectScalar = {
+    id?: boolean
+    nome_autor?: boolean
+    origem?: boolean
+    biografia?: boolean
+    data_de_nascimento?: boolean
+    nome_artistico?: boolean
+    id_user?: boolean
+  }
+
+  export type AutorOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nome_autor" | "origem" | "biografia" | "data_de_nascimento" | "nome_artistico" | "id_user", ExtArgs["result"]["autor"]>
+  export type AutorInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    livros?: boolean | Autor$livrosArgs<ExtArgs>
+    _count?: boolean | AutorCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type AutorIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type AutorIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $AutorPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Autor"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      livros: Prisma.$LivroPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      nome_autor: string
+      origem: string
+      biografia: string
+      data_de_nascimento: Date
+      nome_artistico: string
+      id_user: number
+    }, ExtArgs["result"]["autor"]>
+    composites: {}
+  }
+
+  type AutorGetPayload<S extends boolean | null | undefined | AutorDefaultArgs> = $Result.GetResult<Prisma.$AutorPayload, S>
+
+  type AutorCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AutorFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AutorCountAggregateInputType | true
+    }
+
+  export interface AutorDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Autor'], meta: { name: 'Autor' } }
+    /**
+     * Find zero or one Autor that matches the filter.
+     * @param {AutorFindUniqueArgs} args - Arguments to find a Autor
+     * @example
+     * // Get one Autor
+     * const autor = await prisma.autor.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AutorFindUniqueArgs>(args: SelectSubset<T, AutorFindUniqueArgs<ExtArgs>>): Prisma__AutorClient<$Result.GetResult<Prisma.$AutorPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Autor that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AutorFindUniqueOrThrowArgs} args - Arguments to find a Autor
+     * @example
+     * // Get one Autor
+     * const autor = await prisma.autor.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AutorFindUniqueOrThrowArgs>(args: SelectSubset<T, AutorFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AutorClient<$Result.GetResult<Prisma.$AutorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Autor that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AutorFindFirstArgs} args - Arguments to find a Autor
+     * @example
+     * // Get one Autor
+     * const autor = await prisma.autor.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AutorFindFirstArgs>(args?: SelectSubset<T, AutorFindFirstArgs<ExtArgs>>): Prisma__AutorClient<$Result.GetResult<Prisma.$AutorPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Autor that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AutorFindFirstOrThrowArgs} args - Arguments to find a Autor
+     * @example
+     * // Get one Autor
+     * const autor = await prisma.autor.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AutorFindFirstOrThrowArgs>(args?: SelectSubset<T, AutorFindFirstOrThrowArgs<ExtArgs>>): Prisma__AutorClient<$Result.GetResult<Prisma.$AutorPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Autors that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AutorFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Autors
+     * const autors = await prisma.autor.findMany()
+     * 
+     * // Get first 10 Autors
+     * const autors = await prisma.autor.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const autorWithIdOnly = await prisma.autor.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AutorFindManyArgs>(args?: SelectSubset<T, AutorFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AutorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Autor.
+     * @param {AutorCreateArgs} args - Arguments to create a Autor.
+     * @example
+     * // Create one Autor
+     * const Autor = await prisma.autor.create({
+     *   data: {
+     *     // ... data to create a Autor
+     *   }
+     * })
+     * 
+     */
+    create<T extends AutorCreateArgs>(args: SelectSubset<T, AutorCreateArgs<ExtArgs>>): Prisma__AutorClient<$Result.GetResult<Prisma.$AutorPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Autors.
+     * @param {AutorCreateManyArgs} args - Arguments to create many Autors.
+     * @example
+     * // Create many Autors
+     * const autor = await prisma.autor.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AutorCreateManyArgs>(args?: SelectSubset<T, AutorCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Autors and returns the data saved in the database.
+     * @param {AutorCreateManyAndReturnArgs} args - Arguments to create many Autors.
+     * @example
+     * // Create many Autors
+     * const autor = await prisma.autor.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Autors and only return the `id`
+     * const autorWithIdOnly = await prisma.autor.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AutorCreateManyAndReturnArgs>(args?: SelectSubset<T, AutorCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AutorPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Autor.
+     * @param {AutorDeleteArgs} args - Arguments to delete one Autor.
+     * @example
+     * // Delete one Autor
+     * const Autor = await prisma.autor.delete({
+     *   where: {
+     *     // ... filter to delete one Autor
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AutorDeleteArgs>(args: SelectSubset<T, AutorDeleteArgs<ExtArgs>>): Prisma__AutorClient<$Result.GetResult<Prisma.$AutorPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Autor.
+     * @param {AutorUpdateArgs} args - Arguments to update one Autor.
+     * @example
+     * // Update one Autor
+     * const autor = await prisma.autor.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AutorUpdateArgs>(args: SelectSubset<T, AutorUpdateArgs<ExtArgs>>): Prisma__AutorClient<$Result.GetResult<Prisma.$AutorPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Autors.
+     * @param {AutorDeleteManyArgs} args - Arguments to filter Autors to delete.
+     * @example
+     * // Delete a few Autors
+     * const { count } = await prisma.autor.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AutorDeleteManyArgs>(args?: SelectSubset<T, AutorDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Autors.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AutorUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Autors
+     * const autor = await prisma.autor.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AutorUpdateManyArgs>(args: SelectSubset<T, AutorUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Autors and returns the data updated in the database.
+     * @param {AutorUpdateManyAndReturnArgs} args - Arguments to update many Autors.
+     * @example
+     * // Update many Autors
+     * const autor = await prisma.autor.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Autors and only return the `id`
+     * const autorWithIdOnly = await prisma.autor.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AutorUpdateManyAndReturnArgs>(args: SelectSubset<T, AutorUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AutorPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Autor.
+     * @param {AutorUpsertArgs} args - Arguments to update or create a Autor.
+     * @example
+     * // Update or create a Autor
+     * const autor = await prisma.autor.upsert({
+     *   create: {
+     *     // ... data to create a Autor
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Autor we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AutorUpsertArgs>(args: SelectSubset<T, AutorUpsertArgs<ExtArgs>>): Prisma__AutorClient<$Result.GetResult<Prisma.$AutorPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Autors.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AutorCountArgs} args - Arguments to filter Autors to count.
+     * @example
+     * // Count the number of Autors
+     * const count = await prisma.autor.count({
+     *   where: {
+     *     // ... the filter for the Autors we want to count
+     *   }
+     * })
+    **/
+    count<T extends AutorCountArgs>(
+      args?: Subset<T, AutorCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AutorCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Autor.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AutorAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AutorAggregateArgs>(args: Subset<T, AutorAggregateArgs>): Prisma.PrismaPromise<GetAutorAggregateType<T>>
+
+    /**
+     * Group by Autor.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AutorGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AutorGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AutorGroupByArgs['orderBy'] }
+        : { orderBy?: AutorGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AutorGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAutorGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Autor model
+   */
+  readonly fields: AutorFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Autor.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AutorClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    livros<T extends Autor$livrosArgs<ExtArgs> = {}>(args?: Subset<T, Autor$livrosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LivroPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Autor model
+   */
+  interface AutorFieldRefs {
+    readonly id: FieldRef<"Autor", 'Int'>
+    readonly nome_autor: FieldRef<"Autor", 'String'>
+    readonly origem: FieldRef<"Autor", 'String'>
+    readonly biografia: FieldRef<"Autor", 'String'>
+    readonly data_de_nascimento: FieldRef<"Autor", 'DateTime'>
+    readonly nome_artistico: FieldRef<"Autor", 'String'>
+    readonly id_user: FieldRef<"Autor", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Autor findUnique
+   */
+  export type AutorFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Autor
+     */
+    select?: AutorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Autor
+     */
+    omit?: AutorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AutorInclude<ExtArgs> | null
+    /**
+     * Filter, which Autor to fetch.
+     */
+    where: AutorWhereUniqueInput
+  }
+
+  /**
+   * Autor findUniqueOrThrow
+   */
+  export type AutorFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Autor
+     */
+    select?: AutorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Autor
+     */
+    omit?: AutorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AutorInclude<ExtArgs> | null
+    /**
+     * Filter, which Autor to fetch.
+     */
+    where: AutorWhereUniqueInput
+  }
+
+  /**
+   * Autor findFirst
+   */
+  export type AutorFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Autor
+     */
+    select?: AutorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Autor
+     */
+    omit?: AutorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AutorInclude<ExtArgs> | null
+    /**
+     * Filter, which Autor to fetch.
+     */
+    where?: AutorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Autors to fetch.
+     */
+    orderBy?: AutorOrderByWithRelationInput | AutorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Autors.
+     */
+    cursor?: AutorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Autors from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Autors.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Autors.
+     */
+    distinct?: AutorScalarFieldEnum | AutorScalarFieldEnum[]
+  }
+
+  /**
+   * Autor findFirstOrThrow
+   */
+  export type AutorFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Autor
+     */
+    select?: AutorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Autor
+     */
+    omit?: AutorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AutorInclude<ExtArgs> | null
+    /**
+     * Filter, which Autor to fetch.
+     */
+    where?: AutorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Autors to fetch.
+     */
+    orderBy?: AutorOrderByWithRelationInput | AutorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Autors.
+     */
+    cursor?: AutorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Autors from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Autors.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Autors.
+     */
+    distinct?: AutorScalarFieldEnum | AutorScalarFieldEnum[]
+  }
+
+  /**
+   * Autor findMany
+   */
+  export type AutorFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Autor
+     */
+    select?: AutorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Autor
+     */
+    omit?: AutorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AutorInclude<ExtArgs> | null
+    /**
+     * Filter, which Autors to fetch.
+     */
+    where?: AutorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Autors to fetch.
+     */
+    orderBy?: AutorOrderByWithRelationInput | AutorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Autors.
+     */
+    cursor?: AutorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Autors from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Autors.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Autors.
+     */
+    distinct?: AutorScalarFieldEnum | AutorScalarFieldEnum[]
+  }
+
+  /**
+   * Autor create
+   */
+  export type AutorCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Autor
+     */
+    select?: AutorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Autor
+     */
+    omit?: AutorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AutorInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Autor.
+     */
+    data: XOR<AutorCreateInput, AutorUncheckedCreateInput>
+  }
+
+  /**
+   * Autor createMany
+   */
+  export type AutorCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Autors.
+     */
+    data: AutorCreateManyInput | AutorCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Autor createManyAndReturn
+   */
+  export type AutorCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Autor
+     */
+    select?: AutorSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Autor
+     */
+    omit?: AutorOmit<ExtArgs> | null
+    /**
+     * The data used to create many Autors.
+     */
+    data: AutorCreateManyInput | AutorCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AutorIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Autor update
+   */
+  export type AutorUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Autor
+     */
+    select?: AutorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Autor
+     */
+    omit?: AutorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AutorInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Autor.
+     */
+    data: XOR<AutorUpdateInput, AutorUncheckedUpdateInput>
+    /**
+     * Choose, which Autor to update.
+     */
+    where: AutorWhereUniqueInput
+  }
+
+  /**
+   * Autor updateMany
+   */
+  export type AutorUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Autors.
+     */
+    data: XOR<AutorUpdateManyMutationInput, AutorUncheckedUpdateManyInput>
+    /**
+     * Filter which Autors to update
+     */
+    where?: AutorWhereInput
+    /**
+     * Limit how many Autors to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Autor updateManyAndReturn
+   */
+  export type AutorUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Autor
+     */
+    select?: AutorSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Autor
+     */
+    omit?: AutorOmit<ExtArgs> | null
+    /**
+     * The data used to update Autors.
+     */
+    data: XOR<AutorUpdateManyMutationInput, AutorUncheckedUpdateManyInput>
+    /**
+     * Filter which Autors to update
+     */
+    where?: AutorWhereInput
+    /**
+     * Limit how many Autors to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AutorIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Autor upsert
+   */
+  export type AutorUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Autor
+     */
+    select?: AutorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Autor
+     */
+    omit?: AutorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AutorInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Autor to update in case it exists.
+     */
+    where: AutorWhereUniqueInput
+    /**
+     * In case the Autor found by the `where` argument doesn't exist, create a new Autor with this data.
+     */
+    create: XOR<AutorCreateInput, AutorUncheckedCreateInput>
+    /**
+     * In case the Autor was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AutorUpdateInput, AutorUncheckedUpdateInput>
+  }
+
+  /**
+   * Autor delete
+   */
+  export type AutorDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Autor
+     */
+    select?: AutorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Autor
+     */
+    omit?: AutorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AutorInclude<ExtArgs> | null
+    /**
+     * Filter which Autor to delete.
+     */
+    where: AutorWhereUniqueInput
+  }
+
+  /**
+   * Autor deleteMany
+   */
+  export type AutorDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Autors to delete
+     */
+    where?: AutorWhereInput
+    /**
+     * Limit how many Autors to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Autor.livros
+   */
+  export type Autor$livrosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Livro
+     */
+    select?: LivroSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Livro
+     */
+    omit?: LivroOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LivroInclude<ExtArgs> | null
+    where?: LivroWhereInput
+    orderBy?: LivroOrderByWithRelationInput | LivroOrderByWithRelationInput[]
+    cursor?: LivroWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: LivroScalarFieldEnum | LivroScalarFieldEnum[]
+  }
+
+  /**
+   * Autor without action
+   */
+  export type AutorDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Autor
+     */
+    select?: AutorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Autor
+     */
+    omit?: AutorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AutorInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Livro
+   */
+
+  export type AggregateLivro = {
+    _count: LivroCountAggregateOutputType | null
+    _avg: LivroAvgAggregateOutputType | null
+    _sum: LivroSumAggregateOutputType | null
+    _min: LivroMinAggregateOutputType | null
+    _max: LivroMaxAggregateOutputType | null
+  }
+
+  export type LivroAvgAggregateOutputType = {
+    id: number | null
+    versao: number | null
+    ano: number | null
+    qtde_total: number | null
+    qtde_disponivel: number | null
+    id_autor: number | null
+  }
+
+  export type LivroSumAggregateOutputType = {
+    id: number | null
+    versao: number | null
+    ano: number | null
+    qtde_total: number | null
+    qtde_disponivel: number | null
+    id_autor: number | null
+  }
+
+  export type LivroMinAggregateOutputType = {
+    id: number | null
+    nome_livro: string | null
+    editora: string | null
+    versao: number | null
+    ano: number | null
+    genero: string | null
+    idioma: string | null
+    qtde_total: number | null
+    qtde_disponivel: number | null
+    id_autor: number | null
+  }
+
+  export type LivroMaxAggregateOutputType = {
+    id: number | null
+    nome_livro: string | null
+    editora: string | null
+    versao: number | null
+    ano: number | null
+    genero: string | null
+    idioma: string | null
+    qtde_total: number | null
+    qtde_disponivel: number | null
+    id_autor: number | null
+  }
+
+  export type LivroCountAggregateOutputType = {
+    id: number
+    nome_livro: number
+    editora: number
+    versao: number
+    ano: number
+    genero: number
+    idioma: number
+    qtde_total: number
+    qtde_disponivel: number
+    id_autor: number
+    _all: number
+  }
+
+
+  export type LivroAvgAggregateInputType = {
+    id?: true
+    versao?: true
+    ano?: true
+    qtde_total?: true
+    qtde_disponivel?: true
+    id_autor?: true
+  }
+
+  export type LivroSumAggregateInputType = {
+    id?: true
+    versao?: true
+    ano?: true
+    qtde_total?: true
+    qtde_disponivel?: true
+    id_autor?: true
+  }
+
+  export type LivroMinAggregateInputType = {
+    id?: true
+    nome_livro?: true
+    editora?: true
+    versao?: true
+    ano?: true
+    genero?: true
+    idioma?: true
+    qtde_total?: true
+    qtde_disponivel?: true
+    id_autor?: true
+  }
+
+  export type LivroMaxAggregateInputType = {
+    id?: true
+    nome_livro?: true
+    editora?: true
+    versao?: true
+    ano?: true
+    genero?: true
+    idioma?: true
+    qtde_total?: true
+    qtde_disponivel?: true
+    id_autor?: true
+  }
+
+  export type LivroCountAggregateInputType = {
+    id?: true
+    nome_livro?: true
+    editora?: true
+    versao?: true
+    ano?: true
+    genero?: true
+    idioma?: true
+    qtde_total?: true
+    qtde_disponivel?: true
+    id_autor?: true
+    _all?: true
+  }
+
+  export type LivroAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Livro to aggregate.
+     */
+    where?: LivroWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Livros to fetch.
+     */
+    orderBy?: LivroOrderByWithRelationInput | LivroOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: LivroWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Livros from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Livros.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Livros
+    **/
+    _count?: true | LivroCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: LivroAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: LivroSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: LivroMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: LivroMaxAggregateInputType
+  }
+
+  export type GetLivroAggregateType<T extends LivroAggregateArgs> = {
+        [P in keyof T & keyof AggregateLivro]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateLivro[P]>
+      : GetScalarType<T[P], AggregateLivro[P]>
+  }
+
+
+
+
+  export type LivroGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LivroWhereInput
+    orderBy?: LivroOrderByWithAggregationInput | LivroOrderByWithAggregationInput[]
+    by: LivroScalarFieldEnum[] | LivroScalarFieldEnum
+    having?: LivroScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: LivroCountAggregateInputType | true
+    _avg?: LivroAvgAggregateInputType
+    _sum?: LivroSumAggregateInputType
+    _min?: LivroMinAggregateInputType
+    _max?: LivroMaxAggregateInputType
+  }
+
+  export type LivroGroupByOutputType = {
+    id: number
+    nome_livro: string
+    editora: string
+    versao: number
+    ano: number
+    genero: string
+    idioma: string
+    qtde_total: number
+    qtde_disponivel: number
+    id_autor: number
+    _count: LivroCountAggregateOutputType | null
+    _avg: LivroAvgAggregateOutputType | null
+    _sum: LivroSumAggregateOutputType | null
+    _min: LivroMinAggregateOutputType | null
+    _max: LivroMaxAggregateOutputType | null
+  }
+
+  type GetLivroGroupByPayload<T extends LivroGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<LivroGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof LivroGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], LivroGroupByOutputType[P]>
+            : GetScalarType<T[P], LivroGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type LivroSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    nome_livro?: boolean
+    editora?: boolean
+    versao?: boolean
+    ano?: boolean
+    genero?: boolean
+    idioma?: boolean
+    qtde_total?: boolean
+    qtde_disponivel?: boolean
+    id_autor?: boolean
+    autor?: boolean | AutorDefaultArgs<ExtArgs>
+    itens_emprestimo?: boolean | Livro$itens_emprestimoArgs<ExtArgs>
+    _count?: boolean | LivroCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["livro"]>
+
+  export type LivroSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    nome_livro?: boolean
+    editora?: boolean
+    versao?: boolean
+    ano?: boolean
+    genero?: boolean
+    idioma?: boolean
+    qtde_total?: boolean
+    qtde_disponivel?: boolean
+    id_autor?: boolean
+    autor?: boolean | AutorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["livro"]>
+
+  export type LivroSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    nome_livro?: boolean
+    editora?: boolean
+    versao?: boolean
+    ano?: boolean
+    genero?: boolean
+    idioma?: boolean
+    qtde_total?: boolean
+    qtde_disponivel?: boolean
+    id_autor?: boolean
+    autor?: boolean | AutorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["livro"]>
+
+  export type LivroSelectScalar = {
+    id?: boolean
+    nome_livro?: boolean
+    editora?: boolean
+    versao?: boolean
+    ano?: boolean
+    genero?: boolean
+    idioma?: boolean
+    qtde_total?: boolean
+    qtde_disponivel?: boolean
+    id_autor?: boolean
+  }
+
+  export type LivroOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nome_livro" | "editora" | "versao" | "ano" | "genero" | "idioma" | "qtde_total" | "qtde_disponivel" | "id_autor", ExtArgs["result"]["livro"]>
+  export type LivroInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    autor?: boolean | AutorDefaultArgs<ExtArgs>
+    itens_emprestimo?: boolean | Livro$itens_emprestimoArgs<ExtArgs>
+    _count?: boolean | LivroCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type LivroIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    autor?: boolean | AutorDefaultArgs<ExtArgs>
+  }
+  export type LivroIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    autor?: boolean | AutorDefaultArgs<ExtArgs>
+  }
+
+  export type $LivroPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Livro"
+    objects: {
+      autor: Prisma.$AutorPayload<ExtArgs>
+      itens_emprestimo: Prisma.$ItemEmprestimoPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      nome_livro: string
+      editora: string
+      versao: number
+      ano: number
+      genero: string
+      idioma: string
+      qtde_total: number
+      qtde_disponivel: number
+      id_autor: number
+    }, ExtArgs["result"]["livro"]>
+    composites: {}
+  }
+
+  type LivroGetPayload<S extends boolean | null | undefined | LivroDefaultArgs> = $Result.GetResult<Prisma.$LivroPayload, S>
+
+  type LivroCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<LivroFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: LivroCountAggregateInputType | true
+    }
+
+  export interface LivroDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Livro'], meta: { name: 'Livro' } }
+    /**
+     * Find zero or one Livro that matches the filter.
+     * @param {LivroFindUniqueArgs} args - Arguments to find a Livro
+     * @example
+     * // Get one Livro
+     * const livro = await prisma.livro.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends LivroFindUniqueArgs>(args: SelectSubset<T, LivroFindUniqueArgs<ExtArgs>>): Prisma__LivroClient<$Result.GetResult<Prisma.$LivroPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Livro that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {LivroFindUniqueOrThrowArgs} args - Arguments to find a Livro
+     * @example
+     * // Get one Livro
+     * const livro = await prisma.livro.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends LivroFindUniqueOrThrowArgs>(args: SelectSubset<T, LivroFindUniqueOrThrowArgs<ExtArgs>>): Prisma__LivroClient<$Result.GetResult<Prisma.$LivroPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Livro that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LivroFindFirstArgs} args - Arguments to find a Livro
+     * @example
+     * // Get one Livro
+     * const livro = await prisma.livro.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends LivroFindFirstArgs>(args?: SelectSubset<T, LivroFindFirstArgs<ExtArgs>>): Prisma__LivroClient<$Result.GetResult<Prisma.$LivroPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Livro that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LivroFindFirstOrThrowArgs} args - Arguments to find a Livro
+     * @example
+     * // Get one Livro
+     * const livro = await prisma.livro.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends LivroFindFirstOrThrowArgs>(args?: SelectSubset<T, LivroFindFirstOrThrowArgs<ExtArgs>>): Prisma__LivroClient<$Result.GetResult<Prisma.$LivroPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Livros that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LivroFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Livros
+     * const livros = await prisma.livro.findMany()
+     * 
+     * // Get first 10 Livros
+     * const livros = await prisma.livro.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const livroWithIdOnly = await prisma.livro.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends LivroFindManyArgs>(args?: SelectSubset<T, LivroFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LivroPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Livro.
+     * @param {LivroCreateArgs} args - Arguments to create a Livro.
+     * @example
+     * // Create one Livro
+     * const Livro = await prisma.livro.create({
+     *   data: {
+     *     // ... data to create a Livro
+     *   }
+     * })
+     * 
+     */
+    create<T extends LivroCreateArgs>(args: SelectSubset<T, LivroCreateArgs<ExtArgs>>): Prisma__LivroClient<$Result.GetResult<Prisma.$LivroPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Livros.
+     * @param {LivroCreateManyArgs} args - Arguments to create many Livros.
+     * @example
+     * // Create many Livros
+     * const livro = await prisma.livro.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends LivroCreateManyArgs>(args?: SelectSubset<T, LivroCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Livros and returns the data saved in the database.
+     * @param {LivroCreateManyAndReturnArgs} args - Arguments to create many Livros.
+     * @example
+     * // Create many Livros
+     * const livro = await prisma.livro.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Livros and only return the `id`
+     * const livroWithIdOnly = await prisma.livro.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends LivroCreateManyAndReturnArgs>(args?: SelectSubset<T, LivroCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LivroPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Livro.
+     * @param {LivroDeleteArgs} args - Arguments to delete one Livro.
+     * @example
+     * // Delete one Livro
+     * const Livro = await prisma.livro.delete({
+     *   where: {
+     *     // ... filter to delete one Livro
+     *   }
+     * })
+     * 
+     */
+    delete<T extends LivroDeleteArgs>(args: SelectSubset<T, LivroDeleteArgs<ExtArgs>>): Prisma__LivroClient<$Result.GetResult<Prisma.$LivroPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Livro.
+     * @param {LivroUpdateArgs} args - Arguments to update one Livro.
+     * @example
+     * // Update one Livro
+     * const livro = await prisma.livro.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends LivroUpdateArgs>(args: SelectSubset<T, LivroUpdateArgs<ExtArgs>>): Prisma__LivroClient<$Result.GetResult<Prisma.$LivroPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Livros.
+     * @param {LivroDeleteManyArgs} args - Arguments to filter Livros to delete.
+     * @example
+     * // Delete a few Livros
+     * const { count } = await prisma.livro.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends LivroDeleteManyArgs>(args?: SelectSubset<T, LivroDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Livros.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LivroUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Livros
+     * const livro = await prisma.livro.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends LivroUpdateManyArgs>(args: SelectSubset<T, LivroUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Livros and returns the data updated in the database.
+     * @param {LivroUpdateManyAndReturnArgs} args - Arguments to update many Livros.
+     * @example
+     * // Update many Livros
+     * const livro = await prisma.livro.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Livros and only return the `id`
+     * const livroWithIdOnly = await prisma.livro.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends LivroUpdateManyAndReturnArgs>(args: SelectSubset<T, LivroUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LivroPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Livro.
+     * @param {LivroUpsertArgs} args - Arguments to update or create a Livro.
+     * @example
+     * // Update or create a Livro
+     * const livro = await prisma.livro.upsert({
+     *   create: {
+     *     // ... data to create a Livro
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Livro we want to update
+     *   }
+     * })
+     */
+    upsert<T extends LivroUpsertArgs>(args: SelectSubset<T, LivroUpsertArgs<ExtArgs>>): Prisma__LivroClient<$Result.GetResult<Prisma.$LivroPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Livros.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LivroCountArgs} args - Arguments to filter Livros to count.
+     * @example
+     * // Count the number of Livros
+     * const count = await prisma.livro.count({
+     *   where: {
+     *     // ... the filter for the Livros we want to count
+     *   }
+     * })
+    **/
+    count<T extends LivroCountArgs>(
+      args?: Subset<T, LivroCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], LivroCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Livro.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LivroAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends LivroAggregateArgs>(args: Subset<T, LivroAggregateArgs>): Prisma.PrismaPromise<GetLivroAggregateType<T>>
+
+    /**
+     * Group by Livro.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LivroGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends LivroGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: LivroGroupByArgs['orderBy'] }
+        : { orderBy?: LivroGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, LivroGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetLivroGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Livro model
+   */
+  readonly fields: LivroFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Livro.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__LivroClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    autor<T extends AutorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AutorDefaultArgs<ExtArgs>>): Prisma__AutorClient<$Result.GetResult<Prisma.$AutorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    itens_emprestimo<T extends Livro$itens_emprestimoArgs<ExtArgs> = {}>(args?: Subset<T, Livro$itens_emprestimoArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ItemEmprestimoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Livro model
+   */
+  interface LivroFieldRefs {
+    readonly id: FieldRef<"Livro", 'Int'>
+    readonly nome_livro: FieldRef<"Livro", 'String'>
+    readonly editora: FieldRef<"Livro", 'String'>
+    readonly versao: FieldRef<"Livro", 'Int'>
+    readonly ano: FieldRef<"Livro", 'Int'>
+    readonly genero: FieldRef<"Livro", 'String'>
+    readonly idioma: FieldRef<"Livro", 'String'>
+    readonly qtde_total: FieldRef<"Livro", 'Int'>
+    readonly qtde_disponivel: FieldRef<"Livro", 'Int'>
+    readonly id_autor: FieldRef<"Livro", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Livro findUnique
+   */
+  export type LivroFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Livro
+     */
+    select?: LivroSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Livro
+     */
+    omit?: LivroOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LivroInclude<ExtArgs> | null
+    /**
+     * Filter, which Livro to fetch.
+     */
+    where: LivroWhereUniqueInput
+  }
+
+  /**
+   * Livro findUniqueOrThrow
+   */
+  export type LivroFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Livro
+     */
+    select?: LivroSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Livro
+     */
+    omit?: LivroOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LivroInclude<ExtArgs> | null
+    /**
+     * Filter, which Livro to fetch.
+     */
+    where: LivroWhereUniqueInput
+  }
+
+  /**
+   * Livro findFirst
+   */
+  export type LivroFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Livro
+     */
+    select?: LivroSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Livro
+     */
+    omit?: LivroOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LivroInclude<ExtArgs> | null
+    /**
+     * Filter, which Livro to fetch.
+     */
+    where?: LivroWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Livros to fetch.
+     */
+    orderBy?: LivroOrderByWithRelationInput | LivroOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Livros.
+     */
+    cursor?: LivroWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Livros from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Livros.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Livros.
+     */
+    distinct?: LivroScalarFieldEnum | LivroScalarFieldEnum[]
+  }
+
+  /**
+   * Livro findFirstOrThrow
+   */
+  export type LivroFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Livro
+     */
+    select?: LivroSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Livro
+     */
+    omit?: LivroOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LivroInclude<ExtArgs> | null
+    /**
+     * Filter, which Livro to fetch.
+     */
+    where?: LivroWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Livros to fetch.
+     */
+    orderBy?: LivroOrderByWithRelationInput | LivroOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Livros.
+     */
+    cursor?: LivroWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Livros from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Livros.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Livros.
+     */
+    distinct?: LivroScalarFieldEnum | LivroScalarFieldEnum[]
+  }
+
+  /**
+   * Livro findMany
+   */
+  export type LivroFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Livro
+     */
+    select?: LivroSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Livro
+     */
+    omit?: LivroOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LivroInclude<ExtArgs> | null
+    /**
+     * Filter, which Livros to fetch.
+     */
+    where?: LivroWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Livros to fetch.
+     */
+    orderBy?: LivroOrderByWithRelationInput | LivroOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Livros.
+     */
+    cursor?: LivroWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Livros from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Livros.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Livros.
+     */
+    distinct?: LivroScalarFieldEnum | LivroScalarFieldEnum[]
+  }
+
+  /**
+   * Livro create
+   */
+  export type LivroCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Livro
+     */
+    select?: LivroSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Livro
+     */
+    omit?: LivroOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LivroInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Livro.
+     */
+    data: XOR<LivroCreateInput, LivroUncheckedCreateInput>
+  }
+
+  /**
+   * Livro createMany
+   */
+  export type LivroCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Livros.
+     */
+    data: LivroCreateManyInput | LivroCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Livro createManyAndReturn
+   */
+  export type LivroCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Livro
+     */
+    select?: LivroSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Livro
+     */
+    omit?: LivroOmit<ExtArgs> | null
+    /**
+     * The data used to create many Livros.
+     */
+    data: LivroCreateManyInput | LivroCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LivroIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Livro update
+   */
+  export type LivroUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Livro
+     */
+    select?: LivroSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Livro
+     */
+    omit?: LivroOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LivroInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Livro.
+     */
+    data: XOR<LivroUpdateInput, LivroUncheckedUpdateInput>
+    /**
+     * Choose, which Livro to update.
+     */
+    where: LivroWhereUniqueInput
+  }
+
+  /**
+   * Livro updateMany
+   */
+  export type LivroUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Livros.
+     */
+    data: XOR<LivroUpdateManyMutationInput, LivroUncheckedUpdateManyInput>
+    /**
+     * Filter which Livros to update
+     */
+    where?: LivroWhereInput
+    /**
+     * Limit how many Livros to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Livro updateManyAndReturn
+   */
+  export type LivroUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Livro
+     */
+    select?: LivroSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Livro
+     */
+    omit?: LivroOmit<ExtArgs> | null
+    /**
+     * The data used to update Livros.
+     */
+    data: XOR<LivroUpdateManyMutationInput, LivroUncheckedUpdateManyInput>
+    /**
+     * Filter which Livros to update
+     */
+    where?: LivroWhereInput
+    /**
+     * Limit how many Livros to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LivroIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Livro upsert
+   */
+  export type LivroUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Livro
+     */
+    select?: LivroSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Livro
+     */
+    omit?: LivroOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LivroInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Livro to update in case it exists.
+     */
+    where: LivroWhereUniqueInput
+    /**
+     * In case the Livro found by the `where` argument doesn't exist, create a new Livro with this data.
+     */
+    create: XOR<LivroCreateInput, LivroUncheckedCreateInput>
+    /**
+     * In case the Livro was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<LivroUpdateInput, LivroUncheckedUpdateInput>
+  }
+
+  /**
+   * Livro delete
+   */
+  export type LivroDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Livro
+     */
+    select?: LivroSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Livro
+     */
+    omit?: LivroOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LivroInclude<ExtArgs> | null
+    /**
+     * Filter which Livro to delete.
+     */
+    where: LivroWhereUniqueInput
+  }
+
+  /**
+   * Livro deleteMany
+   */
+  export type LivroDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Livros to delete
+     */
+    where?: LivroWhereInput
+    /**
+     * Limit how many Livros to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Livro.itens_emprestimo
+   */
+  export type Livro$itens_emprestimoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItemEmprestimo
+     */
+    select?: ItemEmprestimoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItemEmprestimo
+     */
+    omit?: ItemEmprestimoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItemEmprestimoInclude<ExtArgs> | null
+    where?: ItemEmprestimoWhereInput
+    orderBy?: ItemEmprestimoOrderByWithRelationInput | ItemEmprestimoOrderByWithRelationInput[]
+    cursor?: ItemEmprestimoWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ItemEmprestimoScalarFieldEnum | ItemEmprestimoScalarFieldEnum[]
+  }
+
+  /**
+   * Livro without action
+   */
+  export type LivroDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Livro
+     */
+    select?: LivroSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Livro
+     */
+    omit?: LivroOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LivroInclude<ExtArgs> | null
   }
 
 
@@ -2730,7 +6286,7 @@ export namespace Prisma {
     id: number
     data_emprestimo: Date
     prazo_de_devolucao: Date
-    observacoes: string
+    observacoes: string | null
     id_leitor: number
     _count: EmprestimoCountAggregateOutputType | null
     _avg: EmprestimoAvgAggregateOutputType | null
@@ -2813,7 +6369,7 @@ export namespace Prisma {
       id: number
       data_emprestimo: Date
       prazo_de_devolucao: Date
-      observacoes: string
+      observacoes: string | null
       id_leitor: number
     }, ExtArgs["result"]["emprestimo"]>
     composites: {}
@@ -4819,3357 +8375,6 @@ export namespace Prisma {
 
 
   /**
-   * Model Livro
-   */
-
-  export type AggregateLivro = {
-    _count: LivroCountAggregateOutputType | null
-    _avg: LivroAvgAggregateOutputType | null
-    _sum: LivroSumAggregateOutputType | null
-    _min: LivroMinAggregateOutputType | null
-    _max: LivroMaxAggregateOutputType | null
-  }
-
-  export type LivroAvgAggregateOutputType = {
-    id: number | null
-    qtde_total: number | null
-    qtde_disponivel: number | null
-  }
-
-  export type LivroSumAggregateOutputType = {
-    id: number | null
-    qtde_total: number | null
-    qtde_disponivel: number | null
-  }
-
-  export type LivroMinAggregateOutputType = {
-    id: number | null
-    nome_livro: string | null
-    editora: string | null
-    versao: string | null
-    ano: string | null
-    genero: string | null
-    idioma: string | null
-    qtde_total: number | null
-    qtde_disponivel: number | null
-  }
-
-  export type LivroMaxAggregateOutputType = {
-    id: number | null
-    nome_livro: string | null
-    editora: string | null
-    versao: string | null
-    ano: string | null
-    genero: string | null
-    idioma: string | null
-    qtde_total: number | null
-    qtde_disponivel: number | null
-  }
-
-  export type LivroCountAggregateOutputType = {
-    id: number
-    nome_livro: number
-    editora: number
-    versao: number
-    ano: number
-    genero: number
-    idioma: number
-    qtde_total: number
-    qtde_disponivel: number
-    _all: number
-  }
-
-
-  export type LivroAvgAggregateInputType = {
-    id?: true
-    qtde_total?: true
-    qtde_disponivel?: true
-  }
-
-  export type LivroSumAggregateInputType = {
-    id?: true
-    qtde_total?: true
-    qtde_disponivel?: true
-  }
-
-  export type LivroMinAggregateInputType = {
-    id?: true
-    nome_livro?: true
-    editora?: true
-    versao?: true
-    ano?: true
-    genero?: true
-    idioma?: true
-    qtde_total?: true
-    qtde_disponivel?: true
-  }
-
-  export type LivroMaxAggregateInputType = {
-    id?: true
-    nome_livro?: true
-    editora?: true
-    versao?: true
-    ano?: true
-    genero?: true
-    idioma?: true
-    qtde_total?: true
-    qtde_disponivel?: true
-  }
-
-  export type LivroCountAggregateInputType = {
-    id?: true
-    nome_livro?: true
-    editora?: true
-    versao?: true
-    ano?: true
-    genero?: true
-    idioma?: true
-    qtde_total?: true
-    qtde_disponivel?: true
-    _all?: true
-  }
-
-  export type LivroAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which Livro to aggregate.
-     */
-    where?: LivroWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Livros to fetch.
-     */
-    orderBy?: LivroOrderByWithRelationInput | LivroOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: LivroWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Livros from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Livros.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned Livros
-    **/
-    _count?: true | LivroCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: LivroAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: LivroSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: LivroMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: LivroMaxAggregateInputType
-  }
-
-  export type GetLivroAggregateType<T extends LivroAggregateArgs> = {
-        [P in keyof T & keyof AggregateLivro]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateLivro[P]>
-      : GetScalarType<T[P], AggregateLivro[P]>
-  }
-
-
-
-
-  export type LivroGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: LivroWhereInput
-    orderBy?: LivroOrderByWithAggregationInput | LivroOrderByWithAggregationInput[]
-    by: LivroScalarFieldEnum[] | LivroScalarFieldEnum
-    having?: LivroScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: LivroCountAggregateInputType | true
-    _avg?: LivroAvgAggregateInputType
-    _sum?: LivroSumAggregateInputType
-    _min?: LivroMinAggregateInputType
-    _max?: LivroMaxAggregateInputType
-  }
-
-  export type LivroGroupByOutputType = {
-    id: number
-    nome_livro: string
-    editora: string
-    versao: string
-    ano: string
-    genero: string
-    idioma: string
-    qtde_total: number
-    qtde_disponivel: number
-    _count: LivroCountAggregateOutputType | null
-    _avg: LivroAvgAggregateOutputType | null
-    _sum: LivroSumAggregateOutputType | null
-    _min: LivroMinAggregateOutputType | null
-    _max: LivroMaxAggregateOutputType | null
-  }
-
-  type GetLivroGroupByPayload<T extends LivroGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<LivroGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof LivroGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], LivroGroupByOutputType[P]>
-            : GetScalarType<T[P], LivroGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type LivroSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    nome_livro?: boolean
-    editora?: boolean
-    versao?: boolean
-    ano?: boolean
-    genero?: boolean
-    idioma?: boolean
-    qtde_total?: boolean
-    qtde_disponivel?: boolean
-    autores?: boolean | Livro$autoresArgs<ExtArgs>
-    itens_emprestimo?: boolean | Livro$itens_emprestimoArgs<ExtArgs>
-    _count?: boolean | LivroCountOutputTypeDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["livro"]>
-
-  export type LivroSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    nome_livro?: boolean
-    editora?: boolean
-    versao?: boolean
-    ano?: boolean
-    genero?: boolean
-    idioma?: boolean
-    qtde_total?: boolean
-    qtde_disponivel?: boolean
-  }, ExtArgs["result"]["livro"]>
-
-  export type LivroSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    nome_livro?: boolean
-    editora?: boolean
-    versao?: boolean
-    ano?: boolean
-    genero?: boolean
-    idioma?: boolean
-    qtde_total?: boolean
-    qtde_disponivel?: boolean
-  }, ExtArgs["result"]["livro"]>
-
-  export type LivroSelectScalar = {
-    id?: boolean
-    nome_livro?: boolean
-    editora?: boolean
-    versao?: boolean
-    ano?: boolean
-    genero?: boolean
-    idioma?: boolean
-    qtde_total?: boolean
-    qtde_disponivel?: boolean
-  }
-
-  export type LivroOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nome_livro" | "editora" | "versao" | "ano" | "genero" | "idioma" | "qtde_total" | "qtde_disponivel", ExtArgs["result"]["livro"]>
-  export type LivroInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    autores?: boolean | Livro$autoresArgs<ExtArgs>
-    itens_emprestimo?: boolean | Livro$itens_emprestimoArgs<ExtArgs>
-    _count?: boolean | LivroCountOutputTypeDefaultArgs<ExtArgs>
-  }
-  export type LivroIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-  export type LivroIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-
-  export type $LivroPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "Livro"
-    objects: {
-      autores: Prisma.$AutorPayload<ExtArgs>[]
-      itens_emprestimo: Prisma.$ItemEmprestimoPayload<ExtArgs>[]
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: number
-      nome_livro: string
-      editora: string
-      versao: string
-      ano: string
-      genero: string
-      idioma: string
-      qtde_total: number
-      qtde_disponivel: number
-    }, ExtArgs["result"]["livro"]>
-    composites: {}
-  }
-
-  type LivroGetPayload<S extends boolean | null | undefined | LivroDefaultArgs> = $Result.GetResult<Prisma.$LivroPayload, S>
-
-  type LivroCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<LivroFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: LivroCountAggregateInputType | true
-    }
-
-  export interface LivroDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Livro'], meta: { name: 'Livro' } }
-    /**
-     * Find zero or one Livro that matches the filter.
-     * @param {LivroFindUniqueArgs} args - Arguments to find a Livro
-     * @example
-     * // Get one Livro
-     * const livro = await prisma.livro.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends LivroFindUniqueArgs>(args: SelectSubset<T, LivroFindUniqueArgs<ExtArgs>>): Prisma__LivroClient<$Result.GetResult<Prisma.$LivroPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one Livro that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {LivroFindUniqueOrThrowArgs} args - Arguments to find a Livro
-     * @example
-     * // Get one Livro
-     * const livro = await prisma.livro.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends LivroFindUniqueOrThrowArgs>(args: SelectSubset<T, LivroFindUniqueOrThrowArgs<ExtArgs>>): Prisma__LivroClient<$Result.GetResult<Prisma.$LivroPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Livro that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {LivroFindFirstArgs} args - Arguments to find a Livro
-     * @example
-     * // Get one Livro
-     * const livro = await prisma.livro.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends LivroFindFirstArgs>(args?: SelectSubset<T, LivroFindFirstArgs<ExtArgs>>): Prisma__LivroClient<$Result.GetResult<Prisma.$LivroPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Livro that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {LivroFindFirstOrThrowArgs} args - Arguments to find a Livro
-     * @example
-     * // Get one Livro
-     * const livro = await prisma.livro.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends LivroFindFirstOrThrowArgs>(args?: SelectSubset<T, LivroFindFirstOrThrowArgs<ExtArgs>>): Prisma__LivroClient<$Result.GetResult<Prisma.$LivroPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more Livros that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {LivroFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all Livros
-     * const livros = await prisma.livro.findMany()
-     * 
-     * // Get first 10 Livros
-     * const livros = await prisma.livro.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const livroWithIdOnly = await prisma.livro.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends LivroFindManyArgs>(args?: SelectSubset<T, LivroFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LivroPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a Livro.
-     * @param {LivroCreateArgs} args - Arguments to create a Livro.
-     * @example
-     * // Create one Livro
-     * const Livro = await prisma.livro.create({
-     *   data: {
-     *     // ... data to create a Livro
-     *   }
-     * })
-     * 
-     */
-    create<T extends LivroCreateArgs>(args: SelectSubset<T, LivroCreateArgs<ExtArgs>>): Prisma__LivroClient<$Result.GetResult<Prisma.$LivroPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many Livros.
-     * @param {LivroCreateManyArgs} args - Arguments to create many Livros.
-     * @example
-     * // Create many Livros
-     * const livro = await prisma.livro.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends LivroCreateManyArgs>(args?: SelectSubset<T, LivroCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many Livros and returns the data saved in the database.
-     * @param {LivroCreateManyAndReturnArgs} args - Arguments to create many Livros.
-     * @example
-     * // Create many Livros
-     * const livro = await prisma.livro.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many Livros and only return the `id`
-     * const livroWithIdOnly = await prisma.livro.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends LivroCreateManyAndReturnArgs>(args?: SelectSubset<T, LivroCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LivroPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a Livro.
-     * @param {LivroDeleteArgs} args - Arguments to delete one Livro.
-     * @example
-     * // Delete one Livro
-     * const Livro = await prisma.livro.delete({
-     *   where: {
-     *     // ... filter to delete one Livro
-     *   }
-     * })
-     * 
-     */
-    delete<T extends LivroDeleteArgs>(args: SelectSubset<T, LivroDeleteArgs<ExtArgs>>): Prisma__LivroClient<$Result.GetResult<Prisma.$LivroPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one Livro.
-     * @param {LivroUpdateArgs} args - Arguments to update one Livro.
-     * @example
-     * // Update one Livro
-     * const livro = await prisma.livro.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends LivroUpdateArgs>(args: SelectSubset<T, LivroUpdateArgs<ExtArgs>>): Prisma__LivroClient<$Result.GetResult<Prisma.$LivroPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more Livros.
-     * @param {LivroDeleteManyArgs} args - Arguments to filter Livros to delete.
-     * @example
-     * // Delete a few Livros
-     * const { count } = await prisma.livro.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends LivroDeleteManyArgs>(args?: SelectSubset<T, LivroDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Livros.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {LivroUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many Livros
-     * const livro = await prisma.livro.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends LivroUpdateManyArgs>(args: SelectSubset<T, LivroUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Livros and returns the data updated in the database.
-     * @param {LivroUpdateManyAndReturnArgs} args - Arguments to update many Livros.
-     * @example
-     * // Update many Livros
-     * const livro = await prisma.livro.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more Livros and only return the `id`
-     * const livroWithIdOnly = await prisma.livro.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends LivroUpdateManyAndReturnArgs>(args: SelectSubset<T, LivroUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LivroPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one Livro.
-     * @param {LivroUpsertArgs} args - Arguments to update or create a Livro.
-     * @example
-     * // Update or create a Livro
-     * const livro = await prisma.livro.upsert({
-     *   create: {
-     *     // ... data to create a Livro
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the Livro we want to update
-     *   }
-     * })
-     */
-    upsert<T extends LivroUpsertArgs>(args: SelectSubset<T, LivroUpsertArgs<ExtArgs>>): Prisma__LivroClient<$Result.GetResult<Prisma.$LivroPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of Livros.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {LivroCountArgs} args - Arguments to filter Livros to count.
-     * @example
-     * // Count the number of Livros
-     * const count = await prisma.livro.count({
-     *   where: {
-     *     // ... the filter for the Livros we want to count
-     *   }
-     * })
-    **/
-    count<T extends LivroCountArgs>(
-      args?: Subset<T, LivroCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], LivroCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a Livro.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {LivroAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends LivroAggregateArgs>(args: Subset<T, LivroAggregateArgs>): Prisma.PrismaPromise<GetLivroAggregateType<T>>
-
-    /**
-     * Group by Livro.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {LivroGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends LivroGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: LivroGroupByArgs['orderBy'] }
-        : { orderBy?: LivroGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, LivroGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetLivroGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the Livro model
-   */
-  readonly fields: LivroFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for Livro.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__LivroClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    autores<T extends Livro$autoresArgs<ExtArgs> = {}>(args?: Subset<T, Livro$autoresArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AutorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    itens_emprestimo<T extends Livro$itens_emprestimoArgs<ExtArgs> = {}>(args?: Subset<T, Livro$itens_emprestimoArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ItemEmprestimoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the Livro model
-   */
-  interface LivroFieldRefs {
-    readonly id: FieldRef<"Livro", 'Int'>
-    readonly nome_livro: FieldRef<"Livro", 'String'>
-    readonly editora: FieldRef<"Livro", 'String'>
-    readonly versao: FieldRef<"Livro", 'String'>
-    readonly ano: FieldRef<"Livro", 'String'>
-    readonly genero: FieldRef<"Livro", 'String'>
-    readonly idioma: FieldRef<"Livro", 'String'>
-    readonly qtde_total: FieldRef<"Livro", 'Int'>
-    readonly qtde_disponivel: FieldRef<"Livro", 'Int'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * Livro findUnique
-   */
-  export type LivroFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Livro
-     */
-    select?: LivroSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Livro
-     */
-    omit?: LivroOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LivroInclude<ExtArgs> | null
-    /**
-     * Filter, which Livro to fetch.
-     */
-    where: LivroWhereUniqueInput
-  }
-
-  /**
-   * Livro findUniqueOrThrow
-   */
-  export type LivroFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Livro
-     */
-    select?: LivroSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Livro
-     */
-    omit?: LivroOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LivroInclude<ExtArgs> | null
-    /**
-     * Filter, which Livro to fetch.
-     */
-    where: LivroWhereUniqueInput
-  }
-
-  /**
-   * Livro findFirst
-   */
-  export type LivroFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Livro
-     */
-    select?: LivroSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Livro
-     */
-    omit?: LivroOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LivroInclude<ExtArgs> | null
-    /**
-     * Filter, which Livro to fetch.
-     */
-    where?: LivroWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Livros to fetch.
-     */
-    orderBy?: LivroOrderByWithRelationInput | LivroOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Livros.
-     */
-    cursor?: LivroWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Livros from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Livros.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Livros.
-     */
-    distinct?: LivroScalarFieldEnum | LivroScalarFieldEnum[]
-  }
-
-  /**
-   * Livro findFirstOrThrow
-   */
-  export type LivroFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Livro
-     */
-    select?: LivroSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Livro
-     */
-    omit?: LivroOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LivroInclude<ExtArgs> | null
-    /**
-     * Filter, which Livro to fetch.
-     */
-    where?: LivroWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Livros to fetch.
-     */
-    orderBy?: LivroOrderByWithRelationInput | LivroOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Livros.
-     */
-    cursor?: LivroWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Livros from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Livros.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Livros.
-     */
-    distinct?: LivroScalarFieldEnum | LivroScalarFieldEnum[]
-  }
-
-  /**
-   * Livro findMany
-   */
-  export type LivroFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Livro
-     */
-    select?: LivroSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Livro
-     */
-    omit?: LivroOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LivroInclude<ExtArgs> | null
-    /**
-     * Filter, which Livros to fetch.
-     */
-    where?: LivroWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Livros to fetch.
-     */
-    orderBy?: LivroOrderByWithRelationInput | LivroOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing Livros.
-     */
-    cursor?: LivroWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Livros from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Livros.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Livros.
-     */
-    distinct?: LivroScalarFieldEnum | LivroScalarFieldEnum[]
-  }
-
-  /**
-   * Livro create
-   */
-  export type LivroCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Livro
-     */
-    select?: LivroSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Livro
-     */
-    omit?: LivroOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LivroInclude<ExtArgs> | null
-    /**
-     * The data needed to create a Livro.
-     */
-    data: XOR<LivroCreateInput, LivroUncheckedCreateInput>
-  }
-
-  /**
-   * Livro createMany
-   */
-  export type LivroCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many Livros.
-     */
-    data: LivroCreateManyInput | LivroCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * Livro createManyAndReturn
-   */
-  export type LivroCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Livro
-     */
-    select?: LivroSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the Livro
-     */
-    omit?: LivroOmit<ExtArgs> | null
-    /**
-     * The data used to create many Livros.
-     */
-    data: LivroCreateManyInput | LivroCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * Livro update
-   */
-  export type LivroUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Livro
-     */
-    select?: LivroSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Livro
-     */
-    omit?: LivroOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LivroInclude<ExtArgs> | null
-    /**
-     * The data needed to update a Livro.
-     */
-    data: XOR<LivroUpdateInput, LivroUncheckedUpdateInput>
-    /**
-     * Choose, which Livro to update.
-     */
-    where: LivroWhereUniqueInput
-  }
-
-  /**
-   * Livro updateMany
-   */
-  export type LivroUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update Livros.
-     */
-    data: XOR<LivroUpdateManyMutationInput, LivroUncheckedUpdateManyInput>
-    /**
-     * Filter which Livros to update
-     */
-    where?: LivroWhereInput
-    /**
-     * Limit how many Livros to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * Livro updateManyAndReturn
-   */
-  export type LivroUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Livro
-     */
-    select?: LivroSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the Livro
-     */
-    omit?: LivroOmit<ExtArgs> | null
-    /**
-     * The data used to update Livros.
-     */
-    data: XOR<LivroUpdateManyMutationInput, LivroUncheckedUpdateManyInput>
-    /**
-     * Filter which Livros to update
-     */
-    where?: LivroWhereInput
-    /**
-     * Limit how many Livros to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * Livro upsert
-   */
-  export type LivroUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Livro
-     */
-    select?: LivroSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Livro
-     */
-    omit?: LivroOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LivroInclude<ExtArgs> | null
-    /**
-     * The filter to search for the Livro to update in case it exists.
-     */
-    where: LivroWhereUniqueInput
-    /**
-     * In case the Livro found by the `where` argument doesn't exist, create a new Livro with this data.
-     */
-    create: XOR<LivroCreateInput, LivroUncheckedCreateInput>
-    /**
-     * In case the Livro was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<LivroUpdateInput, LivroUncheckedUpdateInput>
-  }
-
-  /**
-   * Livro delete
-   */
-  export type LivroDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Livro
-     */
-    select?: LivroSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Livro
-     */
-    omit?: LivroOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LivroInclude<ExtArgs> | null
-    /**
-     * Filter which Livro to delete.
-     */
-    where: LivroWhereUniqueInput
-  }
-
-  /**
-   * Livro deleteMany
-   */
-  export type LivroDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which Livros to delete
-     */
-    where?: LivroWhereInput
-    /**
-     * Limit how many Livros to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * Livro.autores
-   */
-  export type Livro$autoresArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Autor
-     */
-    select?: AutorSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Autor
-     */
-    omit?: AutorOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AutorInclude<ExtArgs> | null
-    where?: AutorWhereInput
-    orderBy?: AutorOrderByWithRelationInput | AutorOrderByWithRelationInput[]
-    cursor?: AutorWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: AutorScalarFieldEnum | AutorScalarFieldEnum[]
-  }
-
-  /**
-   * Livro.itens_emprestimo
-   */
-  export type Livro$itens_emprestimoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ItemEmprestimo
-     */
-    select?: ItemEmprestimoSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ItemEmprestimo
-     */
-    omit?: ItemEmprestimoOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ItemEmprestimoInclude<ExtArgs> | null
-    where?: ItemEmprestimoWhereInput
-    orderBy?: ItemEmprestimoOrderByWithRelationInput | ItemEmprestimoOrderByWithRelationInput[]
-    cursor?: ItemEmprestimoWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: ItemEmprestimoScalarFieldEnum | ItemEmprestimoScalarFieldEnum[]
-  }
-
-  /**
-   * Livro without action
-   */
-  export type LivroDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Livro
-     */
-    select?: LivroSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Livro
-     */
-    omit?: LivroOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LivroInclude<ExtArgs> | null
-  }
-
-
-  /**
-   * Model Autor
-   */
-
-  export type AggregateAutor = {
-    _count: AutorCountAggregateOutputType | null
-    _avg: AutorAvgAggregateOutputType | null
-    _sum: AutorSumAggregateOutputType | null
-    _min: AutorMinAggregateOutputType | null
-    _max: AutorMaxAggregateOutputType | null
-  }
-
-  export type AutorAvgAggregateOutputType = {
-    id: number | null
-    id_livro: number | null
-  }
-
-  export type AutorSumAggregateOutputType = {
-    id: number | null
-    id_livro: number | null
-  }
-
-  export type AutorMinAggregateOutputType = {
-    id: number | null
-    nome_autor: string | null
-    origem: string | null
-    biografia: string | null
-    data_de_nascimento: Date | null
-    nome_artistico: string | null
-    id_livro: number | null
-  }
-
-  export type AutorMaxAggregateOutputType = {
-    id: number | null
-    nome_autor: string | null
-    origem: string | null
-    biografia: string | null
-    data_de_nascimento: Date | null
-    nome_artistico: string | null
-    id_livro: number | null
-  }
-
-  export type AutorCountAggregateOutputType = {
-    id: number
-    nome_autor: number
-    origem: number
-    biografia: number
-    data_de_nascimento: number
-    nome_artistico: number
-    id_livro: number
-    _all: number
-  }
-
-
-  export type AutorAvgAggregateInputType = {
-    id?: true
-    id_livro?: true
-  }
-
-  export type AutorSumAggregateInputType = {
-    id?: true
-    id_livro?: true
-  }
-
-  export type AutorMinAggregateInputType = {
-    id?: true
-    nome_autor?: true
-    origem?: true
-    biografia?: true
-    data_de_nascimento?: true
-    nome_artistico?: true
-    id_livro?: true
-  }
-
-  export type AutorMaxAggregateInputType = {
-    id?: true
-    nome_autor?: true
-    origem?: true
-    biografia?: true
-    data_de_nascimento?: true
-    nome_artistico?: true
-    id_livro?: true
-  }
-
-  export type AutorCountAggregateInputType = {
-    id?: true
-    nome_autor?: true
-    origem?: true
-    biografia?: true
-    data_de_nascimento?: true
-    nome_artistico?: true
-    id_livro?: true
-    _all?: true
-  }
-
-  export type AutorAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which Autor to aggregate.
-     */
-    where?: AutorWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Autors to fetch.
-     */
-    orderBy?: AutorOrderByWithRelationInput | AutorOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: AutorWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Autors from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Autors.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned Autors
-    **/
-    _count?: true | AutorCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: AutorAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: AutorSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: AutorMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: AutorMaxAggregateInputType
-  }
-
-  export type GetAutorAggregateType<T extends AutorAggregateArgs> = {
-        [P in keyof T & keyof AggregateAutor]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateAutor[P]>
-      : GetScalarType<T[P], AggregateAutor[P]>
-  }
-
-
-
-
-  export type AutorGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: AutorWhereInput
-    orderBy?: AutorOrderByWithAggregationInput | AutorOrderByWithAggregationInput[]
-    by: AutorScalarFieldEnum[] | AutorScalarFieldEnum
-    having?: AutorScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: AutorCountAggregateInputType | true
-    _avg?: AutorAvgAggregateInputType
-    _sum?: AutorSumAggregateInputType
-    _min?: AutorMinAggregateInputType
-    _max?: AutorMaxAggregateInputType
-  }
-
-  export type AutorGroupByOutputType = {
-    id: number
-    nome_autor: string
-    origem: string
-    biografia: string
-    data_de_nascimento: Date
-    nome_artistico: string
-    id_livro: number
-    _count: AutorCountAggregateOutputType | null
-    _avg: AutorAvgAggregateOutputType | null
-    _sum: AutorSumAggregateOutputType | null
-    _min: AutorMinAggregateOutputType | null
-    _max: AutorMaxAggregateOutputType | null
-  }
-
-  type GetAutorGroupByPayload<T extends AutorGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<AutorGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof AutorGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], AutorGroupByOutputType[P]>
-            : GetScalarType<T[P], AutorGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type AutorSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    nome_autor?: boolean
-    origem?: boolean
-    biografia?: boolean
-    data_de_nascimento?: boolean
-    nome_artistico?: boolean
-    id_livro?: boolean
-    livro?: boolean | Autor$livroArgs<ExtArgs>
-  }, ExtArgs["result"]["autor"]>
-
-  export type AutorSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    nome_autor?: boolean
-    origem?: boolean
-    biografia?: boolean
-    data_de_nascimento?: boolean
-    nome_artistico?: boolean
-    id_livro?: boolean
-    livro?: boolean | Autor$livroArgs<ExtArgs>
-  }, ExtArgs["result"]["autor"]>
-
-  export type AutorSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    nome_autor?: boolean
-    origem?: boolean
-    biografia?: boolean
-    data_de_nascimento?: boolean
-    nome_artistico?: boolean
-    id_livro?: boolean
-    livro?: boolean | Autor$livroArgs<ExtArgs>
-  }, ExtArgs["result"]["autor"]>
-
-  export type AutorSelectScalar = {
-    id?: boolean
-    nome_autor?: boolean
-    origem?: boolean
-    biografia?: boolean
-    data_de_nascimento?: boolean
-    nome_artistico?: boolean
-    id_livro?: boolean
-  }
-
-  export type AutorOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nome_autor" | "origem" | "biografia" | "data_de_nascimento" | "nome_artistico" | "id_livro", ExtArgs["result"]["autor"]>
-  export type AutorInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    livro?: boolean | Autor$livroArgs<ExtArgs>
-  }
-  export type AutorIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    livro?: boolean | Autor$livroArgs<ExtArgs>
-  }
-  export type AutorIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    livro?: boolean | Autor$livroArgs<ExtArgs>
-  }
-
-  export type $AutorPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "Autor"
-    objects: {
-      livro: Prisma.$LivroPayload<ExtArgs> | null
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: number
-      nome_autor: string
-      origem: string
-      biografia: string
-      data_de_nascimento: Date
-      nome_artistico: string
-      id_livro: number
-    }, ExtArgs["result"]["autor"]>
-    composites: {}
-  }
-
-  type AutorGetPayload<S extends boolean | null | undefined | AutorDefaultArgs> = $Result.GetResult<Prisma.$AutorPayload, S>
-
-  type AutorCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<AutorFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: AutorCountAggregateInputType | true
-    }
-
-  export interface AutorDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Autor'], meta: { name: 'Autor' } }
-    /**
-     * Find zero or one Autor that matches the filter.
-     * @param {AutorFindUniqueArgs} args - Arguments to find a Autor
-     * @example
-     * // Get one Autor
-     * const autor = await prisma.autor.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends AutorFindUniqueArgs>(args: SelectSubset<T, AutorFindUniqueArgs<ExtArgs>>): Prisma__AutorClient<$Result.GetResult<Prisma.$AutorPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one Autor that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {AutorFindUniqueOrThrowArgs} args - Arguments to find a Autor
-     * @example
-     * // Get one Autor
-     * const autor = await prisma.autor.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends AutorFindUniqueOrThrowArgs>(args: SelectSubset<T, AutorFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AutorClient<$Result.GetResult<Prisma.$AutorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Autor that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {AutorFindFirstArgs} args - Arguments to find a Autor
-     * @example
-     * // Get one Autor
-     * const autor = await prisma.autor.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends AutorFindFirstArgs>(args?: SelectSubset<T, AutorFindFirstArgs<ExtArgs>>): Prisma__AutorClient<$Result.GetResult<Prisma.$AutorPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Autor that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {AutorFindFirstOrThrowArgs} args - Arguments to find a Autor
-     * @example
-     * // Get one Autor
-     * const autor = await prisma.autor.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends AutorFindFirstOrThrowArgs>(args?: SelectSubset<T, AutorFindFirstOrThrowArgs<ExtArgs>>): Prisma__AutorClient<$Result.GetResult<Prisma.$AutorPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more Autors that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {AutorFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all Autors
-     * const autors = await prisma.autor.findMany()
-     * 
-     * // Get first 10 Autors
-     * const autors = await prisma.autor.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const autorWithIdOnly = await prisma.autor.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends AutorFindManyArgs>(args?: SelectSubset<T, AutorFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AutorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a Autor.
-     * @param {AutorCreateArgs} args - Arguments to create a Autor.
-     * @example
-     * // Create one Autor
-     * const Autor = await prisma.autor.create({
-     *   data: {
-     *     // ... data to create a Autor
-     *   }
-     * })
-     * 
-     */
-    create<T extends AutorCreateArgs>(args: SelectSubset<T, AutorCreateArgs<ExtArgs>>): Prisma__AutorClient<$Result.GetResult<Prisma.$AutorPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many Autors.
-     * @param {AutorCreateManyArgs} args - Arguments to create many Autors.
-     * @example
-     * // Create many Autors
-     * const autor = await prisma.autor.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends AutorCreateManyArgs>(args?: SelectSubset<T, AutorCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many Autors and returns the data saved in the database.
-     * @param {AutorCreateManyAndReturnArgs} args - Arguments to create many Autors.
-     * @example
-     * // Create many Autors
-     * const autor = await prisma.autor.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many Autors and only return the `id`
-     * const autorWithIdOnly = await prisma.autor.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends AutorCreateManyAndReturnArgs>(args?: SelectSubset<T, AutorCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AutorPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a Autor.
-     * @param {AutorDeleteArgs} args - Arguments to delete one Autor.
-     * @example
-     * // Delete one Autor
-     * const Autor = await prisma.autor.delete({
-     *   where: {
-     *     // ... filter to delete one Autor
-     *   }
-     * })
-     * 
-     */
-    delete<T extends AutorDeleteArgs>(args: SelectSubset<T, AutorDeleteArgs<ExtArgs>>): Prisma__AutorClient<$Result.GetResult<Prisma.$AutorPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one Autor.
-     * @param {AutorUpdateArgs} args - Arguments to update one Autor.
-     * @example
-     * // Update one Autor
-     * const autor = await prisma.autor.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends AutorUpdateArgs>(args: SelectSubset<T, AutorUpdateArgs<ExtArgs>>): Prisma__AutorClient<$Result.GetResult<Prisma.$AutorPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more Autors.
-     * @param {AutorDeleteManyArgs} args - Arguments to filter Autors to delete.
-     * @example
-     * // Delete a few Autors
-     * const { count } = await prisma.autor.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends AutorDeleteManyArgs>(args?: SelectSubset<T, AutorDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Autors.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {AutorUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many Autors
-     * const autor = await prisma.autor.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends AutorUpdateManyArgs>(args: SelectSubset<T, AutorUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Autors and returns the data updated in the database.
-     * @param {AutorUpdateManyAndReturnArgs} args - Arguments to update many Autors.
-     * @example
-     * // Update many Autors
-     * const autor = await prisma.autor.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more Autors and only return the `id`
-     * const autorWithIdOnly = await prisma.autor.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends AutorUpdateManyAndReturnArgs>(args: SelectSubset<T, AutorUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AutorPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one Autor.
-     * @param {AutorUpsertArgs} args - Arguments to update or create a Autor.
-     * @example
-     * // Update or create a Autor
-     * const autor = await prisma.autor.upsert({
-     *   create: {
-     *     // ... data to create a Autor
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the Autor we want to update
-     *   }
-     * })
-     */
-    upsert<T extends AutorUpsertArgs>(args: SelectSubset<T, AutorUpsertArgs<ExtArgs>>): Prisma__AutorClient<$Result.GetResult<Prisma.$AutorPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of Autors.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {AutorCountArgs} args - Arguments to filter Autors to count.
-     * @example
-     * // Count the number of Autors
-     * const count = await prisma.autor.count({
-     *   where: {
-     *     // ... the filter for the Autors we want to count
-     *   }
-     * })
-    **/
-    count<T extends AutorCountArgs>(
-      args?: Subset<T, AutorCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], AutorCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a Autor.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {AutorAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends AutorAggregateArgs>(args: Subset<T, AutorAggregateArgs>): Prisma.PrismaPromise<GetAutorAggregateType<T>>
-
-    /**
-     * Group by Autor.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {AutorGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends AutorGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: AutorGroupByArgs['orderBy'] }
-        : { orderBy?: AutorGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, AutorGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAutorGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the Autor model
-   */
-  readonly fields: AutorFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for Autor.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__AutorClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    livro<T extends Autor$livroArgs<ExtArgs> = {}>(args?: Subset<T, Autor$livroArgs<ExtArgs>>): Prisma__LivroClient<$Result.GetResult<Prisma.$LivroPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the Autor model
-   */
-  interface AutorFieldRefs {
-    readonly id: FieldRef<"Autor", 'Int'>
-    readonly nome_autor: FieldRef<"Autor", 'String'>
-    readonly origem: FieldRef<"Autor", 'String'>
-    readonly biografia: FieldRef<"Autor", 'String'>
-    readonly data_de_nascimento: FieldRef<"Autor", 'DateTime'>
-    readonly nome_artistico: FieldRef<"Autor", 'String'>
-    readonly id_livro: FieldRef<"Autor", 'Int'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * Autor findUnique
-   */
-  export type AutorFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Autor
-     */
-    select?: AutorSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Autor
-     */
-    omit?: AutorOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AutorInclude<ExtArgs> | null
-    /**
-     * Filter, which Autor to fetch.
-     */
-    where: AutorWhereUniqueInput
-  }
-
-  /**
-   * Autor findUniqueOrThrow
-   */
-  export type AutorFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Autor
-     */
-    select?: AutorSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Autor
-     */
-    omit?: AutorOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AutorInclude<ExtArgs> | null
-    /**
-     * Filter, which Autor to fetch.
-     */
-    where: AutorWhereUniqueInput
-  }
-
-  /**
-   * Autor findFirst
-   */
-  export type AutorFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Autor
-     */
-    select?: AutorSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Autor
-     */
-    omit?: AutorOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AutorInclude<ExtArgs> | null
-    /**
-     * Filter, which Autor to fetch.
-     */
-    where?: AutorWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Autors to fetch.
-     */
-    orderBy?: AutorOrderByWithRelationInput | AutorOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Autors.
-     */
-    cursor?: AutorWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Autors from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Autors.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Autors.
-     */
-    distinct?: AutorScalarFieldEnum | AutorScalarFieldEnum[]
-  }
-
-  /**
-   * Autor findFirstOrThrow
-   */
-  export type AutorFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Autor
-     */
-    select?: AutorSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Autor
-     */
-    omit?: AutorOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AutorInclude<ExtArgs> | null
-    /**
-     * Filter, which Autor to fetch.
-     */
-    where?: AutorWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Autors to fetch.
-     */
-    orderBy?: AutorOrderByWithRelationInput | AutorOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Autors.
-     */
-    cursor?: AutorWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Autors from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Autors.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Autors.
-     */
-    distinct?: AutorScalarFieldEnum | AutorScalarFieldEnum[]
-  }
-
-  /**
-   * Autor findMany
-   */
-  export type AutorFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Autor
-     */
-    select?: AutorSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Autor
-     */
-    omit?: AutorOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AutorInclude<ExtArgs> | null
-    /**
-     * Filter, which Autors to fetch.
-     */
-    where?: AutorWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Autors to fetch.
-     */
-    orderBy?: AutorOrderByWithRelationInput | AutorOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing Autors.
-     */
-    cursor?: AutorWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Autors from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Autors.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Autors.
-     */
-    distinct?: AutorScalarFieldEnum | AutorScalarFieldEnum[]
-  }
-
-  /**
-   * Autor create
-   */
-  export type AutorCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Autor
-     */
-    select?: AutorSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Autor
-     */
-    omit?: AutorOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AutorInclude<ExtArgs> | null
-    /**
-     * The data needed to create a Autor.
-     */
-    data: XOR<AutorCreateInput, AutorUncheckedCreateInput>
-  }
-
-  /**
-   * Autor createMany
-   */
-  export type AutorCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many Autors.
-     */
-    data: AutorCreateManyInput | AutorCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * Autor createManyAndReturn
-   */
-  export type AutorCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Autor
-     */
-    select?: AutorSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the Autor
-     */
-    omit?: AutorOmit<ExtArgs> | null
-    /**
-     * The data used to create many Autors.
-     */
-    data: AutorCreateManyInput | AutorCreateManyInput[]
-    skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AutorIncludeCreateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * Autor update
-   */
-  export type AutorUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Autor
-     */
-    select?: AutorSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Autor
-     */
-    omit?: AutorOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AutorInclude<ExtArgs> | null
-    /**
-     * The data needed to update a Autor.
-     */
-    data: XOR<AutorUpdateInput, AutorUncheckedUpdateInput>
-    /**
-     * Choose, which Autor to update.
-     */
-    where: AutorWhereUniqueInput
-  }
-
-  /**
-   * Autor updateMany
-   */
-  export type AutorUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update Autors.
-     */
-    data: XOR<AutorUpdateManyMutationInput, AutorUncheckedUpdateManyInput>
-    /**
-     * Filter which Autors to update
-     */
-    where?: AutorWhereInput
-    /**
-     * Limit how many Autors to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * Autor updateManyAndReturn
-   */
-  export type AutorUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Autor
-     */
-    select?: AutorSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the Autor
-     */
-    omit?: AutorOmit<ExtArgs> | null
-    /**
-     * The data used to update Autors.
-     */
-    data: XOR<AutorUpdateManyMutationInput, AutorUncheckedUpdateManyInput>
-    /**
-     * Filter which Autors to update
-     */
-    where?: AutorWhereInput
-    /**
-     * Limit how many Autors to update.
-     */
-    limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AutorIncludeUpdateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * Autor upsert
-   */
-  export type AutorUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Autor
-     */
-    select?: AutorSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Autor
-     */
-    omit?: AutorOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AutorInclude<ExtArgs> | null
-    /**
-     * The filter to search for the Autor to update in case it exists.
-     */
-    where: AutorWhereUniqueInput
-    /**
-     * In case the Autor found by the `where` argument doesn't exist, create a new Autor with this data.
-     */
-    create: XOR<AutorCreateInput, AutorUncheckedCreateInput>
-    /**
-     * In case the Autor was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<AutorUpdateInput, AutorUncheckedUpdateInput>
-  }
-
-  /**
-   * Autor delete
-   */
-  export type AutorDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Autor
-     */
-    select?: AutorSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Autor
-     */
-    omit?: AutorOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AutorInclude<ExtArgs> | null
-    /**
-     * Filter which Autor to delete.
-     */
-    where: AutorWhereUniqueInput
-  }
-
-  /**
-   * Autor deleteMany
-   */
-  export type AutorDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which Autors to delete
-     */
-    where?: AutorWhereInput
-    /**
-     * Limit how many Autors to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * Autor.livro
-   */
-  export type Autor$livroArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Livro
-     */
-    select?: LivroSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Livro
-     */
-    omit?: LivroOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LivroInclude<ExtArgs> | null
-    where?: LivroWhereInput
-  }
-
-  /**
-   * Autor without action
-   */
-  export type AutorDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Autor
-     */
-    select?: AutorSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Autor
-     */
-    omit?: AutorOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AutorInclude<ExtArgs> | null
-  }
-
-
-  /**
-   * Model User
-   */
-
-  export type AggregateUser = {
-    _count: UserCountAggregateOutputType | null
-    _avg: UserAvgAggregateOutputType | null
-    _sum: UserSumAggregateOutputType | null
-    _min: UserMinAggregateOutputType | null
-    _max: UserMaxAggregateOutputType | null
-  }
-
-  export type UserAvgAggregateOutputType = {
-    id: number | null
-  }
-
-  export type UserSumAggregateOutputType = {
-    id: number | null
-  }
-
-  export type UserMinAggregateOutputType = {
-    id: number | null
-    email: string | null
-    password: string | null
-  }
-
-  export type UserMaxAggregateOutputType = {
-    id: number | null
-    email: string | null
-    password: string | null
-  }
-
-  export type UserCountAggregateOutputType = {
-    id: number
-    email: number
-    password: number
-    _all: number
-  }
-
-
-  export type UserAvgAggregateInputType = {
-    id?: true
-  }
-
-  export type UserSumAggregateInputType = {
-    id?: true
-  }
-
-  export type UserMinAggregateInputType = {
-    id?: true
-    email?: true
-    password?: true
-  }
-
-  export type UserMaxAggregateInputType = {
-    id?: true
-    email?: true
-    password?: true
-  }
-
-  export type UserCountAggregateInputType = {
-    id?: true
-    email?: true
-    password?: true
-    _all?: true
-  }
-
-  export type UserAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which User to aggregate.
-     */
-    where?: UserWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Users to fetch.
-     */
-    orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: UserWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Users from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Users.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned Users
-    **/
-    _count?: true | UserCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: UserAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: UserSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: UserMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: UserMaxAggregateInputType
-  }
-
-  export type GetUserAggregateType<T extends UserAggregateArgs> = {
-        [P in keyof T & keyof AggregateUser]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateUser[P]>
-      : GetScalarType<T[P], AggregateUser[P]>
-  }
-
-
-
-
-  export type UserGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: UserWhereInput
-    orderBy?: UserOrderByWithAggregationInput | UserOrderByWithAggregationInput[]
-    by: UserScalarFieldEnum[] | UserScalarFieldEnum
-    having?: UserScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: UserCountAggregateInputType | true
-    _avg?: UserAvgAggregateInputType
-    _sum?: UserSumAggregateInputType
-    _min?: UserMinAggregateInputType
-    _max?: UserMaxAggregateInputType
-  }
-
-  export type UserGroupByOutputType = {
-    id: number
-    email: string
-    password: string
-    _count: UserCountAggregateOutputType | null
-    _avg: UserAvgAggregateOutputType | null
-    _sum: UserSumAggregateOutputType | null
-    _min: UserMinAggregateOutputType | null
-    _max: UserMaxAggregateOutputType | null
-  }
-
-  type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<UserGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof UserGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], UserGroupByOutputType[P]>
-            : GetScalarType<T[P], UserGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type UserSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    email?: boolean
-    password?: boolean
-  }, ExtArgs["result"]["user"]>
-
-  export type UserSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    email?: boolean
-    password?: boolean
-  }, ExtArgs["result"]["user"]>
-
-  export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    email?: boolean
-    password?: boolean
-  }, ExtArgs["result"]["user"]>
-
-  export type UserSelectScalar = {
-    id?: boolean
-    email?: boolean
-    password?: boolean
-  }
-
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password", ExtArgs["result"]["user"]>
-
-  export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "User"
-    objects: {}
-    scalars: $Extensions.GetPayloadResult<{
-      id: number
-      email: string
-      password: string
-    }, ExtArgs["result"]["user"]>
-    composites: {}
-  }
-
-  type UserGetPayload<S extends boolean | null | undefined | UserDefaultArgs> = $Result.GetResult<Prisma.$UserPayload, S>
-
-  type UserCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<UserFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: UserCountAggregateInputType | true
-    }
-
-  export interface UserDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['User'], meta: { name: 'User' } }
-    /**
-     * Find zero or one User that matches the filter.
-     * @param {UserFindUniqueArgs} args - Arguments to find a User
-     * @example
-     * // Get one User
-     * const user = await prisma.user.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends UserFindUniqueArgs>(args: SelectSubset<T, UserFindUniqueArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one User that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {UserFindUniqueOrThrowArgs} args - Arguments to find a User
-     * @example
-     * // Get one User
-     * const user = await prisma.user.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends UserFindUniqueOrThrowArgs>(args: SelectSubset<T, UserFindUniqueOrThrowArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first User that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserFindFirstArgs} args - Arguments to find a User
-     * @example
-     * // Get one User
-     * const user = await prisma.user.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends UserFindFirstArgs>(args?: SelectSubset<T, UserFindFirstArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first User that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserFindFirstOrThrowArgs} args - Arguments to find a User
-     * @example
-     * // Get one User
-     * const user = await prisma.user.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends UserFindFirstOrThrowArgs>(args?: SelectSubset<T, UserFindFirstOrThrowArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more Users that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all Users
-     * const users = await prisma.user.findMany()
-     * 
-     * // Get first 10 Users
-     * const users = await prisma.user.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const userWithIdOnly = await prisma.user.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends UserFindManyArgs>(args?: SelectSubset<T, UserFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a User.
-     * @param {UserCreateArgs} args - Arguments to create a User.
-     * @example
-     * // Create one User
-     * const User = await prisma.user.create({
-     *   data: {
-     *     // ... data to create a User
-     *   }
-     * })
-     * 
-     */
-    create<T extends UserCreateArgs>(args: SelectSubset<T, UserCreateArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many Users.
-     * @param {UserCreateManyArgs} args - Arguments to create many Users.
-     * @example
-     * // Create many Users
-     * const user = await prisma.user.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends UserCreateManyArgs>(args?: SelectSubset<T, UserCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many Users and returns the data saved in the database.
-     * @param {UserCreateManyAndReturnArgs} args - Arguments to create many Users.
-     * @example
-     * // Create many Users
-     * const user = await prisma.user.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many Users and only return the `id`
-     * const userWithIdOnly = await prisma.user.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends UserCreateManyAndReturnArgs>(args?: SelectSubset<T, UserCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a User.
-     * @param {UserDeleteArgs} args - Arguments to delete one User.
-     * @example
-     * // Delete one User
-     * const User = await prisma.user.delete({
-     *   where: {
-     *     // ... filter to delete one User
-     *   }
-     * })
-     * 
-     */
-    delete<T extends UserDeleteArgs>(args: SelectSubset<T, UserDeleteArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one User.
-     * @param {UserUpdateArgs} args - Arguments to update one User.
-     * @example
-     * // Update one User
-     * const user = await prisma.user.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends UserUpdateArgs>(args: SelectSubset<T, UserUpdateArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more Users.
-     * @param {UserDeleteManyArgs} args - Arguments to filter Users to delete.
-     * @example
-     * // Delete a few Users
-     * const { count } = await prisma.user.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends UserDeleteManyArgs>(args?: SelectSubset<T, UserDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Users.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many Users
-     * const user = await prisma.user.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends UserUpdateManyArgs>(args: SelectSubset<T, UserUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Users and returns the data updated in the database.
-     * @param {UserUpdateManyAndReturnArgs} args - Arguments to update many Users.
-     * @example
-     * // Update many Users
-     * const user = await prisma.user.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more Users and only return the `id`
-     * const userWithIdOnly = await prisma.user.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends UserUpdateManyAndReturnArgs>(args: SelectSubset<T, UserUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one User.
-     * @param {UserUpsertArgs} args - Arguments to update or create a User.
-     * @example
-     * // Update or create a User
-     * const user = await prisma.user.upsert({
-     *   create: {
-     *     // ... data to create a User
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the User we want to update
-     *   }
-     * })
-     */
-    upsert<T extends UserUpsertArgs>(args: SelectSubset<T, UserUpsertArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of Users.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserCountArgs} args - Arguments to filter Users to count.
-     * @example
-     * // Count the number of Users
-     * const count = await prisma.user.count({
-     *   where: {
-     *     // ... the filter for the Users we want to count
-     *   }
-     * })
-    **/
-    count<T extends UserCountArgs>(
-      args?: Subset<T, UserCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], UserCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a User.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends UserAggregateArgs>(args: Subset<T, UserAggregateArgs>): Prisma.PrismaPromise<GetUserAggregateType<T>>
-
-    /**
-     * Group by User.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends UserGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: UserGroupByArgs['orderBy'] }
-        : { orderBy?: UserGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, UserGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUserGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the User model
-   */
-  readonly fields: UserFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for User.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the User model
-   */
-  interface UserFieldRefs {
-    readonly id: FieldRef<"User", 'Int'>
-    readonly email: FieldRef<"User", 'String'>
-    readonly password: FieldRef<"User", 'String'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * User findUnique
-   */
-  export type UserFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the User
-     */
-    select?: UserSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
-     * Filter, which User to fetch.
-     */
-    where: UserWhereUniqueInput
-  }
-
-  /**
-   * User findUniqueOrThrow
-   */
-  export type UserFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the User
-     */
-    select?: UserSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
-     * Filter, which User to fetch.
-     */
-    where: UserWhereUniqueInput
-  }
-
-  /**
-   * User findFirst
-   */
-  export type UserFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the User
-     */
-    select?: UserSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
-     * Filter, which User to fetch.
-     */
-    where?: UserWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Users to fetch.
-     */
-    orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Users.
-     */
-    cursor?: UserWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Users from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Users.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Users.
-     */
-    distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
-  }
-
-  /**
-   * User findFirstOrThrow
-   */
-  export type UserFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the User
-     */
-    select?: UserSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
-     * Filter, which User to fetch.
-     */
-    where?: UserWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Users to fetch.
-     */
-    orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Users.
-     */
-    cursor?: UserWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Users from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Users.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Users.
-     */
-    distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
-  }
-
-  /**
-   * User findMany
-   */
-  export type UserFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the User
-     */
-    select?: UserSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
-     * Filter, which Users to fetch.
-     */
-    where?: UserWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Users to fetch.
-     */
-    orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing Users.
-     */
-    cursor?: UserWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Users from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Users.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Users.
-     */
-    distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
-  }
-
-  /**
-   * User create
-   */
-  export type UserCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the User
-     */
-    select?: UserSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
-     * The data needed to create a User.
-     */
-    data: XOR<UserCreateInput, UserUncheckedCreateInput>
-  }
-
-  /**
-   * User createMany
-   */
-  export type UserCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many Users.
-     */
-    data: UserCreateManyInput | UserCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * User createManyAndReturn
-   */
-  export type UserCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the User
-     */
-    select?: UserSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
-     * The data used to create many Users.
-     */
-    data: UserCreateManyInput | UserCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * User update
-   */
-  export type UserUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the User
-     */
-    select?: UserSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
-     * The data needed to update a User.
-     */
-    data: XOR<UserUpdateInput, UserUncheckedUpdateInput>
-    /**
-     * Choose, which User to update.
-     */
-    where: UserWhereUniqueInput
-  }
-
-  /**
-   * User updateMany
-   */
-  export type UserUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update Users.
-     */
-    data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyInput>
-    /**
-     * Filter which Users to update
-     */
-    where?: UserWhereInput
-    /**
-     * Limit how many Users to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * User updateManyAndReturn
-   */
-  export type UserUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the User
-     */
-    select?: UserSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
-     * The data used to update Users.
-     */
-    data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyInput>
-    /**
-     * Filter which Users to update
-     */
-    where?: UserWhereInput
-    /**
-     * Limit how many Users to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * User upsert
-   */
-  export type UserUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the User
-     */
-    select?: UserSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
-     * The filter to search for the User to update in case it exists.
-     */
-    where: UserWhereUniqueInput
-    /**
-     * In case the User found by the `where` argument doesn't exist, create a new User with this data.
-     */
-    create: XOR<UserCreateInput, UserUncheckedCreateInput>
-    /**
-     * In case the User was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<UserUpdateInput, UserUncheckedUpdateInput>
-  }
-
-  /**
-   * User delete
-   */
-  export type UserDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the User
-     */
-    select?: UserSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
-     * Filter which User to delete.
-     */
-    where: UserWhereUniqueInput
-  }
-
-  /**
-   * User deleteMany
-   */
-  export type UserDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which Users to delete
-     */
-    where?: UserWhereInput
-    /**
-     * Limit how many Users to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * User without action
-   */
-  export type UserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the User
-     */
-    select?: UserSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-  }
-
-
-  /**
    * Enums
    */
 
@@ -8183,17 +8388,57 @@ export namespace Prisma {
   export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
-  export const LeitorScalarFieldEnum: {
+  export const UserScalarFieldEnum: {
     id: 'id',
     email: 'email',
+    password: 'password',
+    role: 'role',
+    created_at: 'created_at'
+  };
+
+  export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+  export const LeitorScalarFieldEnum: {
+    id: 'id',
     nome: 'nome',
     cpf: 'cpf',
     data_de_nascimento: 'data_de_nascimento',
     endereco: 'endereco',
-    observacao: 'observacao'
+    observacao: 'observacao',
+    id_user: 'id_user'
   };
 
   export type LeitorScalarFieldEnum = (typeof LeitorScalarFieldEnum)[keyof typeof LeitorScalarFieldEnum]
+
+
+  export const AutorScalarFieldEnum: {
+    id: 'id',
+    nome_autor: 'nome_autor',
+    origem: 'origem',
+    biografia: 'biografia',
+    data_de_nascimento: 'data_de_nascimento',
+    nome_artistico: 'nome_artistico',
+    id_user: 'id_user'
+  };
+
+  export type AutorScalarFieldEnum = (typeof AutorScalarFieldEnum)[keyof typeof AutorScalarFieldEnum]
+
+
+  export const LivroScalarFieldEnum: {
+    id: 'id',
+    nome_livro: 'nome_livro',
+    editora: 'editora',
+    versao: 'versao',
+    ano: 'ano',
+    genero: 'genero',
+    idioma: 'idioma',
+    qtde_total: 'qtde_total',
+    qtde_disponivel: 'qtde_disponivel',
+    id_autor: 'id_autor'
+  };
+
+  export type LivroScalarFieldEnum = (typeof LivroScalarFieldEnum)[keyof typeof LivroScalarFieldEnum]
 
 
   export const EmprestimoScalarFieldEnum: {
@@ -8217,43 +8462,6 @@ export namespace Prisma {
   };
 
   export type ItemEmprestimoScalarFieldEnum = (typeof ItemEmprestimoScalarFieldEnum)[keyof typeof ItemEmprestimoScalarFieldEnum]
-
-
-  export const LivroScalarFieldEnum: {
-    id: 'id',
-    nome_livro: 'nome_livro',
-    editora: 'editora',
-    versao: 'versao',
-    ano: 'ano',
-    genero: 'genero',
-    idioma: 'idioma',
-    qtde_total: 'qtde_total',
-    qtde_disponivel: 'qtde_disponivel'
-  };
-
-  export type LivroScalarFieldEnum = (typeof LivroScalarFieldEnum)[keyof typeof LivroScalarFieldEnum]
-
-
-  export const AutorScalarFieldEnum: {
-    id: 'id',
-    nome_autor: 'nome_autor',
-    origem: 'origem',
-    biografia: 'biografia',
-    data_de_nascimento: 'data_de_nascimento',
-    nome_artistico: 'nome_artistico',
-    id_livro: 'id_livro'
-  };
-
-  export type AutorScalarFieldEnum = (typeof AutorScalarFieldEnum)[keyof typeof AutorScalarFieldEnum]
-
-
-  export const UserScalarFieldEnum: {
-    id: 'id',
-    email: 'email',
-    password: 'password'
-  };
-
-  export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -8314,6 +8522,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Role'
+   */
+  export type EnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role'>
+    
+
+
+  /**
+   * Reference to a field of type 'Role[]'
+   */
+  export type ListEnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role[]'>
+    
+
+
+  /**
    * Reference to a field of type 'DateTime'
    */
   export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
@@ -8344,35 +8566,97 @@ export namespace Prisma {
    */
 
 
+  export type UserWhereInput = {
+    AND?: UserWhereInput | UserWhereInput[]
+    OR?: UserWhereInput[]
+    NOT?: UserWhereInput | UserWhereInput[]
+    id?: IntFilter<"User"> | number
+    email?: StringFilter<"User"> | string
+    password?: StringFilter<"User"> | string
+    role?: EnumRoleFilter<"User"> | $Enums.Role
+    created_at?: DateTimeFilter<"User"> | Date | string
+    leitor?: XOR<LeitorNullableScalarRelationFilter, LeitorWhereInput> | null
+    autor?: XOR<AutorNullableScalarRelationFilter, AutorWhereInput> | null
+  }
+
+  export type UserOrderByWithRelationInput = {
+    id?: SortOrder
+    email?: SortOrder
+    password?: SortOrder
+    role?: SortOrder
+    created_at?: SortOrder
+    leitor?: LeitorOrderByWithRelationInput
+    autor?: AutorOrderByWithRelationInput
+  }
+
+  export type UserWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    email?: string
+    AND?: UserWhereInput | UserWhereInput[]
+    OR?: UserWhereInput[]
+    NOT?: UserWhereInput | UserWhereInput[]
+    password?: StringFilter<"User"> | string
+    role?: EnumRoleFilter<"User"> | $Enums.Role
+    created_at?: DateTimeFilter<"User"> | Date | string
+    leitor?: XOR<LeitorNullableScalarRelationFilter, LeitorWhereInput> | null
+    autor?: XOR<AutorNullableScalarRelationFilter, AutorWhereInput> | null
+  }, "id" | "email">
+
+  export type UserOrderByWithAggregationInput = {
+    id?: SortOrder
+    email?: SortOrder
+    password?: SortOrder
+    role?: SortOrder
+    created_at?: SortOrder
+    _count?: UserCountOrderByAggregateInput
+    _avg?: UserAvgOrderByAggregateInput
+    _max?: UserMaxOrderByAggregateInput
+    _min?: UserMinOrderByAggregateInput
+    _sum?: UserSumOrderByAggregateInput
+  }
+
+  export type UserScalarWhereWithAggregatesInput = {
+    AND?: UserScalarWhereWithAggregatesInput | UserScalarWhereWithAggregatesInput[]
+    OR?: UserScalarWhereWithAggregatesInput[]
+    NOT?: UserScalarWhereWithAggregatesInput | UserScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"User"> | number
+    email?: StringWithAggregatesFilter<"User"> | string
+    password?: StringWithAggregatesFilter<"User"> | string
+    role?: EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
+    created_at?: DateTimeWithAggregatesFilter<"User"> | Date | string
+  }
+
   export type LeitorWhereInput = {
     AND?: LeitorWhereInput | LeitorWhereInput[]
     OR?: LeitorWhereInput[]
     NOT?: LeitorWhereInput | LeitorWhereInput[]
     id?: IntFilter<"Leitor"> | number
-    email?: StringFilter<"Leitor"> | string
     nome?: StringFilter<"Leitor"> | string
     cpf?: StringFilter<"Leitor"> | string
     data_de_nascimento?: DateTimeFilter<"Leitor"> | Date | string
     endereco?: StringFilter<"Leitor"> | string
     observacao?: StringNullableFilter<"Leitor"> | string | null
+    id_user?: IntFilter<"Leitor"> | number
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     emprestimos?: EmprestimoListRelationFilter
   }
 
   export type LeitorOrderByWithRelationInput = {
     id?: SortOrder
-    email?: SortOrder
     nome?: SortOrder
     cpf?: SortOrder
     data_de_nascimento?: SortOrder
     endereco?: SortOrder
     observacao?: SortOrderInput | SortOrder
+    id_user?: SortOrder
+    user?: UserOrderByWithRelationInput
     emprestimos?: EmprestimoOrderByRelationAggregateInput
   }
 
   export type LeitorWhereUniqueInput = Prisma.AtLeast<{
     id?: number
-    email?: string
     cpf?: string
+    id_user?: number
     AND?: LeitorWhereInput | LeitorWhereInput[]
     OR?: LeitorWhereInput[]
     NOT?: LeitorWhereInput | LeitorWhereInput[]
@@ -8380,17 +8664,18 @@ export namespace Prisma {
     data_de_nascimento?: DateTimeFilter<"Leitor"> | Date | string
     endereco?: StringFilter<"Leitor"> | string
     observacao?: StringNullableFilter<"Leitor"> | string | null
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     emprestimos?: EmprestimoListRelationFilter
-  }, "id" | "email" | "cpf">
+  }, "id" | "cpf" | "id_user">
 
   export type LeitorOrderByWithAggregationInput = {
     id?: SortOrder
-    email?: SortOrder
     nome?: SortOrder
     cpf?: SortOrder
     data_de_nascimento?: SortOrder
     endereco?: SortOrder
     observacao?: SortOrderInput | SortOrder
+    id_user?: SortOrder
     _count?: LeitorCountOrderByAggregateInput
     _avg?: LeitorAvgOrderByAggregateInput
     _max?: LeitorMaxOrderByAggregateInput
@@ -8403,12 +8688,167 @@ export namespace Prisma {
     OR?: LeitorScalarWhereWithAggregatesInput[]
     NOT?: LeitorScalarWhereWithAggregatesInput | LeitorScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Leitor"> | number
-    email?: StringWithAggregatesFilter<"Leitor"> | string
     nome?: StringWithAggregatesFilter<"Leitor"> | string
     cpf?: StringWithAggregatesFilter<"Leitor"> | string
     data_de_nascimento?: DateTimeWithAggregatesFilter<"Leitor"> | Date | string
     endereco?: StringWithAggregatesFilter<"Leitor"> | string
     observacao?: StringNullableWithAggregatesFilter<"Leitor"> | string | null
+    id_user?: IntWithAggregatesFilter<"Leitor"> | number
+  }
+
+  export type AutorWhereInput = {
+    AND?: AutorWhereInput | AutorWhereInput[]
+    OR?: AutorWhereInput[]
+    NOT?: AutorWhereInput | AutorWhereInput[]
+    id?: IntFilter<"Autor"> | number
+    nome_autor?: StringFilter<"Autor"> | string
+    origem?: StringFilter<"Autor"> | string
+    biografia?: StringFilter<"Autor"> | string
+    data_de_nascimento?: DateTimeFilter<"Autor"> | Date | string
+    nome_artistico?: StringFilter<"Autor"> | string
+    id_user?: IntFilter<"Autor"> | number
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    livros?: LivroListRelationFilter
+  }
+
+  export type AutorOrderByWithRelationInput = {
+    id?: SortOrder
+    nome_autor?: SortOrder
+    origem?: SortOrder
+    biografia?: SortOrder
+    data_de_nascimento?: SortOrder
+    nome_artistico?: SortOrder
+    id_user?: SortOrder
+    user?: UserOrderByWithRelationInput
+    livros?: LivroOrderByRelationAggregateInput
+  }
+
+  export type AutorWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    id_user?: number
+    AND?: AutorWhereInput | AutorWhereInput[]
+    OR?: AutorWhereInput[]
+    NOT?: AutorWhereInput | AutorWhereInput[]
+    nome_autor?: StringFilter<"Autor"> | string
+    origem?: StringFilter<"Autor"> | string
+    biografia?: StringFilter<"Autor"> | string
+    data_de_nascimento?: DateTimeFilter<"Autor"> | Date | string
+    nome_artistico?: StringFilter<"Autor"> | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    livros?: LivroListRelationFilter
+  }, "id" | "id_user">
+
+  export type AutorOrderByWithAggregationInput = {
+    id?: SortOrder
+    nome_autor?: SortOrder
+    origem?: SortOrder
+    biografia?: SortOrder
+    data_de_nascimento?: SortOrder
+    nome_artistico?: SortOrder
+    id_user?: SortOrder
+    _count?: AutorCountOrderByAggregateInput
+    _avg?: AutorAvgOrderByAggregateInput
+    _max?: AutorMaxOrderByAggregateInput
+    _min?: AutorMinOrderByAggregateInput
+    _sum?: AutorSumOrderByAggregateInput
+  }
+
+  export type AutorScalarWhereWithAggregatesInput = {
+    AND?: AutorScalarWhereWithAggregatesInput | AutorScalarWhereWithAggregatesInput[]
+    OR?: AutorScalarWhereWithAggregatesInput[]
+    NOT?: AutorScalarWhereWithAggregatesInput | AutorScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"Autor"> | number
+    nome_autor?: StringWithAggregatesFilter<"Autor"> | string
+    origem?: StringWithAggregatesFilter<"Autor"> | string
+    biografia?: StringWithAggregatesFilter<"Autor"> | string
+    data_de_nascimento?: DateTimeWithAggregatesFilter<"Autor"> | Date | string
+    nome_artistico?: StringWithAggregatesFilter<"Autor"> | string
+    id_user?: IntWithAggregatesFilter<"Autor"> | number
+  }
+
+  export type LivroWhereInput = {
+    AND?: LivroWhereInput | LivroWhereInput[]
+    OR?: LivroWhereInput[]
+    NOT?: LivroWhereInput | LivroWhereInput[]
+    id?: IntFilter<"Livro"> | number
+    nome_livro?: StringFilter<"Livro"> | string
+    editora?: StringFilter<"Livro"> | string
+    versao?: IntFilter<"Livro"> | number
+    ano?: IntFilter<"Livro"> | number
+    genero?: StringFilter<"Livro"> | string
+    idioma?: StringFilter<"Livro"> | string
+    qtde_total?: IntFilter<"Livro"> | number
+    qtde_disponivel?: IntFilter<"Livro"> | number
+    id_autor?: IntFilter<"Livro"> | number
+    autor?: XOR<AutorScalarRelationFilter, AutorWhereInput>
+    itens_emprestimo?: ItemEmprestimoListRelationFilter
+  }
+
+  export type LivroOrderByWithRelationInput = {
+    id?: SortOrder
+    nome_livro?: SortOrder
+    editora?: SortOrder
+    versao?: SortOrder
+    ano?: SortOrder
+    genero?: SortOrder
+    idioma?: SortOrder
+    qtde_total?: SortOrder
+    qtde_disponivel?: SortOrder
+    id_autor?: SortOrder
+    autor?: AutorOrderByWithRelationInput
+    itens_emprestimo?: ItemEmprestimoOrderByRelationAggregateInput
+  }
+
+  export type LivroWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: LivroWhereInput | LivroWhereInput[]
+    OR?: LivroWhereInput[]
+    NOT?: LivroWhereInput | LivroWhereInput[]
+    nome_livro?: StringFilter<"Livro"> | string
+    editora?: StringFilter<"Livro"> | string
+    versao?: IntFilter<"Livro"> | number
+    ano?: IntFilter<"Livro"> | number
+    genero?: StringFilter<"Livro"> | string
+    idioma?: StringFilter<"Livro"> | string
+    qtde_total?: IntFilter<"Livro"> | number
+    qtde_disponivel?: IntFilter<"Livro"> | number
+    id_autor?: IntFilter<"Livro"> | number
+    autor?: XOR<AutorScalarRelationFilter, AutorWhereInput>
+    itens_emprestimo?: ItemEmprestimoListRelationFilter
+  }, "id">
+
+  export type LivroOrderByWithAggregationInput = {
+    id?: SortOrder
+    nome_livro?: SortOrder
+    editora?: SortOrder
+    versao?: SortOrder
+    ano?: SortOrder
+    genero?: SortOrder
+    idioma?: SortOrder
+    qtde_total?: SortOrder
+    qtde_disponivel?: SortOrder
+    id_autor?: SortOrder
+    _count?: LivroCountOrderByAggregateInput
+    _avg?: LivroAvgOrderByAggregateInput
+    _max?: LivroMaxOrderByAggregateInput
+    _min?: LivroMinOrderByAggregateInput
+    _sum?: LivroSumOrderByAggregateInput
+  }
+
+  export type LivroScalarWhereWithAggregatesInput = {
+    AND?: LivroScalarWhereWithAggregatesInput | LivroScalarWhereWithAggregatesInput[]
+    OR?: LivroScalarWhereWithAggregatesInput[]
+    NOT?: LivroScalarWhereWithAggregatesInput | LivroScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"Livro"> | number
+    nome_livro?: StringWithAggregatesFilter<"Livro"> | string
+    editora?: StringWithAggregatesFilter<"Livro"> | string
+    versao?: IntWithAggregatesFilter<"Livro"> | number
+    ano?: IntWithAggregatesFilter<"Livro"> | number
+    genero?: StringWithAggregatesFilter<"Livro"> | string
+    idioma?: StringWithAggregatesFilter<"Livro"> | string
+    qtde_total?: IntWithAggregatesFilter<"Livro"> | number
+    qtde_disponivel?: IntWithAggregatesFilter<"Livro"> | number
+    id_autor?: IntWithAggregatesFilter<"Livro"> | number
   }
 
   export type EmprestimoWhereInput = {
@@ -8418,7 +8858,7 @@ export namespace Prisma {
     id?: IntFilter<"Emprestimo"> | number
     data_emprestimo?: DateTimeFilter<"Emprestimo"> | Date | string
     prazo_de_devolucao?: DateTimeFilter<"Emprestimo"> | Date | string
-    observacoes?: StringFilter<"Emprestimo"> | string
+    observacoes?: StringNullableFilter<"Emprestimo"> | string | null
     id_leitor?: IntFilter<"Emprestimo"> | number
     leitor?: XOR<LeitorScalarRelationFilter, LeitorWhereInput>
     itens_emprestimo?: ItemEmprestimoListRelationFilter
@@ -8428,7 +8868,7 @@ export namespace Prisma {
     id?: SortOrder
     data_emprestimo?: SortOrder
     prazo_de_devolucao?: SortOrder
-    observacoes?: SortOrder
+    observacoes?: SortOrderInput | SortOrder
     id_leitor?: SortOrder
     leitor?: LeitorOrderByWithRelationInput
     itens_emprestimo?: ItemEmprestimoOrderByRelationAggregateInput
@@ -8441,7 +8881,7 @@ export namespace Prisma {
     NOT?: EmprestimoWhereInput | EmprestimoWhereInput[]
     data_emprestimo?: DateTimeFilter<"Emprestimo"> | Date | string
     prazo_de_devolucao?: DateTimeFilter<"Emprestimo"> | Date | string
-    observacoes?: StringFilter<"Emprestimo"> | string
+    observacoes?: StringNullableFilter<"Emprestimo"> | string | null
     id_leitor?: IntFilter<"Emprestimo"> | number
     leitor?: XOR<LeitorScalarRelationFilter, LeitorWhereInput>
     itens_emprestimo?: ItemEmprestimoListRelationFilter
@@ -8451,7 +8891,7 @@ export namespace Prisma {
     id?: SortOrder
     data_emprestimo?: SortOrder
     prazo_de_devolucao?: SortOrder
-    observacoes?: SortOrder
+    observacoes?: SortOrderInput | SortOrder
     id_leitor?: SortOrder
     _count?: EmprestimoCountOrderByAggregateInput
     _avg?: EmprestimoAvgOrderByAggregateInput
@@ -8467,7 +8907,7 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"Emprestimo"> | number
     data_emprestimo?: DateTimeWithAggregatesFilter<"Emprestimo"> | Date | string
     prazo_de_devolucao?: DateTimeWithAggregatesFilter<"Emprestimo"> | Date | string
-    observacoes?: StringWithAggregatesFilter<"Emprestimo"> | string
+    observacoes?: StringNullableWithAggregatesFilter<"Emprestimo"> | string | null
     id_leitor?: IntWithAggregatesFilter<"Emprestimo"> | number
   }
 
@@ -8536,251 +8976,120 @@ export namespace Prisma {
     id_livro?: IntWithAggregatesFilter<"ItemEmprestimo"> | number
   }
 
-  export type LivroWhereInput = {
-    AND?: LivroWhereInput | LivroWhereInput[]
-    OR?: LivroWhereInput[]
-    NOT?: LivroWhereInput | LivroWhereInput[]
-    id?: IntFilter<"Livro"> | number
-    nome_livro?: StringFilter<"Livro"> | string
-    editora?: StringFilter<"Livro"> | string
-    versao?: StringFilter<"Livro"> | string
-    ano?: StringFilter<"Livro"> | string
-    genero?: StringFilter<"Livro"> | string
-    idioma?: StringFilter<"Livro"> | string
-    qtde_total?: IntFilter<"Livro"> | number
-    qtde_disponivel?: IntFilter<"Livro"> | number
-    autores?: AutorListRelationFilter
-    itens_emprestimo?: ItemEmprestimoListRelationFilter
+  export type UserCreateInput = {
+    email: string
+    password: string
+    role?: $Enums.Role
+    created_at?: Date | string
+    leitor?: LeitorCreateNestedOneWithoutUserInput
+    autor?: AutorCreateNestedOneWithoutUserInput
   }
 
-  export type LivroOrderByWithRelationInput = {
-    id?: SortOrder
-    nome_livro?: SortOrder
-    editora?: SortOrder
-    versao?: SortOrder
-    ano?: SortOrder
-    genero?: SortOrder
-    idioma?: SortOrder
-    qtde_total?: SortOrder
-    qtde_disponivel?: SortOrder
-    autores?: AutorOrderByRelationAggregateInput
-    itens_emprestimo?: ItemEmprestimoOrderByRelationAggregateInput
-  }
-
-  export type LivroWhereUniqueInput = Prisma.AtLeast<{
+  export type UserUncheckedCreateInput = {
     id?: number
-    AND?: LivroWhereInput | LivroWhereInput[]
-    OR?: LivroWhereInput[]
-    NOT?: LivroWhereInput | LivroWhereInput[]
-    nome_livro?: StringFilter<"Livro"> | string
-    editora?: StringFilter<"Livro"> | string
-    versao?: StringFilter<"Livro"> | string
-    ano?: StringFilter<"Livro"> | string
-    genero?: StringFilter<"Livro"> | string
-    idioma?: StringFilter<"Livro"> | string
-    qtde_total?: IntFilter<"Livro"> | number
-    qtde_disponivel?: IntFilter<"Livro"> | number
-    autores?: AutorListRelationFilter
-    itens_emprestimo?: ItemEmprestimoListRelationFilter
-  }, "id">
-
-  export type LivroOrderByWithAggregationInput = {
-    id?: SortOrder
-    nome_livro?: SortOrder
-    editora?: SortOrder
-    versao?: SortOrder
-    ano?: SortOrder
-    genero?: SortOrder
-    idioma?: SortOrder
-    qtde_total?: SortOrder
-    qtde_disponivel?: SortOrder
-    _count?: LivroCountOrderByAggregateInput
-    _avg?: LivroAvgOrderByAggregateInput
-    _max?: LivroMaxOrderByAggregateInput
-    _min?: LivroMinOrderByAggregateInput
-    _sum?: LivroSumOrderByAggregateInput
+    email: string
+    password: string
+    role?: $Enums.Role
+    created_at?: Date | string
+    leitor?: LeitorUncheckedCreateNestedOneWithoutUserInput
+    autor?: AutorUncheckedCreateNestedOneWithoutUserInput
   }
 
-  export type LivroScalarWhereWithAggregatesInput = {
-    AND?: LivroScalarWhereWithAggregatesInput | LivroScalarWhereWithAggregatesInput[]
-    OR?: LivroScalarWhereWithAggregatesInput[]
-    NOT?: LivroScalarWhereWithAggregatesInput | LivroScalarWhereWithAggregatesInput[]
-    id?: IntWithAggregatesFilter<"Livro"> | number
-    nome_livro?: StringWithAggregatesFilter<"Livro"> | string
-    editora?: StringWithAggregatesFilter<"Livro"> | string
-    versao?: StringWithAggregatesFilter<"Livro"> | string
-    ano?: StringWithAggregatesFilter<"Livro"> | string
-    genero?: StringWithAggregatesFilter<"Livro"> | string
-    idioma?: StringWithAggregatesFilter<"Livro"> | string
-    qtde_total?: IntWithAggregatesFilter<"Livro"> | number
-    qtde_disponivel?: IntWithAggregatesFilter<"Livro"> | number
+  export type UserUpdateInput = {
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    leitor?: LeitorUpdateOneWithoutUserNestedInput
+    autor?: AutorUpdateOneWithoutUserNestedInput
   }
 
-  export type AutorWhereInput = {
-    AND?: AutorWhereInput | AutorWhereInput[]
-    OR?: AutorWhereInput[]
-    NOT?: AutorWhereInput | AutorWhereInput[]
-    id?: IntFilter<"Autor"> | number
-    nome_autor?: StringFilter<"Autor"> | string
-    origem?: StringFilter<"Autor"> | string
-    biografia?: StringFilter<"Autor"> | string
-    data_de_nascimento?: DateTimeFilter<"Autor"> | Date | string
-    nome_artistico?: StringFilter<"Autor"> | string
-    id_livro?: IntFilter<"Autor"> | number
-    livro?: XOR<LivroNullableScalarRelationFilter, LivroWhereInput> | null
+  export type UserUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    leitor?: LeitorUncheckedUpdateOneWithoutUserNestedInput
+    autor?: AutorUncheckedUpdateOneWithoutUserNestedInput
   }
 
-  export type AutorOrderByWithRelationInput = {
-    id?: SortOrder
-    nome_autor?: SortOrder
-    origem?: SortOrder
-    biografia?: SortOrder
-    data_de_nascimento?: SortOrder
-    nome_artistico?: SortOrder
-    id_livro?: SortOrder
-    livro?: LivroOrderByWithRelationInput
-  }
-
-  export type AutorWhereUniqueInput = Prisma.AtLeast<{
+  export type UserCreateManyInput = {
     id?: number
-    AND?: AutorWhereInput | AutorWhereInput[]
-    OR?: AutorWhereInput[]
-    NOT?: AutorWhereInput | AutorWhereInput[]
-    nome_autor?: StringFilter<"Autor"> | string
-    origem?: StringFilter<"Autor"> | string
-    biografia?: StringFilter<"Autor"> | string
-    data_de_nascimento?: DateTimeFilter<"Autor"> | Date | string
-    nome_artistico?: StringFilter<"Autor"> | string
-    id_livro?: IntFilter<"Autor"> | number
-    livro?: XOR<LivroNullableScalarRelationFilter, LivroWhereInput> | null
-  }, "id">
-
-  export type AutorOrderByWithAggregationInput = {
-    id?: SortOrder
-    nome_autor?: SortOrder
-    origem?: SortOrder
-    biografia?: SortOrder
-    data_de_nascimento?: SortOrder
-    nome_artistico?: SortOrder
-    id_livro?: SortOrder
-    _count?: AutorCountOrderByAggregateInput
-    _avg?: AutorAvgOrderByAggregateInput
-    _max?: AutorMaxOrderByAggregateInput
-    _min?: AutorMinOrderByAggregateInput
-    _sum?: AutorSumOrderByAggregateInput
+    email: string
+    password: string
+    role?: $Enums.Role
+    created_at?: Date | string
   }
 
-  export type AutorScalarWhereWithAggregatesInput = {
-    AND?: AutorScalarWhereWithAggregatesInput | AutorScalarWhereWithAggregatesInput[]
-    OR?: AutorScalarWhereWithAggregatesInput[]
-    NOT?: AutorScalarWhereWithAggregatesInput | AutorScalarWhereWithAggregatesInput[]
-    id?: IntWithAggregatesFilter<"Autor"> | number
-    nome_autor?: StringWithAggregatesFilter<"Autor"> | string
-    origem?: StringWithAggregatesFilter<"Autor"> | string
-    biografia?: StringWithAggregatesFilter<"Autor"> | string
-    data_de_nascimento?: DateTimeWithAggregatesFilter<"Autor"> | Date | string
-    nome_artistico?: StringWithAggregatesFilter<"Autor"> | string
-    id_livro?: IntWithAggregatesFilter<"Autor"> | number
+  export type UserUpdateManyMutationInput = {
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type UserWhereInput = {
-    AND?: UserWhereInput | UserWhereInput[]
-    OR?: UserWhereInput[]
-    NOT?: UserWhereInput | UserWhereInput[]
-    id?: IntFilter<"User"> | number
-    email?: StringFilter<"User"> | string
-    password?: StringFilter<"User"> | string
-  }
-
-  export type UserOrderByWithRelationInput = {
-    id?: SortOrder
-    email?: SortOrder
-    password?: SortOrder
-  }
-
-  export type UserWhereUniqueInput = Prisma.AtLeast<{
-    id?: number
-    email?: string
-    AND?: UserWhereInput | UserWhereInput[]
-    OR?: UserWhereInput[]
-    NOT?: UserWhereInput | UserWhereInput[]
-    password?: StringFilter<"User"> | string
-  }, "id" | "email">
-
-  export type UserOrderByWithAggregationInput = {
-    id?: SortOrder
-    email?: SortOrder
-    password?: SortOrder
-    _count?: UserCountOrderByAggregateInput
-    _avg?: UserAvgOrderByAggregateInput
-    _max?: UserMaxOrderByAggregateInput
-    _min?: UserMinOrderByAggregateInput
-    _sum?: UserSumOrderByAggregateInput
-  }
-
-  export type UserScalarWhereWithAggregatesInput = {
-    AND?: UserScalarWhereWithAggregatesInput | UserScalarWhereWithAggregatesInput[]
-    OR?: UserScalarWhereWithAggregatesInput[]
-    NOT?: UserScalarWhereWithAggregatesInput | UserScalarWhereWithAggregatesInput[]
-    id?: IntWithAggregatesFilter<"User"> | number
-    email?: StringWithAggregatesFilter<"User"> | string
-    password?: StringWithAggregatesFilter<"User"> | string
+  export type UserUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type LeitorCreateInput = {
-    email: string
     nome: string
     cpf: string
     data_de_nascimento: Date | string
     endereco: string
     observacao?: string | null
+    user: UserCreateNestedOneWithoutLeitorInput
     emprestimos?: EmprestimoCreateNestedManyWithoutLeitorInput
   }
 
   export type LeitorUncheckedCreateInput = {
     id?: number
-    email: string
     nome: string
     cpf: string
     data_de_nascimento: Date | string
     endereco: string
     observacao?: string | null
+    id_user: number
     emprestimos?: EmprestimoUncheckedCreateNestedManyWithoutLeitorInput
   }
 
   export type LeitorUpdateInput = {
-    email?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     cpf?: StringFieldUpdateOperationsInput | string
     data_de_nascimento?: DateTimeFieldUpdateOperationsInput | Date | string
     endereco?: StringFieldUpdateOperationsInput | string
     observacao?: NullableStringFieldUpdateOperationsInput | string | null
+    user?: UserUpdateOneRequiredWithoutLeitorNestedInput
     emprestimos?: EmprestimoUpdateManyWithoutLeitorNestedInput
   }
 
   export type LeitorUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
-    email?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     cpf?: StringFieldUpdateOperationsInput | string
     data_de_nascimento?: DateTimeFieldUpdateOperationsInput | Date | string
     endereco?: StringFieldUpdateOperationsInput | string
     observacao?: NullableStringFieldUpdateOperationsInput | string | null
+    id_user?: IntFieldUpdateOperationsInput | number
     emprestimos?: EmprestimoUncheckedUpdateManyWithoutLeitorNestedInput
   }
 
   export type LeitorCreateManyInput = {
     id?: number
-    email: string
     nome: string
     cpf: string
     data_de_nascimento: Date | string
     endereco: string
     observacao?: string | null
+    id_user: number
   }
 
   export type LeitorUpdateManyMutationInput = {
-    email?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     cpf?: StringFieldUpdateOperationsInput | string
     data_de_nascimento?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -8790,18 +9099,179 @@ export namespace Prisma {
 
   export type LeitorUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
-    email?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     cpf?: StringFieldUpdateOperationsInput | string
     data_de_nascimento?: DateTimeFieldUpdateOperationsInput | Date | string
     endereco?: StringFieldUpdateOperationsInput | string
     observacao?: NullableStringFieldUpdateOperationsInput | string | null
+    id_user?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type AutorCreateInput = {
+    nome_autor: string
+    origem: string
+    biografia: string
+    data_de_nascimento: Date | string
+    nome_artistico: string
+    user: UserCreateNestedOneWithoutAutorInput
+    livros?: LivroCreateNestedManyWithoutAutorInput
+  }
+
+  export type AutorUncheckedCreateInput = {
+    id?: number
+    nome_autor: string
+    origem: string
+    biografia: string
+    data_de_nascimento: Date | string
+    nome_artistico: string
+    id_user: number
+    livros?: LivroUncheckedCreateNestedManyWithoutAutorInput
+  }
+
+  export type AutorUpdateInput = {
+    nome_autor?: StringFieldUpdateOperationsInput | string
+    origem?: StringFieldUpdateOperationsInput | string
+    biografia?: StringFieldUpdateOperationsInput | string
+    data_de_nascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    nome_artistico?: StringFieldUpdateOperationsInput | string
+    user?: UserUpdateOneRequiredWithoutAutorNestedInput
+    livros?: LivroUpdateManyWithoutAutorNestedInput
+  }
+
+  export type AutorUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    nome_autor?: StringFieldUpdateOperationsInput | string
+    origem?: StringFieldUpdateOperationsInput | string
+    biografia?: StringFieldUpdateOperationsInput | string
+    data_de_nascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    nome_artistico?: StringFieldUpdateOperationsInput | string
+    id_user?: IntFieldUpdateOperationsInput | number
+    livros?: LivroUncheckedUpdateManyWithoutAutorNestedInput
+  }
+
+  export type AutorCreateManyInput = {
+    id?: number
+    nome_autor: string
+    origem: string
+    biografia: string
+    data_de_nascimento: Date | string
+    nome_artistico: string
+    id_user: number
+  }
+
+  export type AutorUpdateManyMutationInput = {
+    nome_autor?: StringFieldUpdateOperationsInput | string
+    origem?: StringFieldUpdateOperationsInput | string
+    biografia?: StringFieldUpdateOperationsInput | string
+    data_de_nascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    nome_artistico?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type AutorUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    nome_autor?: StringFieldUpdateOperationsInput | string
+    origem?: StringFieldUpdateOperationsInput | string
+    biografia?: StringFieldUpdateOperationsInput | string
+    data_de_nascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    nome_artistico?: StringFieldUpdateOperationsInput | string
+    id_user?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type LivroCreateInput = {
+    nome_livro: string
+    editora: string
+    versao: number
+    ano: number
+    genero: string
+    idioma: string
+    qtde_total: number
+    qtde_disponivel: number
+    autor: AutorCreateNestedOneWithoutLivrosInput
+    itens_emprestimo?: ItemEmprestimoCreateNestedManyWithoutLivroInput
+  }
+
+  export type LivroUncheckedCreateInput = {
+    id?: number
+    nome_livro: string
+    editora: string
+    versao: number
+    ano: number
+    genero: string
+    idioma: string
+    qtde_total: number
+    qtde_disponivel: number
+    id_autor: number
+    itens_emprestimo?: ItemEmprestimoUncheckedCreateNestedManyWithoutLivroInput
+  }
+
+  export type LivroUpdateInput = {
+    nome_livro?: StringFieldUpdateOperationsInput | string
+    editora?: StringFieldUpdateOperationsInput | string
+    versao?: IntFieldUpdateOperationsInput | number
+    ano?: IntFieldUpdateOperationsInput | number
+    genero?: StringFieldUpdateOperationsInput | string
+    idioma?: StringFieldUpdateOperationsInput | string
+    qtde_total?: IntFieldUpdateOperationsInput | number
+    qtde_disponivel?: IntFieldUpdateOperationsInput | number
+    autor?: AutorUpdateOneRequiredWithoutLivrosNestedInput
+    itens_emprestimo?: ItemEmprestimoUpdateManyWithoutLivroNestedInput
+  }
+
+  export type LivroUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    nome_livro?: StringFieldUpdateOperationsInput | string
+    editora?: StringFieldUpdateOperationsInput | string
+    versao?: IntFieldUpdateOperationsInput | number
+    ano?: IntFieldUpdateOperationsInput | number
+    genero?: StringFieldUpdateOperationsInput | string
+    idioma?: StringFieldUpdateOperationsInput | string
+    qtde_total?: IntFieldUpdateOperationsInput | number
+    qtde_disponivel?: IntFieldUpdateOperationsInput | number
+    id_autor?: IntFieldUpdateOperationsInput | number
+    itens_emprestimo?: ItemEmprestimoUncheckedUpdateManyWithoutLivroNestedInput
+  }
+
+  export type LivroCreateManyInput = {
+    id?: number
+    nome_livro: string
+    editora: string
+    versao: number
+    ano: number
+    genero: string
+    idioma: string
+    qtde_total: number
+    qtde_disponivel: number
+    id_autor: number
+  }
+
+  export type LivroUpdateManyMutationInput = {
+    nome_livro?: StringFieldUpdateOperationsInput | string
+    editora?: StringFieldUpdateOperationsInput | string
+    versao?: IntFieldUpdateOperationsInput | number
+    ano?: IntFieldUpdateOperationsInput | number
+    genero?: StringFieldUpdateOperationsInput | string
+    idioma?: StringFieldUpdateOperationsInput | string
+    qtde_total?: IntFieldUpdateOperationsInput | number
+    qtde_disponivel?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type LivroUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    nome_livro?: StringFieldUpdateOperationsInput | string
+    editora?: StringFieldUpdateOperationsInput | string
+    versao?: IntFieldUpdateOperationsInput | number
+    ano?: IntFieldUpdateOperationsInput | number
+    genero?: StringFieldUpdateOperationsInput | string
+    idioma?: StringFieldUpdateOperationsInput | string
+    qtde_total?: IntFieldUpdateOperationsInput | number
+    qtde_disponivel?: IntFieldUpdateOperationsInput | number
+    id_autor?: IntFieldUpdateOperationsInput | number
   }
 
   export type EmprestimoCreateInput = {
     data_emprestimo: Date | string
     prazo_de_devolucao: Date | string
-    observacoes: string
+    observacoes?: string | null
     leitor: LeitorCreateNestedOneWithoutEmprestimosInput
     itens_emprestimo?: ItemEmprestimoCreateNestedManyWithoutEmprestimoInput
   }
@@ -8810,7 +9280,7 @@ export namespace Prisma {
     id?: number
     data_emprestimo: Date | string
     prazo_de_devolucao: Date | string
-    observacoes: string
+    observacoes?: string | null
     id_leitor: number
     itens_emprestimo?: ItemEmprestimoUncheckedCreateNestedManyWithoutEmprestimoInput
   }
@@ -8818,7 +9288,7 @@ export namespace Prisma {
   export type EmprestimoUpdateInput = {
     data_emprestimo?: DateTimeFieldUpdateOperationsInput | Date | string
     prazo_de_devolucao?: DateTimeFieldUpdateOperationsInput | Date | string
-    observacoes?: StringFieldUpdateOperationsInput | string
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
     leitor?: LeitorUpdateOneRequiredWithoutEmprestimosNestedInput
     itens_emprestimo?: ItemEmprestimoUpdateManyWithoutEmprestimoNestedInput
   }
@@ -8827,7 +9297,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     data_emprestimo?: DateTimeFieldUpdateOperationsInput | Date | string
     prazo_de_devolucao?: DateTimeFieldUpdateOperationsInput | Date | string
-    observacoes?: StringFieldUpdateOperationsInput | string
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
     id_leitor?: IntFieldUpdateOperationsInput | number
     itens_emprestimo?: ItemEmprestimoUncheckedUpdateManyWithoutEmprestimoNestedInput
   }
@@ -8836,21 +9306,21 @@ export namespace Prisma {
     id?: number
     data_emprestimo: Date | string
     prazo_de_devolucao: Date | string
-    observacoes: string
+    observacoes?: string | null
     id_leitor: number
   }
 
   export type EmprestimoUpdateManyMutationInput = {
     data_emprestimo?: DateTimeFieldUpdateOperationsInput | Date | string
     prazo_de_devolucao?: DateTimeFieldUpdateOperationsInput | Date | string
-    observacoes?: StringFieldUpdateOperationsInput | string
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type EmprestimoUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     data_emprestimo?: DateTimeFieldUpdateOperationsInput | Date | string
     prazo_de_devolucao?: DateTimeFieldUpdateOperationsInput | Date | string
-    observacoes?: StringFieldUpdateOperationsInput | string
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
     id_leitor?: IntFieldUpdateOperationsInput | number
   }
 
@@ -8912,200 +9382,6 @@ export namespace Prisma {
     id_livro?: IntFieldUpdateOperationsInput | number
   }
 
-  export type LivroCreateInput = {
-    nome_livro: string
-    editora: string
-    versao: string
-    ano: string
-    genero: string
-    idioma: string
-    qtde_total: number
-    qtde_disponivel: number
-    autores?: AutorCreateNestedManyWithoutLivroInput
-    itens_emprestimo?: ItemEmprestimoCreateNestedManyWithoutLivroInput
-  }
-
-  export type LivroUncheckedCreateInput = {
-    id?: number
-    nome_livro: string
-    editora: string
-    versao: string
-    ano: string
-    genero: string
-    idioma: string
-    qtde_total: number
-    qtde_disponivel: number
-    autores?: AutorUncheckedCreateNestedManyWithoutLivroInput
-    itens_emprestimo?: ItemEmprestimoUncheckedCreateNestedManyWithoutLivroInput
-  }
-
-  export type LivroUpdateInput = {
-    nome_livro?: StringFieldUpdateOperationsInput | string
-    editora?: StringFieldUpdateOperationsInput | string
-    versao?: StringFieldUpdateOperationsInput | string
-    ano?: StringFieldUpdateOperationsInput | string
-    genero?: StringFieldUpdateOperationsInput | string
-    idioma?: StringFieldUpdateOperationsInput | string
-    qtde_total?: IntFieldUpdateOperationsInput | number
-    qtde_disponivel?: IntFieldUpdateOperationsInput | number
-    autores?: AutorUpdateManyWithoutLivroNestedInput
-    itens_emprestimo?: ItemEmprestimoUpdateManyWithoutLivroNestedInput
-  }
-
-  export type LivroUncheckedUpdateInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    nome_livro?: StringFieldUpdateOperationsInput | string
-    editora?: StringFieldUpdateOperationsInput | string
-    versao?: StringFieldUpdateOperationsInput | string
-    ano?: StringFieldUpdateOperationsInput | string
-    genero?: StringFieldUpdateOperationsInput | string
-    idioma?: StringFieldUpdateOperationsInput | string
-    qtde_total?: IntFieldUpdateOperationsInput | number
-    qtde_disponivel?: IntFieldUpdateOperationsInput | number
-    autores?: AutorUncheckedUpdateManyWithoutLivroNestedInput
-    itens_emprestimo?: ItemEmprestimoUncheckedUpdateManyWithoutLivroNestedInput
-  }
-
-  export type LivroCreateManyInput = {
-    id?: number
-    nome_livro: string
-    editora: string
-    versao: string
-    ano: string
-    genero: string
-    idioma: string
-    qtde_total: number
-    qtde_disponivel: number
-  }
-
-  export type LivroUpdateManyMutationInput = {
-    nome_livro?: StringFieldUpdateOperationsInput | string
-    editora?: StringFieldUpdateOperationsInput | string
-    versao?: StringFieldUpdateOperationsInput | string
-    ano?: StringFieldUpdateOperationsInput | string
-    genero?: StringFieldUpdateOperationsInput | string
-    idioma?: StringFieldUpdateOperationsInput | string
-    qtde_total?: IntFieldUpdateOperationsInput | number
-    qtde_disponivel?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type LivroUncheckedUpdateManyInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    nome_livro?: StringFieldUpdateOperationsInput | string
-    editora?: StringFieldUpdateOperationsInput | string
-    versao?: StringFieldUpdateOperationsInput | string
-    ano?: StringFieldUpdateOperationsInput | string
-    genero?: StringFieldUpdateOperationsInput | string
-    idioma?: StringFieldUpdateOperationsInput | string
-    qtde_total?: IntFieldUpdateOperationsInput | number
-    qtde_disponivel?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type AutorCreateInput = {
-    nome_autor: string
-    origem: string
-    biografia: string
-    data_de_nascimento: Date | string
-    nome_artistico: string
-    livro?: LivroCreateNestedOneWithoutAutoresInput
-  }
-
-  export type AutorUncheckedCreateInput = {
-    id?: number
-    nome_autor: string
-    origem: string
-    biografia: string
-    data_de_nascimento: Date | string
-    nome_artistico: string
-    id_livro: number
-  }
-
-  export type AutorUpdateInput = {
-    nome_autor?: StringFieldUpdateOperationsInput | string
-    origem?: StringFieldUpdateOperationsInput | string
-    biografia?: StringFieldUpdateOperationsInput | string
-    data_de_nascimento?: DateTimeFieldUpdateOperationsInput | Date | string
-    nome_artistico?: StringFieldUpdateOperationsInput | string
-    livro?: LivroUpdateOneWithoutAutoresNestedInput
-  }
-
-  export type AutorUncheckedUpdateInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    nome_autor?: StringFieldUpdateOperationsInput | string
-    origem?: StringFieldUpdateOperationsInput | string
-    biografia?: StringFieldUpdateOperationsInput | string
-    data_de_nascimento?: DateTimeFieldUpdateOperationsInput | Date | string
-    nome_artistico?: StringFieldUpdateOperationsInput | string
-    id_livro?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type AutorCreateManyInput = {
-    id?: number
-    nome_autor: string
-    origem: string
-    biografia: string
-    data_de_nascimento: Date | string
-    nome_artistico: string
-    id_livro: number
-  }
-
-  export type AutorUpdateManyMutationInput = {
-    nome_autor?: StringFieldUpdateOperationsInput | string
-    origem?: StringFieldUpdateOperationsInput | string
-    biografia?: StringFieldUpdateOperationsInput | string
-    data_de_nascimento?: DateTimeFieldUpdateOperationsInput | Date | string
-    nome_artistico?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type AutorUncheckedUpdateManyInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    nome_autor?: StringFieldUpdateOperationsInput | string
-    origem?: StringFieldUpdateOperationsInput | string
-    biografia?: StringFieldUpdateOperationsInput | string
-    data_de_nascimento?: DateTimeFieldUpdateOperationsInput | Date | string
-    nome_artistico?: StringFieldUpdateOperationsInput | string
-    id_livro?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type UserCreateInput = {
-    email: string
-    password: string
-  }
-
-  export type UserUncheckedCreateInput = {
-    id?: number
-    email: string
-    password: string
-  }
-
-  export type UserUpdateInput = {
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type UserUncheckedUpdateInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type UserCreateManyInput = {
-    id?: number
-    email: string
-    password: string
-  }
-
-  export type UserUpdateManyMutationInput = {
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type UserUncheckedUpdateManyInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-  }
-
   export type IntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -9132,6 +9408,13 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
+  export type EnumRoleFilter<$PrismaModel = never> = {
+    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumRoleFilter<$PrismaModel> | $Enums.Role
+  }
+
   export type DateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -9143,71 +9426,45 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
-  export type StringNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  export type LeitorNullableScalarRelationFilter = {
+    is?: LeitorWhereInput | null
+    isNot?: LeitorWhereInput | null
   }
 
-  export type EmprestimoListRelationFilter = {
-    every?: EmprestimoWhereInput
-    some?: EmprestimoWhereInput
-    none?: EmprestimoWhereInput
+  export type AutorNullableScalarRelationFilter = {
+    is?: AutorWhereInput | null
+    isNot?: AutorWhereInput | null
   }
 
-  export type SortOrderInput = {
-    sort: SortOrder
-    nulls?: NullsOrder
-  }
-
-  export type EmprestimoOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type LeitorCountOrderByAggregateInput = {
+  export type UserCountOrderByAggregateInput = {
     id?: SortOrder
     email?: SortOrder
-    nome?: SortOrder
-    cpf?: SortOrder
-    data_de_nascimento?: SortOrder
-    endereco?: SortOrder
-    observacao?: SortOrder
+    password?: SortOrder
+    role?: SortOrder
+    created_at?: SortOrder
   }
 
-  export type LeitorAvgOrderByAggregateInput = {
+  export type UserAvgOrderByAggregateInput = {
     id?: SortOrder
   }
 
-  export type LeitorMaxOrderByAggregateInput = {
+  export type UserMaxOrderByAggregateInput = {
     id?: SortOrder
     email?: SortOrder
-    nome?: SortOrder
-    cpf?: SortOrder
-    data_de_nascimento?: SortOrder
-    endereco?: SortOrder
-    observacao?: SortOrder
+    password?: SortOrder
+    role?: SortOrder
+    created_at?: SortOrder
   }
 
-  export type LeitorMinOrderByAggregateInput = {
+  export type UserMinOrderByAggregateInput = {
     id?: SortOrder
     email?: SortOrder
-    nome?: SortOrder
-    cpf?: SortOrder
-    data_de_nascimento?: SortOrder
-    endereco?: SortOrder
-    observacao?: SortOrder
+    password?: SortOrder
+    role?: SortOrder
+    created_at?: SortOrder
   }
 
-  export type LeitorSumOrderByAggregateInput = {
+  export type UserSumOrderByAggregateInput = {
     id?: SortOrder
   }
 
@@ -9245,6 +9502,16 @@ export namespace Prisma {
     _max?: NestedStringFilter<$PrismaModel>
   }
 
+  export type EnumRoleWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumRoleWithAggregatesFilter<$PrismaModel> | $Enums.Role
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumRoleFilter<$PrismaModel>
+    _max?: NestedEnumRoleFilter<$PrismaModel>
+  }
+
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -9257,6 +9524,81 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type StringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
+  export type UserScalarRelationFilter = {
+    is?: UserWhereInput
+    isNot?: UserWhereInput
+  }
+
+  export type EmprestimoListRelationFilter = {
+    every?: EmprestimoWhereInput
+    some?: EmprestimoWhereInput
+    none?: EmprestimoWhereInput
+  }
+
+  export type SortOrderInput = {
+    sort: SortOrder
+    nulls?: NullsOrder
+  }
+
+  export type EmprestimoOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type LeitorCountOrderByAggregateInput = {
+    id?: SortOrder
+    nome?: SortOrder
+    cpf?: SortOrder
+    data_de_nascimento?: SortOrder
+    endereco?: SortOrder
+    observacao?: SortOrder
+    id_user?: SortOrder
+  }
+
+  export type LeitorAvgOrderByAggregateInput = {
+    id?: SortOrder
+    id_user?: SortOrder
+  }
+
+  export type LeitorMaxOrderByAggregateInput = {
+    id?: SortOrder
+    nome?: SortOrder
+    cpf?: SortOrder
+    data_de_nascimento?: SortOrder
+    endereco?: SortOrder
+    observacao?: SortOrder
+    id_user?: SortOrder
+  }
+
+  export type LeitorMinOrderByAggregateInput = {
+    id?: SortOrder
+    nome?: SortOrder
+    cpf?: SortOrder
+    data_de_nascimento?: SortOrder
+    endereco?: SortOrder
+    observacao?: SortOrder
+    id_user?: SortOrder
+  }
+
+  export type LeitorSumOrderByAggregateInput = {
+    id?: SortOrder
+    id_user?: SortOrder
   }
 
   export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -9277,9 +9619,59 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
-  export type LeitorScalarRelationFilter = {
-    is?: LeitorWhereInput
-    isNot?: LeitorWhereInput
+  export type LivroListRelationFilter = {
+    every?: LivroWhereInput
+    some?: LivroWhereInput
+    none?: LivroWhereInput
+  }
+
+  export type LivroOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AutorCountOrderByAggregateInput = {
+    id?: SortOrder
+    nome_autor?: SortOrder
+    origem?: SortOrder
+    biografia?: SortOrder
+    data_de_nascimento?: SortOrder
+    nome_artistico?: SortOrder
+    id_user?: SortOrder
+  }
+
+  export type AutorAvgOrderByAggregateInput = {
+    id?: SortOrder
+    id_user?: SortOrder
+  }
+
+  export type AutorMaxOrderByAggregateInput = {
+    id?: SortOrder
+    nome_autor?: SortOrder
+    origem?: SortOrder
+    biografia?: SortOrder
+    data_de_nascimento?: SortOrder
+    nome_artistico?: SortOrder
+    id_user?: SortOrder
+  }
+
+  export type AutorMinOrderByAggregateInput = {
+    id?: SortOrder
+    nome_autor?: SortOrder
+    origem?: SortOrder
+    biografia?: SortOrder
+    data_de_nascimento?: SortOrder
+    nome_artistico?: SortOrder
+    id_user?: SortOrder
+  }
+
+  export type AutorSumOrderByAggregateInput = {
+    id?: SortOrder
+    id_user?: SortOrder
+  }
+
+  export type AutorScalarRelationFilter = {
+    is?: AutorWhereInput
+    isNot?: AutorWhereInput
   }
 
   export type ItemEmprestimoListRelationFilter = {
@@ -9290,6 +9682,68 @@ export namespace Prisma {
 
   export type ItemEmprestimoOrderByRelationAggregateInput = {
     _count?: SortOrder
+  }
+
+  export type LivroCountOrderByAggregateInput = {
+    id?: SortOrder
+    nome_livro?: SortOrder
+    editora?: SortOrder
+    versao?: SortOrder
+    ano?: SortOrder
+    genero?: SortOrder
+    idioma?: SortOrder
+    qtde_total?: SortOrder
+    qtde_disponivel?: SortOrder
+    id_autor?: SortOrder
+  }
+
+  export type LivroAvgOrderByAggregateInput = {
+    id?: SortOrder
+    versao?: SortOrder
+    ano?: SortOrder
+    qtde_total?: SortOrder
+    qtde_disponivel?: SortOrder
+    id_autor?: SortOrder
+  }
+
+  export type LivroMaxOrderByAggregateInput = {
+    id?: SortOrder
+    nome_livro?: SortOrder
+    editora?: SortOrder
+    versao?: SortOrder
+    ano?: SortOrder
+    genero?: SortOrder
+    idioma?: SortOrder
+    qtde_total?: SortOrder
+    qtde_disponivel?: SortOrder
+    id_autor?: SortOrder
+  }
+
+  export type LivroMinOrderByAggregateInput = {
+    id?: SortOrder
+    nome_livro?: SortOrder
+    editora?: SortOrder
+    versao?: SortOrder
+    ano?: SortOrder
+    genero?: SortOrder
+    idioma?: SortOrder
+    qtde_total?: SortOrder
+    qtde_disponivel?: SortOrder
+    id_autor?: SortOrder
+  }
+
+  export type LivroSumOrderByAggregateInput = {
+    id?: SortOrder
+    versao?: SortOrder
+    ano?: SortOrder
+    qtde_total?: SortOrder
+    qtde_disponivel?: SortOrder
+    id_autor?: SortOrder
+  }
+
+  export type LeitorScalarRelationFilter = {
+    is?: LeitorWhereInput
+    isNot?: LeitorWhereInput
   }
 
   export type EmprestimoCountOrderByAggregateInput = {
@@ -9377,133 +9831,94 @@ export namespace Prisma {
     id_livro?: SortOrder
   }
 
-  export type AutorListRelationFilter = {
-    every?: AutorWhereInput
-    some?: AutorWhereInput
-    none?: AutorWhereInput
+  export type LeitorCreateNestedOneWithoutUserInput = {
+    create?: XOR<LeitorCreateWithoutUserInput, LeitorUncheckedCreateWithoutUserInput>
+    connectOrCreate?: LeitorCreateOrConnectWithoutUserInput
+    connect?: LeitorWhereUniqueInput
   }
 
-  export type AutorOrderByRelationAggregateInput = {
-    _count?: SortOrder
+  export type AutorCreateNestedOneWithoutUserInput = {
+    create?: XOR<AutorCreateWithoutUserInput, AutorUncheckedCreateWithoutUserInput>
+    connectOrCreate?: AutorCreateOrConnectWithoutUserInput
+    connect?: AutorWhereUniqueInput
   }
 
-  export type LivroCountOrderByAggregateInput = {
-    id?: SortOrder
-    nome_livro?: SortOrder
-    editora?: SortOrder
-    versao?: SortOrder
-    ano?: SortOrder
-    genero?: SortOrder
-    idioma?: SortOrder
-    qtde_total?: SortOrder
-    qtde_disponivel?: SortOrder
+  export type LeitorUncheckedCreateNestedOneWithoutUserInput = {
+    create?: XOR<LeitorCreateWithoutUserInput, LeitorUncheckedCreateWithoutUserInput>
+    connectOrCreate?: LeitorCreateOrConnectWithoutUserInput
+    connect?: LeitorWhereUniqueInput
   }
 
-  export type LivroAvgOrderByAggregateInput = {
-    id?: SortOrder
-    qtde_total?: SortOrder
-    qtde_disponivel?: SortOrder
+  export type AutorUncheckedCreateNestedOneWithoutUserInput = {
+    create?: XOR<AutorCreateWithoutUserInput, AutorUncheckedCreateWithoutUserInput>
+    connectOrCreate?: AutorCreateOrConnectWithoutUserInput
+    connect?: AutorWhereUniqueInput
   }
 
-  export type LivroMaxOrderByAggregateInput = {
-    id?: SortOrder
-    nome_livro?: SortOrder
-    editora?: SortOrder
-    versao?: SortOrder
-    ano?: SortOrder
-    genero?: SortOrder
-    idioma?: SortOrder
-    qtde_total?: SortOrder
-    qtde_disponivel?: SortOrder
+  export type StringFieldUpdateOperationsInput = {
+    set?: string
   }
 
-  export type LivroMinOrderByAggregateInput = {
-    id?: SortOrder
-    nome_livro?: SortOrder
-    editora?: SortOrder
-    versao?: SortOrder
-    ano?: SortOrder
-    genero?: SortOrder
-    idioma?: SortOrder
-    qtde_total?: SortOrder
-    qtde_disponivel?: SortOrder
+  export type EnumRoleFieldUpdateOperationsInput = {
+    set?: $Enums.Role
   }
 
-  export type LivroSumOrderByAggregateInput = {
-    id?: SortOrder
-    qtde_total?: SortOrder
-    qtde_disponivel?: SortOrder
+  export type DateTimeFieldUpdateOperationsInput = {
+    set?: Date | string
   }
 
-  export type LivroNullableScalarRelationFilter = {
-    is?: LivroWhereInput | null
-    isNot?: LivroWhereInput | null
+  export type LeitorUpdateOneWithoutUserNestedInput = {
+    create?: XOR<LeitorCreateWithoutUserInput, LeitorUncheckedCreateWithoutUserInput>
+    connectOrCreate?: LeitorCreateOrConnectWithoutUserInput
+    upsert?: LeitorUpsertWithoutUserInput
+    disconnect?: LeitorWhereInput | boolean
+    delete?: LeitorWhereInput | boolean
+    connect?: LeitorWhereUniqueInput
+    update?: XOR<XOR<LeitorUpdateToOneWithWhereWithoutUserInput, LeitorUpdateWithoutUserInput>, LeitorUncheckedUpdateWithoutUserInput>
   }
 
-  export type AutorCountOrderByAggregateInput = {
-    id?: SortOrder
-    nome_autor?: SortOrder
-    origem?: SortOrder
-    biografia?: SortOrder
-    data_de_nascimento?: SortOrder
-    nome_artistico?: SortOrder
-    id_livro?: SortOrder
+  export type AutorUpdateOneWithoutUserNestedInput = {
+    create?: XOR<AutorCreateWithoutUserInput, AutorUncheckedCreateWithoutUserInput>
+    connectOrCreate?: AutorCreateOrConnectWithoutUserInput
+    upsert?: AutorUpsertWithoutUserInput
+    disconnect?: AutorWhereInput | boolean
+    delete?: AutorWhereInput | boolean
+    connect?: AutorWhereUniqueInput
+    update?: XOR<XOR<AutorUpdateToOneWithWhereWithoutUserInput, AutorUpdateWithoutUserInput>, AutorUncheckedUpdateWithoutUserInput>
   }
 
-  export type AutorAvgOrderByAggregateInput = {
-    id?: SortOrder
-    id_livro?: SortOrder
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
-  export type AutorMaxOrderByAggregateInput = {
-    id?: SortOrder
-    nome_autor?: SortOrder
-    origem?: SortOrder
-    biografia?: SortOrder
-    data_de_nascimento?: SortOrder
-    nome_artistico?: SortOrder
-    id_livro?: SortOrder
+  export type LeitorUncheckedUpdateOneWithoutUserNestedInput = {
+    create?: XOR<LeitorCreateWithoutUserInput, LeitorUncheckedCreateWithoutUserInput>
+    connectOrCreate?: LeitorCreateOrConnectWithoutUserInput
+    upsert?: LeitorUpsertWithoutUserInput
+    disconnect?: LeitorWhereInput | boolean
+    delete?: LeitorWhereInput | boolean
+    connect?: LeitorWhereUniqueInput
+    update?: XOR<XOR<LeitorUpdateToOneWithWhereWithoutUserInput, LeitorUpdateWithoutUserInput>, LeitorUncheckedUpdateWithoutUserInput>
   }
 
-  export type AutorMinOrderByAggregateInput = {
-    id?: SortOrder
-    nome_autor?: SortOrder
-    origem?: SortOrder
-    biografia?: SortOrder
-    data_de_nascimento?: SortOrder
-    nome_artistico?: SortOrder
-    id_livro?: SortOrder
+  export type AutorUncheckedUpdateOneWithoutUserNestedInput = {
+    create?: XOR<AutorCreateWithoutUserInput, AutorUncheckedCreateWithoutUserInput>
+    connectOrCreate?: AutorCreateOrConnectWithoutUserInput
+    upsert?: AutorUpsertWithoutUserInput
+    disconnect?: AutorWhereInput | boolean
+    delete?: AutorWhereInput | boolean
+    connect?: AutorWhereUniqueInput
+    update?: XOR<XOR<AutorUpdateToOneWithWhereWithoutUserInput, AutorUpdateWithoutUserInput>, AutorUncheckedUpdateWithoutUserInput>
   }
 
-  export type AutorSumOrderByAggregateInput = {
-    id?: SortOrder
-    id_livro?: SortOrder
-  }
-
-  export type UserCountOrderByAggregateInput = {
-    id?: SortOrder
-    email?: SortOrder
-    password?: SortOrder
-  }
-
-  export type UserAvgOrderByAggregateInput = {
-    id?: SortOrder
-  }
-
-  export type UserMaxOrderByAggregateInput = {
-    id?: SortOrder
-    email?: SortOrder
-    password?: SortOrder
-  }
-
-  export type UserMinOrderByAggregateInput = {
-    id?: SortOrder
-    email?: SortOrder
-    password?: SortOrder
-  }
-
-  export type UserSumOrderByAggregateInput = {
-    id?: SortOrder
+  export type UserCreateNestedOneWithoutLeitorInput = {
+    create?: XOR<UserCreateWithoutLeitorInput, UserUncheckedCreateWithoutLeitorInput>
+    connectOrCreate?: UserCreateOrConnectWithoutLeitorInput
+    connect?: UserWhereUniqueInput
   }
 
   export type EmprestimoCreateNestedManyWithoutLeitorInput = {
@@ -9520,16 +9935,16 @@ export namespace Prisma {
     connect?: EmprestimoWhereUniqueInput | EmprestimoWhereUniqueInput[]
   }
 
-  export type StringFieldUpdateOperationsInput = {
-    set?: string
-  }
-
-  export type DateTimeFieldUpdateOperationsInput = {
-    set?: Date | string
-  }
-
   export type NullableStringFieldUpdateOperationsInput = {
     set?: string | null
+  }
+
+  export type UserUpdateOneRequiredWithoutLeitorNestedInput = {
+    create?: XOR<UserCreateWithoutLeitorInput, UserUncheckedCreateWithoutLeitorInput>
+    connectOrCreate?: UserCreateOrConnectWithoutLeitorInput
+    upsert?: UserUpsertWithoutLeitorInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutLeitorInput, UserUpdateWithoutLeitorInput>, UserUncheckedUpdateWithoutLeitorInput>
   }
 
   export type EmprestimoUpdateManyWithoutLeitorNestedInput = {
@@ -9546,14 +9961,6 @@ export namespace Prisma {
     deleteMany?: EmprestimoScalarWhereInput | EmprestimoScalarWhereInput[]
   }
 
-  export type IntFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
-  }
-
   export type EmprestimoUncheckedUpdateManyWithoutLeitorNestedInput = {
     create?: XOR<EmprestimoCreateWithoutLeitorInput, EmprestimoUncheckedCreateWithoutLeitorInput> | EmprestimoCreateWithoutLeitorInput[] | EmprestimoUncheckedCreateWithoutLeitorInput[]
     connectOrCreate?: EmprestimoCreateOrConnectWithoutLeitorInput | EmprestimoCreateOrConnectWithoutLeitorInput[]
@@ -9566,6 +9973,118 @@ export namespace Prisma {
     update?: EmprestimoUpdateWithWhereUniqueWithoutLeitorInput | EmprestimoUpdateWithWhereUniqueWithoutLeitorInput[]
     updateMany?: EmprestimoUpdateManyWithWhereWithoutLeitorInput | EmprestimoUpdateManyWithWhereWithoutLeitorInput[]
     deleteMany?: EmprestimoScalarWhereInput | EmprestimoScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutAutorInput = {
+    create?: XOR<UserCreateWithoutAutorInput, UserUncheckedCreateWithoutAutorInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAutorInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type LivroCreateNestedManyWithoutAutorInput = {
+    create?: XOR<LivroCreateWithoutAutorInput, LivroUncheckedCreateWithoutAutorInput> | LivroCreateWithoutAutorInput[] | LivroUncheckedCreateWithoutAutorInput[]
+    connectOrCreate?: LivroCreateOrConnectWithoutAutorInput | LivroCreateOrConnectWithoutAutorInput[]
+    createMany?: LivroCreateManyAutorInputEnvelope
+    connect?: LivroWhereUniqueInput | LivroWhereUniqueInput[]
+  }
+
+  export type LivroUncheckedCreateNestedManyWithoutAutorInput = {
+    create?: XOR<LivroCreateWithoutAutorInput, LivroUncheckedCreateWithoutAutorInput> | LivroCreateWithoutAutorInput[] | LivroUncheckedCreateWithoutAutorInput[]
+    connectOrCreate?: LivroCreateOrConnectWithoutAutorInput | LivroCreateOrConnectWithoutAutorInput[]
+    createMany?: LivroCreateManyAutorInputEnvelope
+    connect?: LivroWhereUniqueInput | LivroWhereUniqueInput[]
+  }
+
+  export type UserUpdateOneRequiredWithoutAutorNestedInput = {
+    create?: XOR<UserCreateWithoutAutorInput, UserUncheckedCreateWithoutAutorInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAutorInput
+    upsert?: UserUpsertWithoutAutorInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAutorInput, UserUpdateWithoutAutorInput>, UserUncheckedUpdateWithoutAutorInput>
+  }
+
+  export type LivroUpdateManyWithoutAutorNestedInput = {
+    create?: XOR<LivroCreateWithoutAutorInput, LivroUncheckedCreateWithoutAutorInput> | LivroCreateWithoutAutorInput[] | LivroUncheckedCreateWithoutAutorInput[]
+    connectOrCreate?: LivroCreateOrConnectWithoutAutorInput | LivroCreateOrConnectWithoutAutorInput[]
+    upsert?: LivroUpsertWithWhereUniqueWithoutAutorInput | LivroUpsertWithWhereUniqueWithoutAutorInput[]
+    createMany?: LivroCreateManyAutorInputEnvelope
+    set?: LivroWhereUniqueInput | LivroWhereUniqueInput[]
+    disconnect?: LivroWhereUniqueInput | LivroWhereUniqueInput[]
+    delete?: LivroWhereUniqueInput | LivroWhereUniqueInput[]
+    connect?: LivroWhereUniqueInput | LivroWhereUniqueInput[]
+    update?: LivroUpdateWithWhereUniqueWithoutAutorInput | LivroUpdateWithWhereUniqueWithoutAutorInput[]
+    updateMany?: LivroUpdateManyWithWhereWithoutAutorInput | LivroUpdateManyWithWhereWithoutAutorInput[]
+    deleteMany?: LivroScalarWhereInput | LivroScalarWhereInput[]
+  }
+
+  export type LivroUncheckedUpdateManyWithoutAutorNestedInput = {
+    create?: XOR<LivroCreateWithoutAutorInput, LivroUncheckedCreateWithoutAutorInput> | LivroCreateWithoutAutorInput[] | LivroUncheckedCreateWithoutAutorInput[]
+    connectOrCreate?: LivroCreateOrConnectWithoutAutorInput | LivroCreateOrConnectWithoutAutorInput[]
+    upsert?: LivroUpsertWithWhereUniqueWithoutAutorInput | LivroUpsertWithWhereUniqueWithoutAutorInput[]
+    createMany?: LivroCreateManyAutorInputEnvelope
+    set?: LivroWhereUniqueInput | LivroWhereUniqueInput[]
+    disconnect?: LivroWhereUniqueInput | LivroWhereUniqueInput[]
+    delete?: LivroWhereUniqueInput | LivroWhereUniqueInput[]
+    connect?: LivroWhereUniqueInput | LivroWhereUniqueInput[]
+    update?: LivroUpdateWithWhereUniqueWithoutAutorInput | LivroUpdateWithWhereUniqueWithoutAutorInput[]
+    updateMany?: LivroUpdateManyWithWhereWithoutAutorInput | LivroUpdateManyWithWhereWithoutAutorInput[]
+    deleteMany?: LivroScalarWhereInput | LivroScalarWhereInput[]
+  }
+
+  export type AutorCreateNestedOneWithoutLivrosInput = {
+    create?: XOR<AutorCreateWithoutLivrosInput, AutorUncheckedCreateWithoutLivrosInput>
+    connectOrCreate?: AutorCreateOrConnectWithoutLivrosInput
+    connect?: AutorWhereUniqueInput
+  }
+
+  export type ItemEmprestimoCreateNestedManyWithoutLivroInput = {
+    create?: XOR<ItemEmprestimoCreateWithoutLivroInput, ItemEmprestimoUncheckedCreateWithoutLivroInput> | ItemEmprestimoCreateWithoutLivroInput[] | ItemEmprestimoUncheckedCreateWithoutLivroInput[]
+    connectOrCreate?: ItemEmprestimoCreateOrConnectWithoutLivroInput | ItemEmprestimoCreateOrConnectWithoutLivroInput[]
+    createMany?: ItemEmprestimoCreateManyLivroInputEnvelope
+    connect?: ItemEmprestimoWhereUniqueInput | ItemEmprestimoWhereUniqueInput[]
+  }
+
+  export type ItemEmprestimoUncheckedCreateNestedManyWithoutLivroInput = {
+    create?: XOR<ItemEmprestimoCreateWithoutLivroInput, ItemEmprestimoUncheckedCreateWithoutLivroInput> | ItemEmprestimoCreateWithoutLivroInput[] | ItemEmprestimoUncheckedCreateWithoutLivroInput[]
+    connectOrCreate?: ItemEmprestimoCreateOrConnectWithoutLivroInput | ItemEmprestimoCreateOrConnectWithoutLivroInput[]
+    createMany?: ItemEmprestimoCreateManyLivroInputEnvelope
+    connect?: ItemEmprestimoWhereUniqueInput | ItemEmprestimoWhereUniqueInput[]
+  }
+
+  export type AutorUpdateOneRequiredWithoutLivrosNestedInput = {
+    create?: XOR<AutorCreateWithoutLivrosInput, AutorUncheckedCreateWithoutLivrosInput>
+    connectOrCreate?: AutorCreateOrConnectWithoutLivrosInput
+    upsert?: AutorUpsertWithoutLivrosInput
+    connect?: AutorWhereUniqueInput
+    update?: XOR<XOR<AutorUpdateToOneWithWhereWithoutLivrosInput, AutorUpdateWithoutLivrosInput>, AutorUncheckedUpdateWithoutLivrosInput>
+  }
+
+  export type ItemEmprestimoUpdateManyWithoutLivroNestedInput = {
+    create?: XOR<ItemEmprestimoCreateWithoutLivroInput, ItemEmprestimoUncheckedCreateWithoutLivroInput> | ItemEmprestimoCreateWithoutLivroInput[] | ItemEmprestimoUncheckedCreateWithoutLivroInput[]
+    connectOrCreate?: ItemEmprestimoCreateOrConnectWithoutLivroInput | ItemEmprestimoCreateOrConnectWithoutLivroInput[]
+    upsert?: ItemEmprestimoUpsertWithWhereUniqueWithoutLivroInput | ItemEmprestimoUpsertWithWhereUniqueWithoutLivroInput[]
+    createMany?: ItemEmprestimoCreateManyLivroInputEnvelope
+    set?: ItemEmprestimoWhereUniqueInput | ItemEmprestimoWhereUniqueInput[]
+    disconnect?: ItemEmprestimoWhereUniqueInput | ItemEmprestimoWhereUniqueInput[]
+    delete?: ItemEmprestimoWhereUniqueInput | ItemEmprestimoWhereUniqueInput[]
+    connect?: ItemEmprestimoWhereUniqueInput | ItemEmprestimoWhereUniqueInput[]
+    update?: ItemEmprestimoUpdateWithWhereUniqueWithoutLivroInput | ItemEmprestimoUpdateWithWhereUniqueWithoutLivroInput[]
+    updateMany?: ItemEmprestimoUpdateManyWithWhereWithoutLivroInput | ItemEmprestimoUpdateManyWithWhereWithoutLivroInput[]
+    deleteMany?: ItemEmprestimoScalarWhereInput | ItemEmprestimoScalarWhereInput[]
+  }
+
+  export type ItemEmprestimoUncheckedUpdateManyWithoutLivroNestedInput = {
+    create?: XOR<ItemEmprestimoCreateWithoutLivroInput, ItemEmprestimoUncheckedCreateWithoutLivroInput> | ItemEmprestimoCreateWithoutLivroInput[] | ItemEmprestimoUncheckedCreateWithoutLivroInput[]
+    connectOrCreate?: ItemEmprestimoCreateOrConnectWithoutLivroInput | ItemEmprestimoCreateOrConnectWithoutLivroInput[]
+    upsert?: ItemEmprestimoUpsertWithWhereUniqueWithoutLivroInput | ItemEmprestimoUpsertWithWhereUniqueWithoutLivroInput[]
+    createMany?: ItemEmprestimoCreateManyLivroInputEnvelope
+    set?: ItemEmprestimoWhereUniqueInput | ItemEmprestimoWhereUniqueInput[]
+    disconnect?: ItemEmprestimoWhereUniqueInput | ItemEmprestimoWhereUniqueInput[]
+    delete?: ItemEmprestimoWhereUniqueInput | ItemEmprestimoWhereUniqueInput[]
+    connect?: ItemEmprestimoWhereUniqueInput | ItemEmprestimoWhereUniqueInput[]
+    update?: ItemEmprestimoUpdateWithWhereUniqueWithoutLivroInput | ItemEmprestimoUpdateWithWhereUniqueWithoutLivroInput[]
+    updateMany?: ItemEmprestimoUpdateManyWithWhereWithoutLivroInput | ItemEmprestimoUpdateManyWithWhereWithoutLivroInput[]
+    deleteMany?: ItemEmprestimoScalarWhereInput | ItemEmprestimoScalarWhereInput[]
   }
 
   export type LeitorCreateNestedOneWithoutEmprestimosInput = {
@@ -9652,106 +10171,6 @@ export namespace Prisma {
     update?: XOR<XOR<LivroUpdateToOneWithWhereWithoutItens_emprestimoInput, LivroUpdateWithoutItens_emprestimoInput>, LivroUncheckedUpdateWithoutItens_emprestimoInput>
   }
 
-  export type AutorCreateNestedManyWithoutLivroInput = {
-    create?: XOR<AutorCreateWithoutLivroInput, AutorUncheckedCreateWithoutLivroInput> | AutorCreateWithoutLivroInput[] | AutorUncheckedCreateWithoutLivroInput[]
-    connectOrCreate?: AutorCreateOrConnectWithoutLivroInput | AutorCreateOrConnectWithoutLivroInput[]
-    createMany?: AutorCreateManyLivroInputEnvelope
-    connect?: AutorWhereUniqueInput | AutorWhereUniqueInput[]
-  }
-
-  export type ItemEmprestimoCreateNestedManyWithoutLivroInput = {
-    create?: XOR<ItemEmprestimoCreateWithoutLivroInput, ItemEmprestimoUncheckedCreateWithoutLivroInput> | ItemEmprestimoCreateWithoutLivroInput[] | ItemEmprestimoUncheckedCreateWithoutLivroInput[]
-    connectOrCreate?: ItemEmprestimoCreateOrConnectWithoutLivroInput | ItemEmprestimoCreateOrConnectWithoutLivroInput[]
-    createMany?: ItemEmprestimoCreateManyLivroInputEnvelope
-    connect?: ItemEmprestimoWhereUniqueInput | ItemEmprestimoWhereUniqueInput[]
-  }
-
-  export type AutorUncheckedCreateNestedManyWithoutLivroInput = {
-    create?: XOR<AutorCreateWithoutLivroInput, AutorUncheckedCreateWithoutLivroInput> | AutorCreateWithoutLivroInput[] | AutorUncheckedCreateWithoutLivroInput[]
-    connectOrCreate?: AutorCreateOrConnectWithoutLivroInput | AutorCreateOrConnectWithoutLivroInput[]
-    createMany?: AutorCreateManyLivroInputEnvelope
-    connect?: AutorWhereUniqueInput | AutorWhereUniqueInput[]
-  }
-
-  export type ItemEmprestimoUncheckedCreateNestedManyWithoutLivroInput = {
-    create?: XOR<ItemEmprestimoCreateWithoutLivroInput, ItemEmprestimoUncheckedCreateWithoutLivroInput> | ItemEmprestimoCreateWithoutLivroInput[] | ItemEmprestimoUncheckedCreateWithoutLivroInput[]
-    connectOrCreate?: ItemEmprestimoCreateOrConnectWithoutLivroInput | ItemEmprestimoCreateOrConnectWithoutLivroInput[]
-    createMany?: ItemEmprestimoCreateManyLivroInputEnvelope
-    connect?: ItemEmprestimoWhereUniqueInput | ItemEmprestimoWhereUniqueInput[]
-  }
-
-  export type AutorUpdateManyWithoutLivroNestedInput = {
-    create?: XOR<AutorCreateWithoutLivroInput, AutorUncheckedCreateWithoutLivroInput> | AutorCreateWithoutLivroInput[] | AutorUncheckedCreateWithoutLivroInput[]
-    connectOrCreate?: AutorCreateOrConnectWithoutLivroInput | AutorCreateOrConnectWithoutLivroInput[]
-    upsert?: AutorUpsertWithWhereUniqueWithoutLivroInput | AutorUpsertWithWhereUniqueWithoutLivroInput[]
-    createMany?: AutorCreateManyLivroInputEnvelope
-    set?: AutorWhereUniqueInput | AutorWhereUniqueInput[]
-    disconnect?: AutorWhereUniqueInput | AutorWhereUniqueInput[]
-    delete?: AutorWhereUniqueInput | AutorWhereUniqueInput[]
-    connect?: AutorWhereUniqueInput | AutorWhereUniqueInput[]
-    update?: AutorUpdateWithWhereUniqueWithoutLivroInput | AutorUpdateWithWhereUniqueWithoutLivroInput[]
-    updateMany?: AutorUpdateManyWithWhereWithoutLivroInput | AutorUpdateManyWithWhereWithoutLivroInput[]
-    deleteMany?: AutorScalarWhereInput | AutorScalarWhereInput[]
-  }
-
-  export type ItemEmprestimoUpdateManyWithoutLivroNestedInput = {
-    create?: XOR<ItemEmprestimoCreateWithoutLivroInput, ItemEmprestimoUncheckedCreateWithoutLivroInput> | ItemEmprestimoCreateWithoutLivroInput[] | ItemEmprestimoUncheckedCreateWithoutLivroInput[]
-    connectOrCreate?: ItemEmprestimoCreateOrConnectWithoutLivroInput | ItemEmprestimoCreateOrConnectWithoutLivroInput[]
-    upsert?: ItemEmprestimoUpsertWithWhereUniqueWithoutLivroInput | ItemEmprestimoUpsertWithWhereUniqueWithoutLivroInput[]
-    createMany?: ItemEmprestimoCreateManyLivroInputEnvelope
-    set?: ItemEmprestimoWhereUniqueInput | ItemEmprestimoWhereUniqueInput[]
-    disconnect?: ItemEmprestimoWhereUniqueInput | ItemEmprestimoWhereUniqueInput[]
-    delete?: ItemEmprestimoWhereUniqueInput | ItemEmprestimoWhereUniqueInput[]
-    connect?: ItemEmprestimoWhereUniqueInput | ItemEmprestimoWhereUniqueInput[]
-    update?: ItemEmprestimoUpdateWithWhereUniqueWithoutLivroInput | ItemEmprestimoUpdateWithWhereUniqueWithoutLivroInput[]
-    updateMany?: ItemEmprestimoUpdateManyWithWhereWithoutLivroInput | ItemEmprestimoUpdateManyWithWhereWithoutLivroInput[]
-    deleteMany?: ItemEmprestimoScalarWhereInput | ItemEmprestimoScalarWhereInput[]
-  }
-
-  export type AutorUncheckedUpdateManyWithoutLivroNestedInput = {
-    create?: XOR<AutorCreateWithoutLivroInput, AutorUncheckedCreateWithoutLivroInput> | AutorCreateWithoutLivroInput[] | AutorUncheckedCreateWithoutLivroInput[]
-    connectOrCreate?: AutorCreateOrConnectWithoutLivroInput | AutorCreateOrConnectWithoutLivroInput[]
-    upsert?: AutorUpsertWithWhereUniqueWithoutLivroInput | AutorUpsertWithWhereUniqueWithoutLivroInput[]
-    createMany?: AutorCreateManyLivroInputEnvelope
-    set?: AutorWhereUniqueInput | AutorWhereUniqueInput[]
-    disconnect?: AutorWhereUniqueInput | AutorWhereUniqueInput[]
-    delete?: AutorWhereUniqueInput | AutorWhereUniqueInput[]
-    connect?: AutorWhereUniqueInput | AutorWhereUniqueInput[]
-    update?: AutorUpdateWithWhereUniqueWithoutLivroInput | AutorUpdateWithWhereUniqueWithoutLivroInput[]
-    updateMany?: AutorUpdateManyWithWhereWithoutLivroInput | AutorUpdateManyWithWhereWithoutLivroInput[]
-    deleteMany?: AutorScalarWhereInput | AutorScalarWhereInput[]
-  }
-
-  export type ItemEmprestimoUncheckedUpdateManyWithoutLivroNestedInput = {
-    create?: XOR<ItemEmprestimoCreateWithoutLivroInput, ItemEmprestimoUncheckedCreateWithoutLivroInput> | ItemEmprestimoCreateWithoutLivroInput[] | ItemEmprestimoUncheckedCreateWithoutLivroInput[]
-    connectOrCreate?: ItemEmprestimoCreateOrConnectWithoutLivroInput | ItemEmprestimoCreateOrConnectWithoutLivroInput[]
-    upsert?: ItemEmprestimoUpsertWithWhereUniqueWithoutLivroInput | ItemEmprestimoUpsertWithWhereUniqueWithoutLivroInput[]
-    createMany?: ItemEmprestimoCreateManyLivroInputEnvelope
-    set?: ItemEmprestimoWhereUniqueInput | ItemEmprestimoWhereUniqueInput[]
-    disconnect?: ItemEmprestimoWhereUniqueInput | ItemEmprestimoWhereUniqueInput[]
-    delete?: ItemEmprestimoWhereUniqueInput | ItemEmprestimoWhereUniqueInput[]
-    connect?: ItemEmprestimoWhereUniqueInput | ItemEmprestimoWhereUniqueInput[]
-    update?: ItemEmprestimoUpdateWithWhereUniqueWithoutLivroInput | ItemEmprestimoUpdateWithWhereUniqueWithoutLivroInput[]
-    updateMany?: ItemEmprestimoUpdateManyWithWhereWithoutLivroInput | ItemEmprestimoUpdateManyWithWhereWithoutLivroInput[]
-    deleteMany?: ItemEmprestimoScalarWhereInput | ItemEmprestimoScalarWhereInput[]
-  }
-
-  export type LivroCreateNestedOneWithoutAutoresInput = {
-    create?: XOR<LivroCreateWithoutAutoresInput, LivroUncheckedCreateWithoutAutoresInput>
-    connectOrCreate?: LivroCreateOrConnectWithoutAutoresInput
-    connect?: LivroWhereUniqueInput
-  }
-
-  export type LivroUpdateOneWithoutAutoresNestedInput = {
-    create?: XOR<LivroCreateWithoutAutoresInput, LivroUncheckedCreateWithoutAutoresInput>
-    connectOrCreate?: LivroCreateOrConnectWithoutAutoresInput
-    upsert?: LivroUpsertWithoutAutoresInput
-    disconnect?: LivroWhereInput | boolean
-    delete?: LivroWhereInput | boolean
-    connect?: LivroWhereUniqueInput
-    update?: XOR<XOR<LivroUpdateToOneWithWhereWithoutAutoresInput, LivroUpdateWithoutAutoresInput>, LivroUncheckedUpdateWithoutAutoresInput>
-  }
-
   export type NestedIntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -9777,6 +10196,13 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
+  export type NestedEnumRoleFilter<$PrismaModel = never> = {
+    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumRoleFilter<$PrismaModel> | $Enums.Role
+  }
+
   export type NestedDateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -9786,20 +10212,6 @@ export namespace Prisma {
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
-  }
-
-  export type NestedStringNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
@@ -9846,6 +10258,16 @@ export namespace Prisma {
     _max?: NestedStringFilter<$PrismaModel>
   }
 
+  export type NestedEnumRoleWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumRoleWithAggregatesFilter<$PrismaModel> | $Enums.Role
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumRoleFilter<$PrismaModel>
+    _max?: NestedEnumRoleFilter<$PrismaModel>
+  }
+
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -9858,6 +10280,20 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type NestedStringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -9888,10 +10324,140 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
+  export type LeitorCreateWithoutUserInput = {
+    nome: string
+    cpf: string
+    data_de_nascimento: Date | string
+    endereco: string
+    observacao?: string | null
+    emprestimos?: EmprestimoCreateNestedManyWithoutLeitorInput
+  }
+
+  export type LeitorUncheckedCreateWithoutUserInput = {
+    id?: number
+    nome: string
+    cpf: string
+    data_de_nascimento: Date | string
+    endereco: string
+    observacao?: string | null
+    emprestimos?: EmprestimoUncheckedCreateNestedManyWithoutLeitorInput
+  }
+
+  export type LeitorCreateOrConnectWithoutUserInput = {
+    where: LeitorWhereUniqueInput
+    create: XOR<LeitorCreateWithoutUserInput, LeitorUncheckedCreateWithoutUserInput>
+  }
+
+  export type AutorCreateWithoutUserInput = {
+    nome_autor: string
+    origem: string
+    biografia: string
+    data_de_nascimento: Date | string
+    nome_artistico: string
+    livros?: LivroCreateNestedManyWithoutAutorInput
+  }
+
+  export type AutorUncheckedCreateWithoutUserInput = {
+    id?: number
+    nome_autor: string
+    origem: string
+    biografia: string
+    data_de_nascimento: Date | string
+    nome_artistico: string
+    livros?: LivroUncheckedCreateNestedManyWithoutAutorInput
+  }
+
+  export type AutorCreateOrConnectWithoutUserInput = {
+    where: AutorWhereUniqueInput
+    create: XOR<AutorCreateWithoutUserInput, AutorUncheckedCreateWithoutUserInput>
+  }
+
+  export type LeitorUpsertWithoutUserInput = {
+    update: XOR<LeitorUpdateWithoutUserInput, LeitorUncheckedUpdateWithoutUserInput>
+    create: XOR<LeitorCreateWithoutUserInput, LeitorUncheckedCreateWithoutUserInput>
+    where?: LeitorWhereInput
+  }
+
+  export type LeitorUpdateToOneWithWhereWithoutUserInput = {
+    where?: LeitorWhereInput
+    data: XOR<LeitorUpdateWithoutUserInput, LeitorUncheckedUpdateWithoutUserInput>
+  }
+
+  export type LeitorUpdateWithoutUserInput = {
+    nome?: StringFieldUpdateOperationsInput | string
+    cpf?: StringFieldUpdateOperationsInput | string
+    data_de_nascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    endereco?: StringFieldUpdateOperationsInput | string
+    observacao?: NullableStringFieldUpdateOperationsInput | string | null
+    emprestimos?: EmprestimoUpdateManyWithoutLeitorNestedInput
+  }
+
+  export type LeitorUncheckedUpdateWithoutUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    nome?: StringFieldUpdateOperationsInput | string
+    cpf?: StringFieldUpdateOperationsInput | string
+    data_de_nascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    endereco?: StringFieldUpdateOperationsInput | string
+    observacao?: NullableStringFieldUpdateOperationsInput | string | null
+    emprestimos?: EmprestimoUncheckedUpdateManyWithoutLeitorNestedInput
+  }
+
+  export type AutorUpsertWithoutUserInput = {
+    update: XOR<AutorUpdateWithoutUserInput, AutorUncheckedUpdateWithoutUserInput>
+    create: XOR<AutorCreateWithoutUserInput, AutorUncheckedCreateWithoutUserInput>
+    where?: AutorWhereInput
+  }
+
+  export type AutorUpdateToOneWithWhereWithoutUserInput = {
+    where?: AutorWhereInput
+    data: XOR<AutorUpdateWithoutUserInput, AutorUncheckedUpdateWithoutUserInput>
+  }
+
+  export type AutorUpdateWithoutUserInput = {
+    nome_autor?: StringFieldUpdateOperationsInput | string
+    origem?: StringFieldUpdateOperationsInput | string
+    biografia?: StringFieldUpdateOperationsInput | string
+    data_de_nascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    nome_artistico?: StringFieldUpdateOperationsInput | string
+    livros?: LivroUpdateManyWithoutAutorNestedInput
+  }
+
+  export type AutorUncheckedUpdateWithoutUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    nome_autor?: StringFieldUpdateOperationsInput | string
+    origem?: StringFieldUpdateOperationsInput | string
+    biografia?: StringFieldUpdateOperationsInput | string
+    data_de_nascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    nome_artistico?: StringFieldUpdateOperationsInput | string
+    livros?: LivroUncheckedUpdateManyWithoutAutorNestedInput
+  }
+
+  export type UserCreateWithoutLeitorInput = {
+    email: string
+    password: string
+    role?: $Enums.Role
+    created_at?: Date | string
+    autor?: AutorCreateNestedOneWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutLeitorInput = {
+    id?: number
+    email: string
+    password: string
+    role?: $Enums.Role
+    created_at?: Date | string
+    autor?: AutorUncheckedCreateNestedOneWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutLeitorInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutLeitorInput, UserUncheckedCreateWithoutLeitorInput>
+  }
+
   export type EmprestimoCreateWithoutLeitorInput = {
     data_emprestimo: Date | string
     prazo_de_devolucao: Date | string
-    observacoes: string
+    observacoes?: string | null
     itens_emprestimo?: ItemEmprestimoCreateNestedManyWithoutEmprestimoInput
   }
 
@@ -9899,7 +10465,7 @@ export namespace Prisma {
     id?: number
     data_emprestimo: Date | string
     prazo_de_devolucao: Date | string
-    observacoes: string
+    observacoes?: string | null
     itens_emprestimo?: ItemEmprestimoUncheckedCreateNestedManyWithoutEmprestimoInput
   }
 
@@ -9911,6 +10477,34 @@ export namespace Prisma {
   export type EmprestimoCreateManyLeitorInputEnvelope = {
     data: EmprestimoCreateManyLeitorInput | EmprestimoCreateManyLeitorInput[]
     skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithoutLeitorInput = {
+    update: XOR<UserUpdateWithoutLeitorInput, UserUncheckedUpdateWithoutLeitorInput>
+    create: XOR<UserCreateWithoutLeitorInput, UserUncheckedCreateWithoutLeitorInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutLeitorInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutLeitorInput, UserUncheckedUpdateWithoutLeitorInput>
+  }
+
+  export type UserUpdateWithoutLeitorInput = {
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    autor?: AutorUpdateOneWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutLeitorInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    autor?: AutorUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type EmprestimoUpsertWithWhereUniqueWithoutLeitorInput = {
@@ -9936,27 +10530,251 @@ export namespace Prisma {
     id?: IntFilter<"Emprestimo"> | number
     data_emprestimo?: DateTimeFilter<"Emprestimo"> | Date | string
     prazo_de_devolucao?: DateTimeFilter<"Emprestimo"> | Date | string
-    observacoes?: StringFilter<"Emprestimo"> | string
+    observacoes?: StringNullableFilter<"Emprestimo"> | string | null
     id_leitor?: IntFilter<"Emprestimo"> | number
   }
 
-  export type LeitorCreateWithoutEmprestimosInput = {
+  export type UserCreateWithoutAutorInput = {
     email: string
+    password: string
+    role?: $Enums.Role
+    created_at?: Date | string
+    leitor?: LeitorCreateNestedOneWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutAutorInput = {
+    id?: number
+    email: string
+    password: string
+    role?: $Enums.Role
+    created_at?: Date | string
+    leitor?: LeitorUncheckedCreateNestedOneWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutAutorInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutAutorInput, UserUncheckedCreateWithoutAutorInput>
+  }
+
+  export type LivroCreateWithoutAutorInput = {
+    nome_livro: string
+    editora: string
+    versao: number
+    ano: number
+    genero: string
+    idioma: string
+    qtde_total: number
+    qtde_disponivel: number
+    itens_emprestimo?: ItemEmprestimoCreateNestedManyWithoutLivroInput
+  }
+
+  export type LivroUncheckedCreateWithoutAutorInput = {
+    id?: number
+    nome_livro: string
+    editora: string
+    versao: number
+    ano: number
+    genero: string
+    idioma: string
+    qtde_total: number
+    qtde_disponivel: number
+    itens_emprestimo?: ItemEmprestimoUncheckedCreateNestedManyWithoutLivroInput
+  }
+
+  export type LivroCreateOrConnectWithoutAutorInput = {
+    where: LivroWhereUniqueInput
+    create: XOR<LivroCreateWithoutAutorInput, LivroUncheckedCreateWithoutAutorInput>
+  }
+
+  export type LivroCreateManyAutorInputEnvelope = {
+    data: LivroCreateManyAutorInput | LivroCreateManyAutorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithoutAutorInput = {
+    update: XOR<UserUpdateWithoutAutorInput, UserUncheckedUpdateWithoutAutorInput>
+    create: XOR<UserCreateWithoutAutorInput, UserUncheckedCreateWithoutAutorInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutAutorInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutAutorInput, UserUncheckedUpdateWithoutAutorInput>
+  }
+
+  export type UserUpdateWithoutAutorInput = {
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    leitor?: LeitorUpdateOneWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutAutorInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    leitor?: LeitorUncheckedUpdateOneWithoutUserNestedInput
+  }
+
+  export type LivroUpsertWithWhereUniqueWithoutAutorInput = {
+    where: LivroWhereUniqueInput
+    update: XOR<LivroUpdateWithoutAutorInput, LivroUncheckedUpdateWithoutAutorInput>
+    create: XOR<LivroCreateWithoutAutorInput, LivroUncheckedCreateWithoutAutorInput>
+  }
+
+  export type LivroUpdateWithWhereUniqueWithoutAutorInput = {
+    where: LivroWhereUniqueInput
+    data: XOR<LivroUpdateWithoutAutorInput, LivroUncheckedUpdateWithoutAutorInput>
+  }
+
+  export type LivroUpdateManyWithWhereWithoutAutorInput = {
+    where: LivroScalarWhereInput
+    data: XOR<LivroUpdateManyMutationInput, LivroUncheckedUpdateManyWithoutAutorInput>
+  }
+
+  export type LivroScalarWhereInput = {
+    AND?: LivroScalarWhereInput | LivroScalarWhereInput[]
+    OR?: LivroScalarWhereInput[]
+    NOT?: LivroScalarWhereInput | LivroScalarWhereInput[]
+    id?: IntFilter<"Livro"> | number
+    nome_livro?: StringFilter<"Livro"> | string
+    editora?: StringFilter<"Livro"> | string
+    versao?: IntFilter<"Livro"> | number
+    ano?: IntFilter<"Livro"> | number
+    genero?: StringFilter<"Livro"> | string
+    idioma?: StringFilter<"Livro"> | string
+    qtde_total?: IntFilter<"Livro"> | number
+    qtde_disponivel?: IntFilter<"Livro"> | number
+    id_autor?: IntFilter<"Livro"> | number
+  }
+
+  export type AutorCreateWithoutLivrosInput = {
+    nome_autor: string
+    origem: string
+    biografia: string
+    data_de_nascimento: Date | string
+    nome_artistico: string
+    user: UserCreateNestedOneWithoutAutorInput
+  }
+
+  export type AutorUncheckedCreateWithoutLivrosInput = {
+    id?: number
+    nome_autor: string
+    origem: string
+    biografia: string
+    data_de_nascimento: Date | string
+    nome_artistico: string
+    id_user: number
+  }
+
+  export type AutorCreateOrConnectWithoutLivrosInput = {
+    where: AutorWhereUniqueInput
+    create: XOR<AutorCreateWithoutLivrosInput, AutorUncheckedCreateWithoutLivrosInput>
+  }
+
+  export type ItemEmprestimoCreateWithoutLivroInput = {
+    data_de_devolucao: Date | string
+    valor_multa: number
+    status: string
+    emprestimo: EmprestimoCreateNestedOneWithoutItens_emprestimoInput
+  }
+
+  export type ItemEmprestimoUncheckedCreateWithoutLivroInput = {
+    id?: number
+    data_de_devolucao: Date | string
+    valor_multa: number
+    status: string
+    id_emprestimo: number
+  }
+
+  export type ItemEmprestimoCreateOrConnectWithoutLivroInput = {
+    where: ItemEmprestimoWhereUniqueInput
+    create: XOR<ItemEmprestimoCreateWithoutLivroInput, ItemEmprestimoUncheckedCreateWithoutLivroInput>
+  }
+
+  export type ItemEmprestimoCreateManyLivroInputEnvelope = {
+    data: ItemEmprestimoCreateManyLivroInput | ItemEmprestimoCreateManyLivroInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AutorUpsertWithoutLivrosInput = {
+    update: XOR<AutorUpdateWithoutLivrosInput, AutorUncheckedUpdateWithoutLivrosInput>
+    create: XOR<AutorCreateWithoutLivrosInput, AutorUncheckedCreateWithoutLivrosInput>
+    where?: AutorWhereInput
+  }
+
+  export type AutorUpdateToOneWithWhereWithoutLivrosInput = {
+    where?: AutorWhereInput
+    data: XOR<AutorUpdateWithoutLivrosInput, AutorUncheckedUpdateWithoutLivrosInput>
+  }
+
+  export type AutorUpdateWithoutLivrosInput = {
+    nome_autor?: StringFieldUpdateOperationsInput | string
+    origem?: StringFieldUpdateOperationsInput | string
+    biografia?: StringFieldUpdateOperationsInput | string
+    data_de_nascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    nome_artistico?: StringFieldUpdateOperationsInput | string
+    user?: UserUpdateOneRequiredWithoutAutorNestedInput
+  }
+
+  export type AutorUncheckedUpdateWithoutLivrosInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    nome_autor?: StringFieldUpdateOperationsInput | string
+    origem?: StringFieldUpdateOperationsInput | string
+    biografia?: StringFieldUpdateOperationsInput | string
+    data_de_nascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    nome_artistico?: StringFieldUpdateOperationsInput | string
+    id_user?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type ItemEmprestimoUpsertWithWhereUniqueWithoutLivroInput = {
+    where: ItemEmprestimoWhereUniqueInput
+    update: XOR<ItemEmprestimoUpdateWithoutLivroInput, ItemEmprestimoUncheckedUpdateWithoutLivroInput>
+    create: XOR<ItemEmprestimoCreateWithoutLivroInput, ItemEmprestimoUncheckedCreateWithoutLivroInput>
+  }
+
+  export type ItemEmprestimoUpdateWithWhereUniqueWithoutLivroInput = {
+    where: ItemEmprestimoWhereUniqueInput
+    data: XOR<ItemEmprestimoUpdateWithoutLivroInput, ItemEmprestimoUncheckedUpdateWithoutLivroInput>
+  }
+
+  export type ItemEmprestimoUpdateManyWithWhereWithoutLivroInput = {
+    where: ItemEmprestimoScalarWhereInput
+    data: XOR<ItemEmprestimoUpdateManyMutationInput, ItemEmprestimoUncheckedUpdateManyWithoutLivroInput>
+  }
+
+  export type ItemEmprestimoScalarWhereInput = {
+    AND?: ItemEmprestimoScalarWhereInput | ItemEmprestimoScalarWhereInput[]
+    OR?: ItemEmprestimoScalarWhereInput[]
+    NOT?: ItemEmprestimoScalarWhereInput | ItemEmprestimoScalarWhereInput[]
+    id?: IntFilter<"ItemEmprestimo"> | number
+    data_de_devolucao?: DateTimeFilter<"ItemEmprestimo"> | Date | string
+    valor_multa?: IntFilter<"ItemEmprestimo"> | number
+    status?: StringFilter<"ItemEmprestimo"> | string
+    id_emprestimo?: IntFilter<"ItemEmprestimo"> | number
+    id_livro?: IntFilter<"ItemEmprestimo"> | number
+  }
+
+  export type LeitorCreateWithoutEmprestimosInput = {
     nome: string
     cpf: string
     data_de_nascimento: Date | string
     endereco: string
     observacao?: string | null
+    user: UserCreateNestedOneWithoutLeitorInput
   }
 
   export type LeitorUncheckedCreateWithoutEmprestimosInput = {
     id?: number
-    email: string
     nome: string
     cpf: string
     data_de_nascimento: Date | string
     endereco: string
     observacao?: string | null
+    id_user: number
   }
 
   export type LeitorCreateOrConnectWithoutEmprestimosInput = {
@@ -10001,22 +10819,22 @@ export namespace Prisma {
   }
 
   export type LeitorUpdateWithoutEmprestimosInput = {
-    email?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     cpf?: StringFieldUpdateOperationsInput | string
     data_de_nascimento?: DateTimeFieldUpdateOperationsInput | Date | string
     endereco?: StringFieldUpdateOperationsInput | string
     observacao?: NullableStringFieldUpdateOperationsInput | string | null
+    user?: UserUpdateOneRequiredWithoutLeitorNestedInput
   }
 
   export type LeitorUncheckedUpdateWithoutEmprestimosInput = {
     id?: IntFieldUpdateOperationsInput | number
-    email?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     cpf?: StringFieldUpdateOperationsInput | string
     data_de_nascimento?: DateTimeFieldUpdateOperationsInput | Date | string
     endereco?: StringFieldUpdateOperationsInput | string
     observacao?: NullableStringFieldUpdateOperationsInput | string | null
+    id_user?: IntFieldUpdateOperationsInput | number
   }
 
   export type ItemEmprestimoUpsertWithWhereUniqueWithoutEmprestimoInput = {
@@ -10035,22 +10853,10 @@ export namespace Prisma {
     data: XOR<ItemEmprestimoUpdateManyMutationInput, ItemEmprestimoUncheckedUpdateManyWithoutEmprestimoInput>
   }
 
-  export type ItemEmprestimoScalarWhereInput = {
-    AND?: ItemEmprestimoScalarWhereInput | ItemEmprestimoScalarWhereInput[]
-    OR?: ItemEmprestimoScalarWhereInput[]
-    NOT?: ItemEmprestimoScalarWhereInput | ItemEmprestimoScalarWhereInput[]
-    id?: IntFilter<"ItemEmprestimo"> | number
-    data_de_devolucao?: DateTimeFilter<"ItemEmprestimo"> | Date | string
-    valor_multa?: IntFilter<"ItemEmprestimo"> | number
-    status?: StringFilter<"ItemEmprestimo"> | string
-    id_emprestimo?: IntFilter<"ItemEmprestimo"> | number
-    id_livro?: IntFilter<"ItemEmprestimo"> | number
-  }
-
   export type EmprestimoCreateWithoutItens_emprestimoInput = {
     data_emprestimo: Date | string
     prazo_de_devolucao: Date | string
-    observacoes: string
+    observacoes?: string | null
     leitor: LeitorCreateNestedOneWithoutEmprestimosInput
   }
 
@@ -10058,7 +10864,7 @@ export namespace Prisma {
     id?: number
     data_emprestimo: Date | string
     prazo_de_devolucao: Date | string
-    observacoes: string
+    observacoes?: string | null
     id_leitor: number
   }
 
@@ -10070,26 +10876,26 @@ export namespace Prisma {
   export type LivroCreateWithoutItens_emprestimoInput = {
     nome_livro: string
     editora: string
-    versao: string
-    ano: string
+    versao: number
+    ano: number
     genero: string
     idioma: string
     qtde_total: number
     qtde_disponivel: number
-    autores?: AutorCreateNestedManyWithoutLivroInput
+    autor: AutorCreateNestedOneWithoutLivrosInput
   }
 
   export type LivroUncheckedCreateWithoutItens_emprestimoInput = {
     id?: number
     nome_livro: string
     editora: string
-    versao: string
-    ano: string
+    versao: number
+    ano: number
     genero: string
     idioma: string
     qtde_total: number
     qtde_disponivel: number
-    autores?: AutorUncheckedCreateNestedManyWithoutLivroInput
+    id_autor: number
   }
 
   export type LivroCreateOrConnectWithoutItens_emprestimoInput = {
@@ -10111,7 +10917,7 @@ export namespace Prisma {
   export type EmprestimoUpdateWithoutItens_emprestimoInput = {
     data_emprestimo?: DateTimeFieldUpdateOperationsInput | Date | string
     prazo_de_devolucao?: DateTimeFieldUpdateOperationsInput | Date | string
-    observacoes?: StringFieldUpdateOperationsInput | string
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
     leitor?: LeitorUpdateOneRequiredWithoutEmprestimosNestedInput
   }
 
@@ -10119,7 +10925,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     data_emprestimo?: DateTimeFieldUpdateOperationsInput | Date | string
     prazo_de_devolucao?: DateTimeFieldUpdateOperationsInput | Date | string
-    observacoes?: StringFieldUpdateOperationsInput | string
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
     id_leitor?: IntFieldUpdateOperationsInput | number
   }
 
@@ -10137,202 +10943,39 @@ export namespace Prisma {
   export type LivroUpdateWithoutItens_emprestimoInput = {
     nome_livro?: StringFieldUpdateOperationsInput | string
     editora?: StringFieldUpdateOperationsInput | string
-    versao?: StringFieldUpdateOperationsInput | string
-    ano?: StringFieldUpdateOperationsInput | string
+    versao?: IntFieldUpdateOperationsInput | number
+    ano?: IntFieldUpdateOperationsInput | number
     genero?: StringFieldUpdateOperationsInput | string
     idioma?: StringFieldUpdateOperationsInput | string
     qtde_total?: IntFieldUpdateOperationsInput | number
     qtde_disponivel?: IntFieldUpdateOperationsInput | number
-    autores?: AutorUpdateManyWithoutLivroNestedInput
+    autor?: AutorUpdateOneRequiredWithoutLivrosNestedInput
   }
 
   export type LivroUncheckedUpdateWithoutItens_emprestimoInput = {
     id?: IntFieldUpdateOperationsInput | number
     nome_livro?: StringFieldUpdateOperationsInput | string
     editora?: StringFieldUpdateOperationsInput | string
-    versao?: StringFieldUpdateOperationsInput | string
-    ano?: StringFieldUpdateOperationsInput | string
+    versao?: IntFieldUpdateOperationsInput | number
+    ano?: IntFieldUpdateOperationsInput | number
     genero?: StringFieldUpdateOperationsInput | string
     idioma?: StringFieldUpdateOperationsInput | string
     qtde_total?: IntFieldUpdateOperationsInput | number
     qtde_disponivel?: IntFieldUpdateOperationsInput | number
-    autores?: AutorUncheckedUpdateManyWithoutLivroNestedInput
-  }
-
-  export type AutorCreateWithoutLivroInput = {
-    nome_autor: string
-    origem: string
-    biografia: string
-    data_de_nascimento: Date | string
-    nome_artistico: string
-  }
-
-  export type AutorUncheckedCreateWithoutLivroInput = {
-    id?: number
-    nome_autor: string
-    origem: string
-    biografia: string
-    data_de_nascimento: Date | string
-    nome_artistico: string
-  }
-
-  export type AutorCreateOrConnectWithoutLivroInput = {
-    where: AutorWhereUniqueInput
-    create: XOR<AutorCreateWithoutLivroInput, AutorUncheckedCreateWithoutLivroInput>
-  }
-
-  export type AutorCreateManyLivroInputEnvelope = {
-    data: AutorCreateManyLivroInput | AutorCreateManyLivroInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type ItemEmprestimoCreateWithoutLivroInput = {
-    data_de_devolucao: Date | string
-    valor_multa: number
-    status: string
-    emprestimo: EmprestimoCreateNestedOneWithoutItens_emprestimoInput
-  }
-
-  export type ItemEmprestimoUncheckedCreateWithoutLivroInput = {
-    id?: number
-    data_de_devolucao: Date | string
-    valor_multa: number
-    status: string
-    id_emprestimo: number
-  }
-
-  export type ItemEmprestimoCreateOrConnectWithoutLivroInput = {
-    where: ItemEmprestimoWhereUniqueInput
-    create: XOR<ItemEmprestimoCreateWithoutLivroInput, ItemEmprestimoUncheckedCreateWithoutLivroInput>
-  }
-
-  export type ItemEmprestimoCreateManyLivroInputEnvelope = {
-    data: ItemEmprestimoCreateManyLivroInput | ItemEmprestimoCreateManyLivroInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type AutorUpsertWithWhereUniqueWithoutLivroInput = {
-    where: AutorWhereUniqueInput
-    update: XOR<AutorUpdateWithoutLivroInput, AutorUncheckedUpdateWithoutLivroInput>
-    create: XOR<AutorCreateWithoutLivroInput, AutorUncheckedCreateWithoutLivroInput>
-  }
-
-  export type AutorUpdateWithWhereUniqueWithoutLivroInput = {
-    where: AutorWhereUniqueInput
-    data: XOR<AutorUpdateWithoutLivroInput, AutorUncheckedUpdateWithoutLivroInput>
-  }
-
-  export type AutorUpdateManyWithWhereWithoutLivroInput = {
-    where: AutorScalarWhereInput
-    data: XOR<AutorUpdateManyMutationInput, AutorUncheckedUpdateManyWithoutLivroInput>
-  }
-
-  export type AutorScalarWhereInput = {
-    AND?: AutorScalarWhereInput | AutorScalarWhereInput[]
-    OR?: AutorScalarWhereInput[]
-    NOT?: AutorScalarWhereInput | AutorScalarWhereInput[]
-    id?: IntFilter<"Autor"> | number
-    nome_autor?: StringFilter<"Autor"> | string
-    origem?: StringFilter<"Autor"> | string
-    biografia?: StringFilter<"Autor"> | string
-    data_de_nascimento?: DateTimeFilter<"Autor"> | Date | string
-    nome_artistico?: StringFilter<"Autor"> | string
-    id_livro?: IntFilter<"Autor"> | number
-  }
-
-  export type ItemEmprestimoUpsertWithWhereUniqueWithoutLivroInput = {
-    where: ItemEmprestimoWhereUniqueInput
-    update: XOR<ItemEmprestimoUpdateWithoutLivroInput, ItemEmprestimoUncheckedUpdateWithoutLivroInput>
-    create: XOR<ItemEmprestimoCreateWithoutLivroInput, ItemEmprestimoUncheckedCreateWithoutLivroInput>
-  }
-
-  export type ItemEmprestimoUpdateWithWhereUniqueWithoutLivroInput = {
-    where: ItemEmprestimoWhereUniqueInput
-    data: XOR<ItemEmprestimoUpdateWithoutLivroInput, ItemEmprestimoUncheckedUpdateWithoutLivroInput>
-  }
-
-  export type ItemEmprestimoUpdateManyWithWhereWithoutLivroInput = {
-    where: ItemEmprestimoScalarWhereInput
-    data: XOR<ItemEmprestimoUpdateManyMutationInput, ItemEmprestimoUncheckedUpdateManyWithoutLivroInput>
-  }
-
-  export type LivroCreateWithoutAutoresInput = {
-    nome_livro: string
-    editora: string
-    versao: string
-    ano: string
-    genero: string
-    idioma: string
-    qtde_total: number
-    qtde_disponivel: number
-    itens_emprestimo?: ItemEmprestimoCreateNestedManyWithoutLivroInput
-  }
-
-  export type LivroUncheckedCreateWithoutAutoresInput = {
-    id?: number
-    nome_livro: string
-    editora: string
-    versao: string
-    ano: string
-    genero: string
-    idioma: string
-    qtde_total: number
-    qtde_disponivel: number
-    itens_emprestimo?: ItemEmprestimoUncheckedCreateNestedManyWithoutLivroInput
-  }
-
-  export type LivroCreateOrConnectWithoutAutoresInput = {
-    where: LivroWhereUniqueInput
-    create: XOR<LivroCreateWithoutAutoresInput, LivroUncheckedCreateWithoutAutoresInput>
-  }
-
-  export type LivroUpsertWithoutAutoresInput = {
-    update: XOR<LivroUpdateWithoutAutoresInput, LivroUncheckedUpdateWithoutAutoresInput>
-    create: XOR<LivroCreateWithoutAutoresInput, LivroUncheckedCreateWithoutAutoresInput>
-    where?: LivroWhereInput
-  }
-
-  export type LivroUpdateToOneWithWhereWithoutAutoresInput = {
-    where?: LivroWhereInput
-    data: XOR<LivroUpdateWithoutAutoresInput, LivroUncheckedUpdateWithoutAutoresInput>
-  }
-
-  export type LivroUpdateWithoutAutoresInput = {
-    nome_livro?: StringFieldUpdateOperationsInput | string
-    editora?: StringFieldUpdateOperationsInput | string
-    versao?: StringFieldUpdateOperationsInput | string
-    ano?: StringFieldUpdateOperationsInput | string
-    genero?: StringFieldUpdateOperationsInput | string
-    idioma?: StringFieldUpdateOperationsInput | string
-    qtde_total?: IntFieldUpdateOperationsInput | number
-    qtde_disponivel?: IntFieldUpdateOperationsInput | number
-    itens_emprestimo?: ItemEmprestimoUpdateManyWithoutLivroNestedInput
-  }
-
-  export type LivroUncheckedUpdateWithoutAutoresInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    nome_livro?: StringFieldUpdateOperationsInput | string
-    editora?: StringFieldUpdateOperationsInput | string
-    versao?: StringFieldUpdateOperationsInput | string
-    ano?: StringFieldUpdateOperationsInput | string
-    genero?: StringFieldUpdateOperationsInput | string
-    idioma?: StringFieldUpdateOperationsInput | string
-    qtde_total?: IntFieldUpdateOperationsInput | number
-    qtde_disponivel?: IntFieldUpdateOperationsInput | number
-    itens_emprestimo?: ItemEmprestimoUncheckedUpdateManyWithoutLivroNestedInput
+    id_autor?: IntFieldUpdateOperationsInput | number
   }
 
   export type EmprestimoCreateManyLeitorInput = {
     id?: number
     data_emprestimo: Date | string
     prazo_de_devolucao: Date | string
-    observacoes: string
+    observacoes?: string | null
   }
 
   export type EmprestimoUpdateWithoutLeitorInput = {
     data_emprestimo?: DateTimeFieldUpdateOperationsInput | Date | string
     prazo_de_devolucao?: DateTimeFieldUpdateOperationsInput | Date | string
-    observacoes?: StringFieldUpdateOperationsInput | string
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
     itens_emprestimo?: ItemEmprestimoUpdateManyWithoutEmprestimoNestedInput
   }
 
@@ -10340,7 +10983,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     data_emprestimo?: DateTimeFieldUpdateOperationsInput | Date | string
     prazo_de_devolucao?: DateTimeFieldUpdateOperationsInput | Date | string
-    observacoes?: StringFieldUpdateOperationsInput | string
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
     itens_emprestimo?: ItemEmprestimoUncheckedUpdateManyWithoutEmprestimoNestedInput
   }
 
@@ -10348,7 +10991,87 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     data_emprestimo?: DateTimeFieldUpdateOperationsInput | Date | string
     prazo_de_devolucao?: DateTimeFieldUpdateOperationsInput | Date | string
-    observacoes?: StringFieldUpdateOperationsInput | string
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type LivroCreateManyAutorInput = {
+    id?: number
+    nome_livro: string
+    editora: string
+    versao: number
+    ano: number
+    genero: string
+    idioma: string
+    qtde_total: number
+    qtde_disponivel: number
+  }
+
+  export type LivroUpdateWithoutAutorInput = {
+    nome_livro?: StringFieldUpdateOperationsInput | string
+    editora?: StringFieldUpdateOperationsInput | string
+    versao?: IntFieldUpdateOperationsInput | number
+    ano?: IntFieldUpdateOperationsInput | number
+    genero?: StringFieldUpdateOperationsInput | string
+    idioma?: StringFieldUpdateOperationsInput | string
+    qtde_total?: IntFieldUpdateOperationsInput | number
+    qtde_disponivel?: IntFieldUpdateOperationsInput | number
+    itens_emprestimo?: ItemEmprestimoUpdateManyWithoutLivroNestedInput
+  }
+
+  export type LivroUncheckedUpdateWithoutAutorInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    nome_livro?: StringFieldUpdateOperationsInput | string
+    editora?: StringFieldUpdateOperationsInput | string
+    versao?: IntFieldUpdateOperationsInput | number
+    ano?: IntFieldUpdateOperationsInput | number
+    genero?: StringFieldUpdateOperationsInput | string
+    idioma?: StringFieldUpdateOperationsInput | string
+    qtde_total?: IntFieldUpdateOperationsInput | number
+    qtde_disponivel?: IntFieldUpdateOperationsInput | number
+    itens_emprestimo?: ItemEmprestimoUncheckedUpdateManyWithoutLivroNestedInput
+  }
+
+  export type LivroUncheckedUpdateManyWithoutAutorInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    nome_livro?: StringFieldUpdateOperationsInput | string
+    editora?: StringFieldUpdateOperationsInput | string
+    versao?: IntFieldUpdateOperationsInput | number
+    ano?: IntFieldUpdateOperationsInput | number
+    genero?: StringFieldUpdateOperationsInput | string
+    idioma?: StringFieldUpdateOperationsInput | string
+    qtde_total?: IntFieldUpdateOperationsInput | number
+    qtde_disponivel?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type ItemEmprestimoCreateManyLivroInput = {
+    id?: number
+    data_de_devolucao: Date | string
+    valor_multa: number
+    status: string
+    id_emprestimo: number
+  }
+
+  export type ItemEmprestimoUpdateWithoutLivroInput = {
+    data_de_devolucao?: DateTimeFieldUpdateOperationsInput | Date | string
+    valor_multa?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    emprestimo?: EmprestimoUpdateOneRequiredWithoutItens_emprestimoNestedInput
+  }
+
+  export type ItemEmprestimoUncheckedUpdateWithoutLivroInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    data_de_devolucao?: DateTimeFieldUpdateOperationsInput | Date | string
+    valor_multa?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    id_emprestimo?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type ItemEmprestimoUncheckedUpdateManyWithoutLivroInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    data_de_devolucao?: DateTimeFieldUpdateOperationsInput | Date | string
+    valor_multa?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    id_emprestimo?: IntFieldUpdateOperationsInput | number
   }
 
   export type ItemEmprestimoCreateManyEmprestimoInput = {
@@ -10380,72 +11103,6 @@ export namespace Prisma {
     valor_multa?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
     id_livro?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type AutorCreateManyLivroInput = {
-    id?: number
-    nome_autor: string
-    origem: string
-    biografia: string
-    data_de_nascimento: Date | string
-    nome_artistico: string
-  }
-
-  export type ItemEmprestimoCreateManyLivroInput = {
-    id?: number
-    data_de_devolucao: Date | string
-    valor_multa: number
-    status: string
-    id_emprestimo: number
-  }
-
-  export type AutorUpdateWithoutLivroInput = {
-    nome_autor?: StringFieldUpdateOperationsInput | string
-    origem?: StringFieldUpdateOperationsInput | string
-    biografia?: StringFieldUpdateOperationsInput | string
-    data_de_nascimento?: DateTimeFieldUpdateOperationsInput | Date | string
-    nome_artistico?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type AutorUncheckedUpdateWithoutLivroInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    nome_autor?: StringFieldUpdateOperationsInput | string
-    origem?: StringFieldUpdateOperationsInput | string
-    biografia?: StringFieldUpdateOperationsInput | string
-    data_de_nascimento?: DateTimeFieldUpdateOperationsInput | Date | string
-    nome_artistico?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type AutorUncheckedUpdateManyWithoutLivroInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    nome_autor?: StringFieldUpdateOperationsInput | string
-    origem?: StringFieldUpdateOperationsInput | string
-    biografia?: StringFieldUpdateOperationsInput | string
-    data_de_nascimento?: DateTimeFieldUpdateOperationsInput | Date | string
-    nome_artistico?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type ItemEmprestimoUpdateWithoutLivroInput = {
-    data_de_devolucao?: DateTimeFieldUpdateOperationsInput | Date | string
-    valor_multa?: IntFieldUpdateOperationsInput | number
-    status?: StringFieldUpdateOperationsInput | string
-    emprestimo?: EmprestimoUpdateOneRequiredWithoutItens_emprestimoNestedInput
-  }
-
-  export type ItemEmprestimoUncheckedUpdateWithoutLivroInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    data_de_devolucao?: DateTimeFieldUpdateOperationsInput | Date | string
-    valor_multa?: IntFieldUpdateOperationsInput | number
-    status?: StringFieldUpdateOperationsInput | string
-    id_emprestimo?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type ItemEmprestimoUncheckedUpdateManyWithoutLivroInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    data_de_devolucao?: DateTimeFieldUpdateOperationsInput | Date | string
-    valor_multa?: IntFieldUpdateOperationsInput | number
-    status?: StringFieldUpdateOperationsInput | string
-    id_emprestimo?: IntFieldUpdateOperationsInput | number
   }
 
 

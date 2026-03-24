@@ -1,71 +1,91 @@
 generator client {
   provider = "prisma-client-js"
   output   = "../src/generated/prisma"
+  moduleformat = "cjs"
 }
 
 datasource db {
   provider = "postgresql"
 }
 
+enum Role {
+  LEITOR
+  AUTOR
+  ADMIN
+}
+
+model User {
+  id         Int      @id @default(autoincrement())
+  email      String   @unique
+  password   String
+  role       Role     @default(LEITOR)
+  created_at DateTime @default(now())
+
+  leitor Leitor?
+  autor  Autor?
+}
+
 model Leitor {
-  id             Int          @id @default(autoincrement())
-  email          String       @unique
-  nome           String
-  cpf            String       @unique
+  id                 Int          @id @default(autoincrement())
+  nome               String
+  cpf                String       @unique
   data_de_nascimento DateTime
-  endereco       String
-  observacao     String?
-  emprestimos    Emprestimo[]
-}
+  endereco           String
+  observacao         String?
 
-model Emprestimo {
-  id                 Int              @id @default(autoincrement())
-  data_emprestimo    DateTime
-  prazo_de_devolucao DateTime
-  observacoes        String
-  id_leitor          Int
-  leitor             Leitor           @relation(fields: [id_leitor], references: [id])
-  itens_emprestimo   ItemEmprestimo[]
-}
-
-model ItemEmprestimo {
-  id                Int        @id @default(autoincrement())
-  data_de_devolucao DateTime
-  valor_multa       Int
-  status            String
-  id_emprestimo     Int
-  id_livro          Int
-  emprestimo        Emprestimo @relation(fields: [id_emprestimo], references: [id])
-  livro             Livro      @relation(fields: [id_livro], references: [id])
-}
-
-model Livro {
-  id               Int              @id @default(autoincrement())
-  nome_livro       String
-  editora          String
-  versao           String
-  ano              String
-  genero           String
-  idioma           String
-  qtde_total       Int
-  qtde_disponivel  Int
-  autores          Autor[]
-  itens_emprestimo ItemEmprestimo[]
+  id_user     Int          @unique
+  user        User         @relation(fields: [id_user], references: [id])
+  emprestimos Emprestimo[]
 }
 
 model Autor {
-  id                 Int      @id @default(autoincrement())
+  id                 Int     @id @default(autoincrement())
   nome_autor         String
   origem             String
   biografia          String
   data_de_nascimento DateTime
   nome_artistico     String
-  id_livro           Int
-  livro              Livro?    @relation(fields: [id_livro], references: [id])
+
+  id_user Int     @unique
+  user    User    @relation(fields: [id_user], references: [id])
+  livros  Livro[]
 }
 
-model User {
-  id       Int    @id @default(autoincrement())
-  email    String @unique
-  password String
+model Livro {
+  id              Int    @id @default(autoincrement())
+  nome_livro      String
+  editora         String
+  versao          Int
+  ano             Int
+  genero          String
+  idioma          String
+  qtde_total      Int
+  qtde_disponivel Int
+
+  id_autor         Int
+  autor            Autor            @relation(fields: [id_autor], references: [id])
+  itens_emprestimo ItemEmprestimo[]
+}
+
+model Emprestimo {
+  id                 Int      @id @default(autoincrement())
+  data_emprestimo    DateTime
+  prazo_de_devolucao DateTime
+  observacoes        String?
+
+  id_leitor        Int
+  leitor           Leitor           @relation(fields: [id_leitor], references: [id])
+  itens_emprestimo ItemEmprestimo[]
+}
+
+model ItemEmprestimo {
+  id                Int      @id @default(autoincrement())
+  data_de_devolucao DateTime
+  valor_multa       Int
+  status            String
+
+  id_emprestimo Int
+  id_livro      Int
+  emprestimo    Emprestimo @relation(fields: [id_emprestimo], references: [id])
+  livro         Livro      @relation(fields: [id_livro], references: [id])
 }

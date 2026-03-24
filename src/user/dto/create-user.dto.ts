@@ -1,13 +1,18 @@
-import { IsEmail, IsNotEmpty, IsString } from "class-validator"
+import { IsEmail, IsString, IsDate } from "class-validator"
+import { Role } from "src/generated/prisma"
 
 export class CreateUserDto {
-    @IsNotEmpty()
+
     @IsEmail()
-    @IsString()
     email!:string
 
-    @IsNotEmpty()
     @IsString()
     password!:string
-    
+
+    @IsString()
+    role!: Role
+
+    @IsDate()
+    created_at!: Date
+
 }
