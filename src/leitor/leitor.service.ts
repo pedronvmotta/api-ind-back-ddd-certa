@@ -2,10 +2,19 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateLeitorDto } from './dto/create-leitor.dto';
 import { UpdateLeitorDto } from './dto/update-leitor.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { CreateLivroDto } from '../livro/dto/create-livro.dto';
 
 @Injectable()
 export class LeitorService {
     constructor(private prisma: PrismaService) {}
+
+    async criarLeitor(createLeitorDto: CreateLeitorDto){
+        return await this.prisma.leitor.create({
+            data:{
+                ...createLeitorDto
+            }
+        })
+    }
 
     async listarLeitores() {
         return await this.prisma.leitor.findMany()

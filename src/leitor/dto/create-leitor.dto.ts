@@ -1,16 +1,16 @@
-import { IsInt, IsString, IsDate, IsOptional } from "class-validator";
+import { IsInt, IsString, IsDate, IsOptional, IsEmail } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 import {Type} from 'class-transformer';
 
 export class CreateLeitorDto {
 
-    @ApiProperty({ description: "id do usuário vinculado", example: 1 })
-    @IsInt()
-    id_user!: number;
-
     @ApiProperty({ description: "nome do leitor", example: "vitor" })
     @IsString()
     nome!: string;
+
+    @ApiProperty({description: "email do leitor", example: "vitor@example.com"})
+    @IsEmail()
+    email!:string;
 
     @ApiProperty({ description: "cpf do leitor", example: "123.456.789-00" })
     @IsString()

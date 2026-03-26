@@ -16,7 +16,7 @@ model User {
 
 model Leitor {
   id                 Int          @id @default(autoincrement())
-  email              String       @unique
+  email              String?      @unique
   nome               String
   cpf                String       @unique
   endereco           String
@@ -26,13 +26,14 @@ model Leitor {
 }
 
 model Autor {
-  id                 Int          @id @default(autoincrement())
+  id                 Int      @id @default(autoincrement())
   nome_autor         String
   origem             String
   biografia          String
   data_de_nascimento DateTime
   nome_artistico     String
-  livros             AutorLivro[]
+  id_livro           Int
+  Livro              Livro    @relation(fields: [id_livro], references: [id])
 }
 
 model Livro {
@@ -45,17 +46,8 @@ model Livro {
   idioma           String
   qtde_total       Int
   qtde_disponivel  Int
-  autores          AutorLivro[]
+  Autor            Autor[]
   itens_emprestimo ItemEmprestimo[]
-}
-
-model AutorLivro {
-  id_autor Int
-  id_livro Int
-  autor    Autor @relation(fields: [id_autor], references: [id])
-  livro    Livro @relation(fields: [id_livro], references: [id])
-
-  @@id([id_autor, id_livro])
 }
 
 model Emprestimo {

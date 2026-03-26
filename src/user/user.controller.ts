@@ -9,7 +9,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post("/cadastro")
-  @ApiOperation({ summary: "cadastra o usuario" })
+  @ApiOperation({ summary: "loga o usuario" })
   @ApiResponse({ status: 201, description: "usuario cadastrado com sucesso" })
   @ApiResponse({ status: 400, description: "dados inválidos" })
   cadastrarUsuario(@Body() createUserDto: CreateUserDto) {

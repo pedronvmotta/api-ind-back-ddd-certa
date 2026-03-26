@@ -16,7 +16,7 @@ model User {
 
 model Leitor {
   id                 Int          @id @default(autoincrement())
-  email              String       @unique
+  email              String?      @unique
   nome               String
   cpf                String       @unique
   endereco           String

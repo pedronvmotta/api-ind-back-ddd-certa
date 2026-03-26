@@ -13,12 +13,12 @@ export class ItemEmprestimoController {
   @ApiResponse({status:201, description: "item criado"})
   @ApiResponse({status:400, description: "item não criado"})
 
-  adicionarItemEmprestimo(createItemEmprestimoDto: CreateItemEmprestimoDto){
+  adicionarItemEmprestimo(@Body() createItemEmprestimoDto: CreateItemEmprestimoDto){
     return this.itemEmprestimoService.adicionarItemEmprestimo(createItemEmprestimoDto)
   }
 
   @Get('/listar-todos-os-itens')
-  @ApiOperation({summary: "lista todos os empréstimos"})
+  @ApiOperation({summary: "lista todos os itens de empréstimo"})
   @ApiResponse({status:200, description:"item found"})
   @ApiResponse({status:404, description: "item not found"})
 

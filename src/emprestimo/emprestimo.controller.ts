@@ -13,7 +13,7 @@ export class EmprestimoController {
   @ApiResponse({status:201, description: "empréstimo criado"}) 
   @ApiResponse({status:400, description: 'empréstimo não criado'})  
 
-  criarEmprestimo(createEmprestimoDto: CreateEmprestimoDto){
+  criarEmprestimo(@Body() createEmprestimoDto: CreateEmprestimoDto){
     return this.emprestimoService.criarEmprestimo(createEmprestimoDto)
   }
 

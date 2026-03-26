@@ -57,11 +57,4 @@ export class CreateLivroDto {
     })
     @IsInt()
     qtde_disponivel!:number
-
-    @ApiProperty({
-        description: "id do autor",
-        example: "id:1"
-    })
-    @IsInt()
-    id_autor!:number
 }

@@ -3,10 +3,20 @@ import { LeitorService } from './leitor.service';
 import { CreateLeitorDto } from './dto/create-leitor.dto';
 import { UpdateLeitorDto } from './dto/update-leitor.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { CreateAutorDto } from 'src/autor/dto/create-autor.dto';
 
 @Controller('leitores')
 export class LeitorController {
   constructor(private readonly leitorService: LeitorService) {}
+
+  @Post('/criar-leitor')
+  @ApiOperation({summary: "cria um leitor"})
+  @ApiResponse({status:201, description: "leitor criado"})
+  @ApiResponse({status:400, description: "leitor não criado"})
+
+  criarAutor(@Body() createLeitorDto: CreateLeitorDto){
+    return this.leitorService.criarLeitor(createLeitorDto)
+  }
 
   @Get('/listar-todos')
   @ApiOperation({summary: "lista todos os leitores"})
