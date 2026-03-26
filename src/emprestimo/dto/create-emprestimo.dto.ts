@@ -1,20 +1,23 @@
-import { IsInt, IsString, IsDate } from "class-validator";
+import { IsInt, IsString, IsDate, IsNumber } from "class-validator";
 import { ApiProperty} from "@nestjs/swagger";
+import {Type} from 'class-transformer'
 
 export class CreateEmprestimoDto {
 
     @ApiProperty({
         description: "essa é a data de empréstimo",
-        example: 19/11/2025
+        example: "2025-11-19"
     })
     @IsDate()
+    @Type(()=> Date)
     data_emprestimo!: Date;
 
     @ApiProperty({
         description: "esse é o prazo que o leitor tem pra devolver, ou seja, é o final do empréstimo",
-        example: 25/11/2025
+        example: "2025-11-19"
     })
     @IsDate()
+    @Type(()=> Date)
     prazo_de_devolucao!:Date;
 
     @ApiProperty({
@@ -26,10 +29,10 @@ export class CreateEmprestimoDto {
 
     @ApiProperty({
         description: "id do leitor que pegou emprestado",
-        example: "id : 1"
+        example: "1"
     })
-    @IsInt()
-    id_leitor !: number;
+    @IsNumber()
+    id_leitor !:number;
 
 }
 

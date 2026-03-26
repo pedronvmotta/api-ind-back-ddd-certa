@@ -1,5 +1,6 @@
-import { IsString, IsDateString } from 'class-validator';
+import { IsString, IsDateString, IsInt } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 
 export class CreateAutorDto {
   @ApiProperty({ description: 'nome do autor', example: 'Antonio' })
@@ -21,4 +22,9 @@ export class CreateAutorDto {
   @ApiProperty({ description: 'nome artístico do autor', example: 'Tom' })
   @IsString()
   nome_artistico!: string;
+
+  @ApiProperty({ example: 1 })
+  @IsInt()
+  @Type(() => Number)
+  id_livro: number; // estava faltando isso
 }

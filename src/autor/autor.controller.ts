@@ -29,9 +29,9 @@ listarAutores(){
 @ApiOperation({summary:"pega os dados de um autor"})
 @ApiResponse({status:200, description: "autor encontrado"})
 @ApiResponse({status:404, description: 'autor não encontrado'})
-@ApiParam({name: "id", type:Number})
+@ApiParam({name: "id", type:String})
 
-getDadosByAutor(@Param('id') id:number){
+getDadosByAutor(@Param('id') id:string){
   return this.autorService.getDadosByAutor(+id)
 }
 
@@ -39,9 +39,9 @@ getDadosByAutor(@Param('id') id:number){
 @ApiOperation({summary:"atualiza os dados de um autor"})
 @ApiResponse({status:200, description: "autor atualizado"})
 @ApiResponse({status:404, description: 'autor não encontrado'})
-@ApiParam({name: "id", type:Number})
+@ApiParam({name: "id", type:String})
 
-updateDadosAutor(@Param('id') id:number, @Body() updateAutorDto: CreateAutorDto){
+updateDadosAutor(@Param('id') id:string, @Body() updateAutorDto: CreateAutorDto){
   return this.autorService.updateDadosAutor(+id, updateAutorDto)
 }
 
@@ -49,9 +49,9 @@ updateDadosAutor(@Param('id') id:number, @Body() updateAutorDto: CreateAutorDto)
 @ApiOperation({summary:"deleta um autor"})
 @ApiResponse({status:200, description: "autor deletado"})
 @ApiResponse({status:404, description: 'autor não encontrado'})
-@ApiParam({name: "id", type:Number})
+@ApiParam({name: "id", type:String})
 
-deletarAutor(@Param('id') id:number){
+deletarAutor(@Param('id') id:string){
   return this.autorService.deletarAutor(+id)
 }
   

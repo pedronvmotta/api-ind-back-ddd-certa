@@ -3,10 +3,20 @@ import { LeitorService } from './leitor.service';
 import { CreateLeitorDto } from './dto/create-leitor.dto';
 import { UpdateLeitorDto } from './dto/update-leitor.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { CreateAutorDto } from 'src/autor/dto/create-autor.dto';
 
 @Controller('leitores')
 export class LeitorController {
   constructor(private readonly leitorService: LeitorService) {}
+
+  @Post('/criar-leitor')
+  @ApiOperation({summary: "cria um leitor"})
+  @ApiResponse({status:201, description: "leitor criado"})
+  @ApiResponse({status:400, description: "leitor não criado"})
+
+  criarAutor(@Body() createLeitorDto: CreateLeitorDto){
+    return this.leitorService.criarLeitor(createLeitorDto)
+  }
 
   @Get('/listar-todos')
   @ApiOperation({summary: "lista todos os leitores"})
@@ -20,7 +30,7 @@ export class LeitorController {
   @ApiOperation({summary: "pega os dados de um leitor"})
   @ApiResponse({status:200, description: "leitor encontrado"})
   @ApiResponse({status:404, description: "leitor não encontrado"})
-  getDadosByLeitor(@Param('id') id:number){
+  getDadosByLeitor(@Param('id') id:string){
     return this.leitorService.getDadosByLeitor(+id)
   }
 
@@ -28,7 +38,7 @@ export class LeitorController {
   @ApiOperation({summary: "atualiza os dados de um leitor"})
   @ApiResponse({status:200, description: "leitor encontrado"})
   @ApiResponse({status:404, description: "leitor não encontrado"})
-  atualizarDadosDoLeitor(@Param('id') id:number, @Body() updateLeitorDto: UpdateLeitorDto){
+  atualizarDadosDoLeitor(@Param('id') id:string, @Body() updateLeitorDto: UpdateLeitorDto){
     return this.leitorService.atualizarDadosDoLeitor(+id, updateLeitorDto)
   }
 
@@ -36,7 +46,7 @@ export class LeitorController {
   @ApiOperation({summary: "deleta um leitor"})
   @ApiResponse({status:200, description: "leitor encontrado"})
   @ApiResponse({status:404, description: "leitor não encontrado"})
-  deletarLeitor(@Param('id') id:number){
+  deletarLeitor(@Param('id') id:string){
     return this.leitorService.deletarLeitor(+id)
   }
    

@@ -13,7 +13,7 @@ export class EmprestimoController {
   @ApiResponse({status:201, description: "empréstimo criado"}) 
   @ApiResponse({status:400, description: 'empréstimo não criado'})  
 
-  criarEmprestimo(createEmprestimoDto: CreateEmprestimoDto){
+  criarEmprestimo(@Body() createEmprestimoDto: CreateEmprestimoDto){
     return this.emprestimoService.criarEmprestimo(createEmprestimoDto)
   }
 
@@ -29,7 +29,7 @@ export class EmprestimoController {
   @ApiOperation({summary:"pega os dados de um empréstimo"})
   @ApiResponse({status:200, description: "empréstimo encontrado"})
   @ApiResponse({status:404, description: 'empréstimo não encontrado'})
-  getDadosByEmprestimo(@Param('id') id:number){
+  getDadosByEmprestimo(@Param('id') id:string){
     return this.emprestimoService.getDadosByEmprestimo(+id)
   }
 
@@ -37,7 +37,7 @@ export class EmprestimoController {
   @ApiOperation({summary:"atualiza os dados de um empréstimo"})
   @ApiResponse({status:200, description: "empréstimo atualizado"})
   @ApiResponse({status:404, description: 'empréstimo não encontrado'})
-  atualizarDadosEmprestimo(@Param('id') id:number, @Body() updateEmprestimoDto: UpdateEmprestimoDto){
+  atualizarDadosEmprestimo(@Param('id') id:string, @Body() updateEmprestimoDto: UpdateEmprestimoDto){
     return this.emprestimoService.atualizarDadosEmprestimo(+id, updateEmprestimoDto)
   }
 }

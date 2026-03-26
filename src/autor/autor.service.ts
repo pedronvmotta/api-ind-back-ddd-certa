@@ -7,11 +7,14 @@ import { UpdateAutorDto } from './dto/update-autor.dto';
 export class AutorService {
 
   constructor(private readonly prisma: PrismaService) {}
-
-  async cadastrarAutor(createAutorDto: CreateAutorDto) {
+async cadastrarAutor(createAutorDto: CreateAutorDto) {
   return await this.prisma.autor.create({
     data: {
-      ...createAutorDto,
+      nome_autor: createAutorDto.nome_autor,
+      origem: createAutorDto.origem,
+      biografia: createAutorDto.biografia,
+      nome_artistico: createAutorDto.nome_artistico,
+      id_livro: createAutorDto.id_livro,
       data_de_nascimento: new Date(createAutorDto.data_de_nascimento),
     },
   });
@@ -52,10 +55,17 @@ export class AutorService {
 
     return this.prisma.autor.update({
       where: { id },
-      data: updateAutorDto
-    })
+  data: {
+    nome_autor: updateAutorDto.nome_autor,
+    origem: updateAutorDto.origem,
+    biografia: updateAutorDto.biografia,
+    nome_artistico: updateAutorDto.nome_artistico,
+    id_livro: updateAutorDto.id_livro,
+    data_de_nascimento: updateAutorDto.data_de_nascimento
+      ? new Date(updateAutorDto.data_de_nascimento)
+      : undefined,
+    }})
   }
-
   async deletarAutor(id: number) {
     const autor = await this.prisma.autor.findUnique({
       where: { id }

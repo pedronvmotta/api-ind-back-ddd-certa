@@ -13,12 +13,12 @@ export class ItemEmprestimoController {
   @ApiResponse({status:201, description: "item criado"})
   @ApiResponse({status:400, description: "item não criado"})
 
-  adicionarItemEmprestimo(createItemEmprestimoDto: CreateItemEmprestimoDto){
+  adicionarItemEmprestimo(@Body() createItemEmprestimoDto: CreateItemEmprestimoDto){
     return this.itemEmprestimoService.adicionarItemEmprestimo(createItemEmprestimoDto)
   }
 
   @Get('/listar-todos-os-itens')
-  @ApiOperation({summary: "lista todos os empréstimos"})
+  @ApiOperation({summary: "lista todos os itens de empréstimo"})
   @ApiResponse({status:200, description:"item found"})
   @ApiResponse({status:404, description: "item not found"})
 
@@ -30,9 +30,9 @@ export class ItemEmprestimoController {
   @ApiOperation({summary: "pega os dados de um item de empréstimo específico"})
   @ApiResponse({status:200, description:"item found"})
   @ApiResponse({status:404, description: "item not found"})
-  @ApiParam({name:"id", type:Number})
+  @ApiParam({name:"id", type:String})
 
-  verItemEspecificoEmprestimo(@Param('id') id:number){
+  verItemEspecificoEmprestimo(@Param('id') id:string){
     return this.itemEmprestimoService.verItemEspecificoEmprestimo(+id)
   }
 
@@ -40,9 +40,9 @@ export class ItemEmprestimoController {
   @ApiOperation({summary: "atualiza os dados de um item de empréstimo específico"})
   @ApiResponse({status:200, description:"item found"})
   @ApiResponse({status:404, description: "item not found"})
-  @ApiParam({name:"id", type:Number})
+  @ApiParam({name:"id", type:String})
 
-  atualizarDadosItem(@Param('id') id:number, @Body() updateItemEmprestimoDto: UpdateItemEmprestimoDto){
+  atualizarDadosItem(@Param('id') id:string, @Body() updateItemEmprestimoDto: UpdateItemEmprestimoDto){
     return this.itemEmprestimoService.atualizarDadosItem(+id, updateItemEmprestimoDto)
   }
 
@@ -50,9 +50,9 @@ export class ItemEmprestimoController {
   @ApiOperation({summary: "deleta um item de empréstimo específico"})
   @ApiResponse({status:200, description:"item found"})
   @ApiResponse({status:404, description: "item not found"})
-  @ApiParam({name:"id", type:Number})
+  @ApiParam({name:"id", type:String})
 
-  removerItemEmprestimo(@Param('id') id:number){
+  removerItemEmprestimo(@Param('id') id:string){
     return this.itemEmprestimoService.removerItemEmprestimo(+id)
   }
 
