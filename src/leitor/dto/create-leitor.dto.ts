@@ -1,5 +1,6 @@
 import { IsInt, IsString, IsDate, IsOptional } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
+import {Type} from 'class-transformer';
 
 export class CreateLeitorDto {
 
@@ -16,6 +17,7 @@ export class CreateLeitorDto {
     cpf!: string;
 
     @ApiProperty({ description: "data de nascimento", example: "2005-11-19" })
+    @Type(()=> Date)
     @IsDate()
     data_de_nascimento!: Date;
 

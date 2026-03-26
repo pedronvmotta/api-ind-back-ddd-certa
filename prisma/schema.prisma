@@ -26,36 +26,28 @@ model Leitor {
 }
 
 model Autor {
-  id                 Int          @id @default(autoincrement())
+  id                 Int      @id @default(autoincrement())
   nome_autor         String
   origem             String
   biografia          String
   data_de_nascimento DateTime
   nome_artistico     String
-  livros             AutorLivro[]
+  id_livro           Int
+  Livro              Livro    @relation(fields: [id_livro], references: [id])
 }
 
 model Livro {
-  id              Int              @id @default(autoincrement())
-  nome_livro      String
-  editora         String
-  versao          String
-  ano             String
-  genero          String
-  idioma          String
-  qtde_total      Int
-  qtde_disponivel Int
-  autores         AutorLivro[]
+  id               Int              @id @default(autoincrement())
+  nome_livro       String
+  editora          String
+  versao           String
+  ano              String
+  genero           String
+  idioma           String
+  qtde_total       Int
+  qtde_disponivel  Int
+  Autor            Autor[]
   itens_emprestimo ItemEmprestimo[]
-}
-
-model AutorLivro {
-  id_autor Int
-  id_livro Int
-  autor    Autor @relation(fields: [id_autor], references: [id])
-  livro    Livro @relation(fields: [id_livro], references: [id])
-
-  @@id([id_autor, id_livro])
 }
 
 model Emprestimo {

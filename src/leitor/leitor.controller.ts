@@ -20,7 +20,7 @@ export class LeitorController {
   @ApiOperation({summary: "pega os dados de um leitor"})
   @ApiResponse({status:200, description: "leitor encontrado"})
   @ApiResponse({status:404, description: "leitor não encontrado"})
-  getDadosByLeitor(@Param('id') id:number){
+  getDadosByLeitor(@Param('id') id:string){
     return this.leitorService.getDadosByLeitor(+id)
   }
 
@@ -28,7 +28,7 @@ export class LeitorController {
   @ApiOperation({summary: "atualiza os dados de um leitor"})
   @ApiResponse({status:200, description: "leitor encontrado"})
   @ApiResponse({status:404, description: "leitor não encontrado"})
-  atualizarDadosDoLeitor(@Param('id') id:number, @Body() updateLeitorDto: UpdateLeitorDto){
+  atualizarDadosDoLeitor(@Param('id') id:string, @Body() updateLeitorDto: UpdateLeitorDto){
     return this.leitorService.atualizarDadosDoLeitor(+id, updateLeitorDto)
   }
 
@@ -36,7 +36,7 @@ export class LeitorController {
   @ApiOperation({summary: "deleta um leitor"})
   @ApiResponse({status:200, description: "leitor encontrado"})
   @ApiResponse({status:404, description: "leitor não encontrado"})
-  deletarLeitor(@Param('id') id:number){
+  deletarLeitor(@Param('id') id:string){
     return this.leitorService.deletarLeitor(+id)
   }
    

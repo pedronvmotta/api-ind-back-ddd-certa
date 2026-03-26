@@ -29,7 +29,7 @@ export class LivroController {
   @ApiOperation({summary: "pega os dados de um livro"})
   @ApiResponse({status:200, description: "livro encontrado"})
   @ApiResponse({status:404, description: "livro não encontrado"})
-  getLivroByDados(@Param('id') id:number){
+  getLivroByDados(@Param('id') id:string){
     return this.livroService.getLivroByDados(+id)
   }
 
@@ -37,7 +37,7 @@ export class LivroController {
   @ApiOperation({summary: "atualiza os dados de um livro"})
   @ApiResponse({status:200, description: "livro encontrado"})
   @ApiResponse({status:404, description: "livro não encontrado"})
-  atualizarDados(@Param('id') id:number, @Body() updateLivroDto: UpdateLivroDto){
+  atualizarDados(@Param('id') id:string, @Body() updateLivroDto: UpdateLivroDto){
     return this.livroService.atualizarDados(+id, updateLivroDto)
   }
 
@@ -45,7 +45,7 @@ export class LivroController {
   @ApiOperation({summary: "deleta um livro"})
   @ApiResponse({status:200, description: "livro encontrado"})
   @ApiResponse({status:404, description: "livro não encontrado"})
-  deletarLivro(@Param('id') id:number){
+  deletarLivro(@Param('id') id:string){
     return this.livroService.deletarLivro(+id)
   }
 

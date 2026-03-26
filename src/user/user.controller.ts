@@ -28,8 +28,8 @@ export class UserController {
   @ApiOperation({ summary: "pega os dados do usuario" })
   @ApiResponse({ status: 200, description: "dados do usuario pegos com sucesso" })
   @ApiResponse({ status: 404, description: "usuário não encontrado" })
-  @ApiParam({ name: "id", type: Number })
-  getDadosByUsuario(@Param('id') id: number) { // faltava @Param
+  @ApiParam({ name: "id", type: String })
+  getDadosByUsuario(@Param('id') id: string) { // faltava @Param
     return this.userService.getDadosByUsuario(+id)
   }
 
@@ -37,8 +37,8 @@ export class UserController {
   @ApiOperation({ summary: "atualiza os dados do usuario" })
   @ApiResponse({ status: 200, description: "dados do usuario atualizados com sucesso" })
   @ApiResponse({ status: 404, description: "usuário não encontrado" })
-  @ApiParam({ name: "id", type: Number })
-  updateDadosUsuario(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto) { // faltava @Param
+  @ApiParam({ name: "id", type: String })
+  updateDadosUsuario(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) { // faltava @Param
     return this.userService.updateDadosUsuario(+id, updateUserDto)
   }
 
@@ -46,8 +46,8 @@ export class UserController {
   @ApiOperation({ summary: "deleta o usuario" })
   @ApiResponse({ status: 200, description: "usuario deletado com sucesso" })
   @ApiResponse({ status: 404, description: "usuário não encontrado" })
-  @ApiParam({ name: "id", type: Number })
-  deletarUsuario(@Param('id') id: number) { // faltava @Param
+  @ApiParam({ name: "id", type: String })
+  deletarUsuario(@Param('id') id: string) { // faltava @Param
     return this.userService.deletarUsuario(+id)
   }
 }
